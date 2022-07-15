@@ -11,7 +11,7 @@ public class Town extends BaseEntity{
     private String name;
     @OneToMany(mappedBy = "town")
     private List<Apartment> apartments;
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String description;
     @OneToOne
     private Picture pictureUrl;

@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Type extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     private TypeEnum type;
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String description;
     @Column(nullable = false)
     private int capacity;

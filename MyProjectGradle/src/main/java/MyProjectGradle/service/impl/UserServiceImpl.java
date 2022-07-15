@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
-
         this.pictureService = pictureService;
     }
 
@@ -95,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(()->new EntityNotFoundException("User"));
     }
 
     @Transactional

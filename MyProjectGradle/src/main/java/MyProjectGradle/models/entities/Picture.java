@@ -7,9 +7,9 @@ import javax.persistence.*;
 public class Picture extends BaseEntity{
     @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String url;
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String publicId;
     @Column(name = "user_name")
     private String userName;
