@@ -1,0 +1,60 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+    <header id="nav" th:replace="fragments/fragment::navigation" >
+    </header>
+    <div class="jumbotron jumbotron-fluid bg-blur min-vh-100" id="jumbotron">
+        <div class="container text-light ">
+            <h5 class="display-5 text-center my-5">
+                <strong class="bg-blur rounded px-5  text-light py-3 vw-25">
+                    login and find your place</strong></h5>
+        </div>
+        <div class="container bg-blur rounded p-5 mx-auto w-50 my-3 px-5">
+            <form th:action="@{/users/login}" th:method="POST" class=" text-center text-light px-5">
+                <h3 class="mt-5 text-center">
+                   <!-- <strong class="bg-blur rounded text-danger">
+                        Wrong username and password combination.
+                    </strong>-->
+                    <strong th:if="${bad_credentials}" class="errors alert alert-danger">
+                        Invalid username or password.
+                    </strong>
+                </h3>
+                <div class="form-group row px-5">
+                    <label for="username" class="col-sm-2 col-form-label">Username</label>
+                    <div class="col-sm-10">
+                        <input th:value="${username}"
+                               name="username" type="text" min="3" max="20" class="form-control" id="username"
+                               aria-describedby="usernameHelpInline" placeholder="Username">
+                    <!--    <small class="text-danger">
+                            Username length must be between 5 and 20 characters.
+                        </small>-->
+                    </div>
+                </div>
+                <div class="form-group row px-5">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input id="password"
+                               name="password"
+                               type="password"  min="3" max="20" class="form-control"
+                               aria-describedby="passwordHelpInline" placeholder="Password">
+                      <!--  <small class="text-danger ">
+                            Password length must be more than 3 characters long.
+                        </small>-->
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-info w-50">Login</button>
+            </form>
+            <hr class="bg-light">
+        </div>
+    </div>
+
+<footer th:replace="fragments/fragment::footer">
+
+</footer>
+</body>
+</html>

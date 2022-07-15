@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation">
+
+</header>
+
+<div class="container-fluid">
+    <h2 class="text-center text-white mt-5">Details</h2>
+    <div class="offers row mx-auto d-flex flex-row justify-content-center">
+        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+
+            <div class="card-body pb-1">
+                <h5 class="card-title" th:text="|Details apartment *{name}|">
+                    Apartment description</h5>
+            </div>
+            <ul class="offer-details list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="card-text"><span th:text="|Type: *{type.type}|">Type</span></div>
+                    <div class="card-text"><span th:text="|Capacity: *{capacity}|">Capacity</span></div>
+                    <div class="card-text"><span th:text="|Price: *{price}|">Price</span></div>
+                    <div class="card-text"><span th:text="|Address: *{address}|">Address</span></div>
+                </li>
+            </ul>
+            <div class="card-body">
+                <div class="row">
+                   <th:block th:if="*{canUpdate}">
+                    <a class="btn btn-link" th:href="@{/apartments/{id}/update(id=*{id})}">Update</a>
+                       <a class="btn btn-link" id="statisticsBtn" th:href="@{/apartments/api/statistic/{id}(id=*{id})}">Statistic</a>
+                    </th:block>
+
+                    <th:block th:if="${canDelete}">
+                    <form class="btn btn-link" th:action="@{/apartments/{id}/delete(id=*{id})}" th:method="delete">
+                        <input type="submit" class="btn btn-link" value="Delete"/>
+                    </form>
+                    </th:block>
+                    <th:block th:unless="${canDelete}">
+                        <h5> The apartment has active reservations and could not be deleted</h5>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+
+            <span th:each="picture : ${apartment.getPictures()}" th:object="${picture}">
+          <img th:src="*{url}" th:value="*{publicId}" class="card-img-top"  alt="Apartment image">
+                 <th:block th:if="${apartment.canUpdate}">
+                  <th:block th:if="${apartment.getPictures().size()>1}">
+               <a class="btn btn-link" th:href="@{/pictures/delete/{id}(id=*{publicId})}">Delete Picture</a>
+                 </th:block>
+                     <th:block th:if="${apartment.getPictures().size()==1}">You can not delete the picture</th:block>
+            <a class="btn btn-link" th:href="@{/pictures/add/{id}(id=${apartment.getId()})}">Add Picture</a>
+                 </th:block>
+            </span>
+
+        </div>
+    </div>
+
+</div>
+<div class="container-fluid">
+    <form th:if="${apartment.canReserve}" method="POST" th:action="@{/apartments/reserve/{id}(id=${id})}"
+          th:object="${reservationCreateBindingModel}">
+
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="guestName" class="text-white font-weight-bold">Guest name</label>
+                    <input th:field="*{guestName}"
+                           th:errorclass="bg-danger" id="guestName" type="text"
+                           class="form-control"
+                           placeholder="Guest Name"/>
+                    <p th:if="${#fields.hasErrors('guestName')}" th:errors="*{guestName}" class="errors alert alert-danger invalid-feedback">
+                        Guest name must be filled.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="numberOfGuests" class="text-white font-weight-bold">Number of guest</label>
+                        <input th:field="*{numberOfGuests}"
+                               th:errorclass="bg-danger" id="numberOfGuests" type="number"
+                               class="form-control"
+                               placeholder="numberOfGuests"/>
+                        <p th:if="${#fields.hasErrors('numberOfGuests')}" th:errors="*{numberOfGuests}" class="errors alert alert-danger invalid-feedback">
+                           Number of guest must be positive and not more than max capacity of the apartment
+                        </p>
+                    </div>
+                </div>
+            <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="arriveDate" class="text-white font-weight-bold">Arrive Date</label>
+                <input required min="2022-7-1" max="2023-1-1" th:field="*{arrivalDate}"
+                       th:errorclass="bg-danger" id="arriveDate" type="date"
+                       class="form-control"
+                       placeholder="Arrive Date"/>
+                <p th:if="${#fields.hasErrors('arrivalDate')}" th:errors="*{arrivalDate}" class="errors alert alert-danger invalid-feedback">
+                    Arrive date can't be in the past.
+                </p>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label for="departureDate" class="text-white font-weight-bold">Departure Date</label>
+                <input th:field="*{departureDate}" required min="2022-7-1" max="2023-1-1"
+                       th:errorclass="bg-danger" id="departureDate" type="date"
+                       class="form-control"
+                       placeholder="Departure Date"/>
+                <p th:if="${#fields.hasErrors('departureDate')}" th:errors="*{departureDate}" class="errors alert alert-danger invalid-feedback">
+                    Leave date must be in the future and must be later than arrive date.
+                </p>
+            </div>
+            </div>
+        <button type="submit" value="Reserve" class="btn btn-warning">Reserve</button>
+        <p th:if="${isReserved}" class="errors alert alert-danger">
+            The apartment is not available in this period.
+        <p th:if="${isReserved}" th:text="${nextAvailableDates}" class="errors alert alert-danger"></p>
+        </p>
+    </form>
+
+    <div id="apartmentStatistic">
+    </div>
+</div>
+
+<footer th:replace="fragments/fragment::footer">
+</footer>
+<script src="/js/apartmentStatistics.js"></script>
+</body>
+</html>

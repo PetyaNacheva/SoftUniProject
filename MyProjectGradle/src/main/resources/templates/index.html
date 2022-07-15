@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation" >
+
+</header>
+
+<div class="jumbotron jumbotron-fluid bg-blur min-vh-100">
+    <div class="container">
+        <h1 class="title-h1 pl-2 text-light">Welcome to travel and working
+            <span sec:authorize="isAuthenticated()" sec:authentication="name">Name of the logged in user</span>
+            <span sec:authorize="!isAuthenticated()">Anonymous!</span>
+        </h1>
+        <p class="text-center text-light ">Top 3 of the towns with most available apartments</p>
+        <p sec:authorize="!isAuthenticated()" class="text-center text-light ">If you want to find more information about our available destinations please  <a class="text-info" th:href="@{/users/login}">Login</a> or  <a class="text-info" th:href="@{/users/register}">Register</a></p>
+        <ul class="container card-columns my-4 justify-content-between">
+            <li th:each="t: ${towns}" th:object="${t}" class="text-center">
+              <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header" th:text="*{name}"></div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="*{description}"></h5>
+                        <img th:src="*{pictureUrl}" class="card-img" alt="Card image cap">
+                        <p class="card-text my-1" th:text="*{description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <th:block sec:authorize="isAuthenticated()">
+                        <a th:href="@{/towns/{id}/details(id=*{id})}" class="btn-primary my-3">View details</a>
+                        </th:block>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <hr class="bg-light">
+        <th:block sec:authorize="isAuthenticated()">
+            <div id="search-section" class="col-md-3 mx-auto my-lg-5">
+            <div  class="form-group">
+                <label for="town" class="text-black-50 font-weight-bold">Town</label>
+                <select id="town" class="form-control">
+                    <option value="">- Choose Town -</option>
+                    <option th:each="t: ${allTowns}" th:object="${t}"
+                            th:value="${t.name}"
+                            th:text="${t.name}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type" class="text-black-50 font-weight-bold">Type</label>
+                <select id="type" class="form-control">
+                    <option value="">- Choose Type-</option>
+                    <option th:each="t: ${T(MyProjectGradle.models.enums.TypeEnum).values()}" th:object="${t}"
+                            th:value="${t.name}"
+                            th:text="${t.name}"></option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col my-auto">
+                    <div class="button-holder">
+                        <input id="searchBtn" type="button" class="btn btn-info btn-lg" value="Search"/>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div id="cardsListSearch">
+            </div>
+        </th:block>
+    </div>
+</div>
+
+
+<footer th:replace="fragments/fragment::footer">
+
+</footer>
+<script src="/js/search.js"></script>
+<!--<script src="/js/towns.js"></script>-->
+</body>
+
+</html>

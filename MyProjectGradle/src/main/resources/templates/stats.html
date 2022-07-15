@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation" >
+</header>
+<main>
+    <div class="jumbotron bg-blur" id="jumbotron">
+        <div class="container text-light ">
+            <h2 class="display-5 text-center my-5">
+                <strong class="bg-blur rounded px-5  text-light py-3 vw-25">
+                    Welcome to stats!</strong></h2>
+         <h3 class="display-5 text-center my-5"> Total requests: <th:block th:text="${stats.getTotalRequests()}"> </th:block></h3>
+            <h3 class="display-5 text-center my-5"> Anonymous requests: <th:block th:text="${stats.getAnonymousRequests()}"> </th:block></h3>
+            <h3 class="display-5 text-center my-5"> Authenticated requests: <th:block th:text="${stats.getAuthRequests()}"> </th:block></h3>
+            <h3 class="display-5 text-center my-5"><th:block th:text="${reservations}"> </th:block></h3>
+            <h3 class="display-5 text-center my-5"><th:block th:text="${apartments}"> </th:block></h3>
+        </div>
+        <div class="container w-75">
+            <div class="container mx-auto text-white">
+                <h2 class="text-light text-center">Users actions</h2>
+                <div class="table-responsive text-light">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr style="color: white">
+                            <th>#</th>
+                            <th>Action</th>
+                            <th>Date</th>
+                            <th>User</th>
+                        </tr>
+                        </thead>
+                        <tbody style="color: white">
+                        <tr th:each="l : ${logs}" th:object="${l}">
+                            <td th:text="${l.id}">Id</td>
+                            <td th:text="${l.action}">Action</td>
+                            <td th:text="${l.dateTime}">Date</td>
+                            <td th:text="${l.userEntity.getUsername()}">User</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/fragment::footer">
+
+</footer>
+<!--<script src="/js/admin.js"></script>-->
+</body>
+</html>

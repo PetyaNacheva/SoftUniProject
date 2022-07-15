@@ -1,0 +1,157 @@
+html{
+    box-sizing: content-box;
+}
+
+*::after {
+    content: none !important;
+}
+*::before {
+    content: none !important;
+}
+body{box-sizing: content-box;
+min-height: 100% !important}
+
+.navbar, #nav, .footer{
+    background-color: #0b4027;
+    padding: 5px;
+    margin-bottom: 0px;
+    font-size: large;
+    color: rgb(240, 205, 139);
+    border: none
+}
+ .navbar-brand, .nav-link,
+ .nav{
+     border: none;
+    background-color: #0b4027;
+   color: rgb(240, 205, 139);
+}
+.my-navigation, .navbar-right{
+    display: flex;
+    box-sizing: content-box;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.my-form{
+    font-size: 14px;
+}
+.my-btn{
+    font-size: 18px;
+}
+main{
+    min-height: 100% !important;
+}
+ .jumbotron{
+     min-height: 100%;
+     max-width: 100%;
+     margin: 0;
+     border-radius: 0px;
+ }
+
+ .container.text-light{
+    box-sizing: content-box;
+ }
+ .navbar-expand-sm{
+     border: none;
+ }
+
+.bg-blur.my-main{
+    min-height: 100%;
+    border: none;
+
+}
+
+.bg-nav{
+    background-color: rgba(65, 1, 81, 0.95);
+}
+.my-index-div{
+    min-height:56.6vh ;
+    max-height: 100%;
+}
+.my-register-div{
+    min-height:85.5vh ;
+    max-height: 100%;
+}
+.my-footer{
+    position:absolute;
+    text-align: center;
+    width:100%;
+}
+
+.bg-blur {
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/opacity/see-through */
+    color: black;
+    font-weight: bold;
+    z-index: 2;
+    width: 100%;
+}
+main {
+    background-image: url(https://i.pinimg.com/736x/88/c6/c6/88c6c6b6a8cae5dd846f596fd447010a.jpg);
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100%;
+    box-sizing: content-box;
+    min-height: 100%;
+}
+body{
+    min-height: 100%;
+}
+.container{
+    max-width: 100%;
+}
+.my-main {
+    min-height:50.2vh;
+}
+.fs-1{
+    font-size: 40px;
+}
+.navbar-header{
+    max-width: 15%;
+}
+
+.title-h1{
+    text-align: center;
+    padding-bottom: 8px;
+}
+.search-field{
+    border-radius: 4px;
+    max-width: 60% ;
+    margin-left: 19%;
+}
+
+/*Font-awesome integration*/
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+/*Google font integration*/
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+#contact{
+    background-color:#f1f1f1;
+    font-family: 'Roboto', sans-serif;
+}
+
+#contact .well{
+    margin-top:30px;
+    border-radius:0;
+}
+
+#contact .form-control{
+    border-radius: 0;
+    border:2px solid #1e1e1e;
+}
+
+#contact button{
+    border-radius:0;
+    border:2px solid #1e1e1e;
+}
+
+#contact .row{
+    margin-bottom:30px;
+}
+
+@media (max-width: 768px) {
+    #contact iframe {
+        margin-bottom: 15px;
+    }
+
+}

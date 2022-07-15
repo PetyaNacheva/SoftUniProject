@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation">
+
+</header>
+
+<div class="jumbotron bg-blur text-center">
+    <div class="container text-light text-center">
+        <h1 class="display-4"><strong class="bg-blur rounded text-light px-3">Arrival Today</strong></h1>
+    </div>
+    <div class="row mx-xl-5 justify-content-center">
+        <div th:each="r : ${reservationArrivedToday}" th:object="${r}"class="bg-blur rounded mx-5 pb-3 w-75">
+            <div  class="mt-3 rounded badge-info p-3">
+                <span class="justify-content-center">
+                <img th:src="*{apartment.pictures.get(0).url}" class="mr-2"
+                     width="50px" height="50px">
+                    </span>
+                <span th:text="*{guestName}" class="justify-content-center">GuestName</span>
+                <span th:text="*{arrivalDate}" class="p-3">ArrivalDate</span>
+                <span th:text="*{departureDate}" class="p-3">DepartureDate</span>
+                <span th:text="*{apartment.name}" class="p-3">Apartment</span>
+                <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="ml-3 p-3 text-warning">ApartmentDetails</a>
+                <a th:href="@{/reservations/{id}/details(id=*{id})}" class="ml-3 p-3 text-warning">ReservationDetails</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="jumbotron bg-blur text-center">
+    <div class="container justify-content-center text-light text-center">
+        <h1 class="display-4"><strong class="bg-blur rounded text-light px-3 text-sm-center">New Reservations</strong></h1>
+    </div>
+    <div class="row mx-xl-5 justify-content-center">
+  <div th:each="r : ${futureReservations}" th:object="${r}"class="bg-blur rounded mx-5 pb-3 w-75">
+            <div  class="mt-3 rounded badge-info p-3 mx-auto justify-content-md-around">
+                <span class="">
+                <img th:src="*{apartment.pictures.get(0).url}" class="mr-2"
+                     width="50px" height="50px">
+                    </span>
+                <span th:text="*{guestName}" class="p-3">GuestName</span>
+                <span th:text="*{arrivalDate}" class="p-3">ArrivalDate</span>
+                <span th:text="*{departureDate}" class="p-3">DepartureDate</span>
+                <span th:text="*{apartment.name}" class="p-3">Apartment</span>
+                <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="ml-3 p-3 text-warning">ApartmentDetails</a>
+                <a th:href="@{/reservations/{id}/details(id=*{id})}" class="ml-3 p-3 text-warning">ReservationDetails</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="jumbotron bg-blur text-center">
+    <div class="container text-light text-center">
+        <h1 class="display-4"><strong class="bg-blur rounded text-light px-3">Past Reservations</strong></h1>
+    </div>
+    <div class="row mx-xl-5 justify-content-center">
+        <div th:each="r : ${oldReservations}" th:object="${r}" class="bg-blur rounded mx-5 pb-3 w-75">
+            <div  class="mt-3 rounded badge-info p-3">
+                <img th:src="*{apartment.pictures.get(0).url}" class="mr-2"
+                     width="50px" height="50px">
+                <span th:text="*{guestName}" class="p-3">GuestName</span>
+                <span th:text="*{arrivalDate}" class="p-3">ArrivalDate</span>
+                <span th:text="*{departureDate}" class="p-3">DepartureDate</span>
+                <span th:text="*{apartment.name}" class="p-3">Apartment</span>
+                <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="ml-3 p-3 text-warning">ApartmentDetails</a>
+                <a th:href="@{/reservations/{id}/details(id=*{id})}" class="ml-3 p-3 text-warning">ReservationDetails</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<footer th:replace="fragments/fragment::footer">
+</footer>
+
+</body>
+</html>

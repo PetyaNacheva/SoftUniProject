@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation">
+
+</header>
+
+<div class="container-fluid">
+    <h2 class="text-center text-white mt-5">Details</h2>
+    <div class="offers row mx-auto d-flex flex-row justify-content-center">
+        <div th:object="${reservation}" class="offer card" >
+
+            <div class="card-body">
+                <h5 class="card-title" th:text="|Details reservation of *{username} to *{apartment.name}|">
+                    Offer year Brand name Model name</h5>
+                <img th:src="*{pictureUrl}" height="50 px" width="50 px">
+            </div>
+            <ul class="offer-details list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="card-text"><span th:text="|Guest: *{guestName}|">Type</span></div>
+                    <div class="card-text"><span th:text="|ArrivalDate: *{arrivalDate}|">ArrivalDate</span></div>
+                    <div class="card-text"><span th:text="|DepartureDate: *{departureDate}|">DepartureDate</span></div>
+                    <div class="card-text"><span th:text="|Number of guests: *{numberOfGuests}|">Number of guests</span></div>
+                    <div class="card-text"><span th:text="|ReservedOn: *{reservedOn}|">ReservedOn</span></div>
+                    <div class="card-text"><span th:text="|Price: *{price}|">Price</span></div>
+                </li>
+            </ul>
+            <div class="card-body">
+                <div class="row">
+                    <th:block th:if="*{canUpdate}">
+                        <a class="btn btn-link" th:href="@{/reservations/{id}/update(id=*{id})}">Update</a>
+                    </th:block>
+
+                    <th:block th:if="*{canDelete}">
+                        <form class="btn btn-link" th:action="@{/reservations/{id}/delete(id=*{id})}" th:method="delete">
+                            <input type="submit" class="btn btn-link" value="Delete"/>
+                        </form>
+                    </th:block>
+                    <th:block th:unless="*{canDelete}">
+                       <h5> The arrival date of reservation is too early, and it could not be deleted</h5>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="fragments/fragment::footer">
+</footer>
+
+</body>
+</html>

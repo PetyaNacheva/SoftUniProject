@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation">
+
+</header>
+
+<div class="container-fluid">
+    <h2 class="text-center text-white mt-5">Details</h2>
+    <div class="offers row mx-auto d-flex flex-row justify-content-center">
+        <div th:object="${town}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+
+            <div class="card-body pb-1">
+                <h5 class="card-title" th:text="|Town *{name}|"></h5>
+            </div>
+            <ul class="offer-details list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="card-text"><span th:text="|Description: *{description}|"></span></div>
+                </li>
+            </ul>
+            <div class="card-body">
+                <div class="row">
+                    <th:block th:if="*{canUpdate}">
+                        <a class="btn btn-link" th:href="@{/towns/{id}/update(id=*{id})}">Update</a>
+                    </th:block>
+                        <th:block th:if="*{canDelete}">
+                            <form class="btn btn-link" th:action="@{/towns/{id}/delete(id=*{id})}" th:method="delete">
+                                <input type="submit" class="btn btn-link" value="Delete"/>
+                            </form>
+                       <!-- <a class="btn btn-link" th:href="@{/towns/{id}/delete(id=*{id})}">Delete</a>-->
+                    </th:block>
+                </div>
+            </div>
+            <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+            <img th:src="*{picture.url}" th:value="*{picture.publicId}" class="card-img-top"  alt="Apartment image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/fragment::footer">
+</footer>
+
+</body>
+</html>

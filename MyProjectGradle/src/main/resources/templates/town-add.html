@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head">
+
+</head>
+<body>
+<header id="nav" th:replace="fragments/fragment::navigation">
+</header>
+<div class="jumbotron">
+    <div class="container text-light">
+        <h5 class="display-5 text-center my-0">
+            <strong class="bg-blur rounded px-5 border-bottom">
+                Add Town</strong></h5>
+        <h5 th:if="${isExist}" class="bg-danger text-light rounded my-1" >Town already exist</h5>
+    </div>
+    <div class="container bg-blur rounded p-5 mt-5 w-75">
+        <form role="form" enctype="multipart/form-data" th:action="@{/towns/add}"  th:method="POST" th:object="${townAddBindingModel}"
+              class=" text-center text-light">
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label">Apartment name</label>
+                <div class="col-sm-10">
+                    <input th:field="*{name}" th:errorclass="bg-danger" type="text" min="3" max="50" class="form-control" id="name"
+                           aria-describedby="usernameHelpInline" placeholder="name">
+                    <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" id="nameHelpInline" class="bg-danger text-light rounded">
+                        Town name length must be between 5 and 20 characters.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <input th:field="*{description}" th:errorclass="bg-danger" type="text" min="3" max="50" class="form-control" id="description"
+                           aria-describedby="apartmentTypeHelpInline" placeholder="Town description">
+                    <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="bg-danger text-light rounded">
+                        Description is required and must be at least 5 chars.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="picture" class="col-sm-2 col-form-label">Pictures</label>
+                <div class="col-sm-10">
+                    <!--th:field ="*{picture}" th:errorclass="bg-danger"-->
+                    <input type="file" class="form-control" id="picture" name="picture" th:field="*{picture}"
+                           aria-describedby="passwordHelpInline" placeholder="Put picture of your apartment here">
+                    <!--           <input th:field ="*{pictures}" th:errorclass="bg-danger"  type="url" class="form-control" id="pictureBedroom"
+                                      aria-describedby="passwordHelpInline" placeholder="Put picture of your bedroom here">-->
+                    <small th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"  class="bg-danger text-light rounded">
+                        At least one picture must be uploaded.
+                    </small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-info w-50">Add Town</button>
+        </form>
+        <hr class="bg-light">
+    </div>
+</div>
+
+<footer th:replace="fragments/fragment::footer">
+
+</footer>
+
+
+</body>
+</html>

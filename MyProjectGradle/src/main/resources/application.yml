@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/myProject_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
+    username: root
+    password: 55555
+
+  sql:
+    init:
+      mode: always
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+#JPA Properties
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+    defer-datasource-initialization: true
+
+##spring.sql.init.mode=always
+###Logging Levels
+# Disable the default loggers
+#Show SQL executed with parameter bindings
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+cloudinary:
+  api-key: 553456756494887
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+  ##${CLOUDINARY_API_SECRET}
+  cloud-name: petia
+#Change server port
+#server.port=8000
+
