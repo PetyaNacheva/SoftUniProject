@@ -2,8 +2,8 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/myProject_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
-    username: root
-    password: 55555
+    username:
+    password:
 
   sql:
     init:
