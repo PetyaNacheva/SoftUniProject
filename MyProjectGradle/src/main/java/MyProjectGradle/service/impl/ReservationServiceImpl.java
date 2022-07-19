@@ -5,7 +5,7 @@ import MyProjectGradle.models.service.ReservationServiceModel;
 import MyProjectGradle.models.views.ApartmentDetailsViewModel;
 import MyProjectGradle.models.views.ReservationDetailsViewModel;
 import MyProjectGradle.models.views.ReservationViewModel;
-import MyProjectGradle.config.repository.ReservationRepository;
+import MyProjectGradle.repository.ReservationRepository;
 
 import MyProjectGradle.service.ReservationService;
 import MyProjectGradle.service.UserService;

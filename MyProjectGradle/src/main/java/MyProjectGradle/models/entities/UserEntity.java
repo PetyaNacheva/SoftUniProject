@@ -22,7 +22,7 @@ public class UserEntity extends BaseEntity {
     private String email;
     @Column(name = "register_on")
     private LocalDate registerOn;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> role;
     @OneToMany(mappedBy = "guestName")
     private List<Reservation> reservations;

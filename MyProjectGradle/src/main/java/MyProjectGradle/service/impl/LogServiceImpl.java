@@ -1,13 +1,13 @@
 package MyProjectGradle.service.impl;
 
 
+import MyProjectGradle.models.entities.Apartment;
 import MyProjectGradle.models.entities.Log;
 import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.service.LogServiceModel;
-import MyProjectGradle.config.repository.LogRepository;
+import MyProjectGradle.repository.LogRepository;
 import MyProjectGradle.service.ApartmentService;
 import MyProjectGradle.service.LogService;;
-import MyProjectGradle.service.ReservationService;
 import MyProjectGradle.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -23,13 +23,14 @@ import java.util.stream.Collectors;
 public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
-    private final ReservationService reservationService;
+    private final ApartmentService apartmentService;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public LogServiceImpl(LogRepository logRepository, ApartmentService apartmentService, ReservationService reservationService, UserService userService, ModelMapper modelMapper) {
+    public LogServiceImpl(LogRepository logRepository, ApartmentService apartmentService, UserService userService, ModelMapper modelMapper) {
         this.logRepository = logRepository;
-        this.reservationService = reservationService;
+        this.apartmentService = apartmentService;
+
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
@@ -54,7 +55,7 @@ public class LogServiceImpl implements LogService {
         log.setAction(action);
         log.setDateTime(LocalDateTime.now());
         log.setUser(this.modelMapper.map(this.userService.findByUsername(authentication.getName()), UserEntity.class));
-        log.setReservation(reservationService.findById(id));
+        log.setApartment(modelMapper.map(apartmentService.findApartmentById(id), Apartment.class));
         logRepository.save(log);
     }
 }

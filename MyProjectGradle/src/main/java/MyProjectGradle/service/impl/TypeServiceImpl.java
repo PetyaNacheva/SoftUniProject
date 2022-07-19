@@ -2,7 +2,7 @@ package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.entities.Type;
 import MyProjectGradle.models.enums.TypeEnum;
-import MyProjectGradle.config.repository.TypeRepository;
+import MyProjectGradle.repository.TypeRepository;
 import MyProjectGradle.service.TypeService;
 import org.springframework.stereotype.Service;
 

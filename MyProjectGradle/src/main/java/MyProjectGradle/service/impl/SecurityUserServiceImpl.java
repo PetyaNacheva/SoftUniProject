@@ -2,7 +2,7 @@ package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.entities.Role;
 import MyProjectGradle.models.entities.UserEntity;
-import MyProjectGradle.config.repository.UserRepository;
+import MyProjectGradle.repository.UserRepository;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

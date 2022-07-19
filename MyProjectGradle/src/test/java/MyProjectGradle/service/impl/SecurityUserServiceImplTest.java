@@ -1,6 +1,6 @@
 package MyProjectGradle.service.impl;
 
-import MyProjectGradle.config.repository.UserRepository;
+import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.models.entities.Role;
 import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.enums.RolesEnum;
@@ -18,8 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class SecurityUserServiceImplTest {
