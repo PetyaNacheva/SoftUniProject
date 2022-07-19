@@ -18,16 +18,16 @@ public class LogAspect {
         this.logService = logService;
     }
 
-    @Pointcut("execution(* MyProjectGradle.service.ReservationService.addReservation(..))")
+    @Pointcut("execution(* MyProjectGradle.web.ApartmentController.makeReservation(..))")
     public void detailsPointcut(){};
 
-  /*@After("detailsPointcut()")
+  @After("detailsPointcut()")
     public void afterAdvice(JoinPoint joinPoint){
         Object[] args = joinPoint.getArgs();
-        Long reservationId = (Long) args[0];
+        Long apartmentId= (Long) args[0];
         String action = joinPoint.getSignature().getName();
-        logService.createLog(action, reservationId);
-       // TODO: 7/9/2022 to fix the logic for the logger when making a reservation
+        logService.createLog(action, apartmentId);
 
-    }*/
+
+    }
 }

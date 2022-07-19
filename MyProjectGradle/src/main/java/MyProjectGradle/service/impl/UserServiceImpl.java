@@ -8,7 +8,7 @@ import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.service.UserServiceModel;
 import MyProjectGradle.models.views.UserViewModel;
-import MyProjectGradle.config.repository.UserRepository;
+import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.service.PictureService;
 import MyProjectGradle.service.RoleService;
 import MyProjectGradle.service.UserService;

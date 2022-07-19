@@ -2,7 +2,7 @@ package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.entities.Role;
 import MyProjectGradle.models.enums.RolesEnum;
-import MyProjectGradle.config.repository.RoleRepository;
+import MyProjectGradle.repository.RoleRepository;
 import MyProjectGradle.service.RoleService;
 import org.springframework.stereotype.Service;
 

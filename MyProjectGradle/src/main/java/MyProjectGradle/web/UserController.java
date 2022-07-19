@@ -45,6 +45,7 @@ public class UserController {
         return "register";
     }
 
+    @Transactional
     @PostMapping("/register")
     public String registerConfirmed(@Valid UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 

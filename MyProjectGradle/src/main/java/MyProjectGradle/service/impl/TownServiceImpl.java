@@ -5,7 +5,7 @@ import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.service.TownServiceModel;
 import MyProjectGradle.models.views.TownViewModel;
 import MyProjectGradle.models.views.TownDetailsViewModel;
-import MyProjectGradle.config.repository.TownRepository;
+import MyProjectGradle.repository.TownRepository;
 import MyProjectGradle.service.PictureService;
 import MyProjectGradle.service.TownService;
 import MyProjectGradle.service.UserService;

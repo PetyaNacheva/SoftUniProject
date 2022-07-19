@@ -39,12 +39,13 @@ public class TownController {
 
     @GetMapping("/add")
     public String addTown(Model model){
-        model.addAttribute("towns", townService.getTowns());
-        if(!model.containsAttribute("townAddBindingModel")){
-            model.addAttribute("townAddBindingModel", new TownAddBindingModel());
-            model.addAttribute("isExist", false);
-        }
-        return "town-add";
+            model.addAttribute("towns", townService.getTowns());
+            if (!model.containsAttribute("townAddBindingModel")) {
+                model.addAttribute("townAddBindingModel", new TownAddBindingModel());
+                model.addAttribute("isExist", false);
+            }
+            return "town-add";
+
     }
 
     @PostMapping("/add")
@@ -125,5 +126,6 @@ public class TownController {
         }
         return "redirect:/towns/all";
     }
+
 
 }

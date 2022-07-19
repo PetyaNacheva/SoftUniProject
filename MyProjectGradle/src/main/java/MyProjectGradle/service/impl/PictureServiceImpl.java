@@ -2,7 +2,7 @@ package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.entities.Picture;
 import MyProjectGradle.models.service.PictureServiceModel;
-import MyProjectGradle.config.repository.PictureRepository;
+import MyProjectGradle.repository.PictureRepository;
 import MyProjectGradle.service.CloudinaryImage;
 import MyProjectGradle.service.CloudinaryService;
 import MyProjectGradle.service.PictureService;

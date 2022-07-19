@@ -1,4 +1,4 @@
-package MyProjectGradle.config.repository;
+package MyProjectGradle.repository;
 
 
 import MyProjectGradle.models.entities.UserEntity;

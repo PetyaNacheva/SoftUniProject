@@ -12,7 +12,7 @@ public class Log extends BaseEntity{
     @ManyToOne
     private UserEntity user;
     @ManyToOne
-    private Reservation reservation;
+    private Apartment apartment;
     @Column(nullable = false)
     private String action;
     @Column(name = "date_time", nullable = false)
@@ -29,12 +29,12 @@ public class Log extends BaseEntity{
         this.user = user;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public Apartment getApartment() {
+        return apartment;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setApartment(Apartment apartment) {
+        this.apartment = apartment;
     }
 
     public String getAction() {

@@ -4,7 +4,7 @@ import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.service.ApartmentServiceModel;
 import MyProjectGradle.models.views.ApartmentDetailsViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
-import MyProjectGradle.config.repository.ApartmentRepository;
+import MyProjectGradle.repository.ApartmentRepository;
 import MyProjectGradle.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
