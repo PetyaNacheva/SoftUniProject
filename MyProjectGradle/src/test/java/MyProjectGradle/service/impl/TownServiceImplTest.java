@@ -1,12 +1,10 @@
 package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.binding.TownUpdateBindingModel;
-import MyProjectGradle.models.entities.Picture;
-import MyProjectGradle.models.entities.Role;
-import MyProjectGradle.models.entities.Town;
-import MyProjectGradle.models.entities.UserEntity;
+import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.service.TownServiceModel;
+import MyProjectGradle.models.views.TownDetailsViewModel;
 import MyProjectGradle.repository.TownRepository;
 import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.service.PictureService;
@@ -25,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +34,8 @@ import static org.mockito.Mockito.when;
 class TownServiceImplTest {
     private UserEntity testUser;
     private UserEntity secondUser;
-    private TownUpdateBindingModel townUpdateBindingModel;
     private TownServiceModel townServiceModel;
+    private TownUpdateBindingModel townUpdateBindingModel;
     private Town townTest;
     private Role userRole, adminRole, hostRole;
     private TownServiceImpl townService;
@@ -49,6 +48,8 @@ class TownServiceImplTest {
     TownRepository mockTownRepository;
     @Mock
     RoleService mockRoleService;
+   @Mock
+   MultipartFile mockMultipartFile;
     @Mock
     PictureService pictureService;
     @Mock
@@ -64,7 +65,7 @@ class TownServiceImplTest {
         userRole.setName(RolesEnum.USER);
         adminRole = new Role();
         adminRole.setName(RolesEnum.ADMIN);
-        testUser.setRole(List.of(userRole, adminRole));
+        testUser.setRole(List.of(adminRole));
         testUser.setUsername("testUser");
         testUser.setFirstName("test");
         testUser.setLastName("test");
@@ -84,6 +85,7 @@ class TownServiceImplTest {
         townTest = new Town();
         townTest.setName("TestTown");
         townTest.setDescription("TestTown");
+        townTest.setApartments(new ArrayList<>());
         pictureTest = new Picture();
         pictureTest.setTitle("test");
         pictureTest.setUserName("TestTown");
@@ -138,17 +140,32 @@ class TownServiceImplTest {
         assertThrows(EntityNotFoundException.class,()->townService.deleteTown(55L));
     }
 
-   /* @Test
+    @Test
     public void testUpdate() throws IOException {
         when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
-        townUpdateBindingModel = new TownUpdateBindingModel();
+       // when(pictureService.findPictureByPublicId(townTest.getPictureUrl().getPublicId()));
 
+        //when(townUpdateBindingModel).thenReturn(new TownUpdateBindingModel());
+        townTest.setPictureUrl(pictureTest);
+        townUpdateBindingModel = new TownUpdateBindingModel();
         townUpdateBindingModel.setName("TestingTesting");
         townUpdateBindingModel.setDescription("TestingTesting");
-        String user= testUser.getUsername().toString();
+        townUpdateBindingModel.setPicture(mockMultipartFile);
 
+        String user= testUser.getUsername().toString();
+        pictureService.findPictureByPublicId(townTest.getPictureUrl().getPublicId());
+        townTest.getPictureUrl().setTitle("");
         townService.updateTown(townTest.getId(),townUpdateBindingModel,user);
         assertEquals(townUpdateBindingModel.getName(), townTest.getName());
+    }
 
-    }*/
+
+    @Test
+    public  void testCanDelete(){
+        when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+        when(userService.isAdmin(testUser.getUsername())).thenReturn(true);
+        assertTrue(townService.canDelete(townTest.getId(), testUser.getUsername()));
+    }
+
+
 }

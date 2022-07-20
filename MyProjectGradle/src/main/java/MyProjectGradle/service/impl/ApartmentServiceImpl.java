@@ -123,8 +123,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public Apartment findByApartmentByApartmentName(String apartmentName) {
-        return apartmentRepository.findApartmentByName(apartmentName).orElse(null);
-        // TODO: 7/7/2022 to check this functionality
+        return apartmentRepository.findApartmentByName(apartmentName).orElseThrow(()-> new EntityNotFoundException("Apartment"));
+        // TODO: 7/7/2022 to check this functionality changed the throw to be with exception when implementing tests
     }
 
     @Override

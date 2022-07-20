@@ -1,5 +1,7 @@
 package MyProjectGradle.service.impl;
 
+import MyProjectGradle.models.binding.UserProfileBindingModel;
+import MyProjectGradle.models.entities.Picture;
 import MyProjectGradle.models.views.UserViewModel;
 import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.models.entities.Role;
@@ -18,8 +20,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +33,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest{
     private UserDetailsService userDetailsService;
+    private Picture pictureTest;
     private UserServiceImpl serviceToTest;
     private PasswordEncoder passwordEncoder;
     private UserViewModel userViewModel;
+    private UserProfileBindingModel userProfileBindingModel;
     private UserEntity testUser;
     private UserEntity secondUser;
     private List<GrantedAuthority> authorities;
@@ -44,6 +50,8 @@ public class UserServiceImplTest{
     RoleService mockRoleService;
     @Mock
     PictureService mockPictureService;
+    @Mock
+    MultipartFile mockMultipartFile;
     @Mock
     ModelMapper modelMapper = new ModelMapper();
 
@@ -62,6 +70,12 @@ public class UserServiceImplTest{
         testUser.setPassword("test");
         testUser.setEmail("test@test.com");
         testUser.setPhone("+3598935467");
+        pictureTest = new Picture();
+        pictureTest.setTitle("defaultPicture");
+        pictureTest.setUserName("TestTown");
+        pictureTest.setUrl("testUrl");
+        pictureTest.setPublicId("testId");
+        testUser.setProfileImg(pictureTest);
         mockUserRepository.save(testUser);
 
         secondUser = new UserEntity();
@@ -149,11 +163,18 @@ public class UserServiceImplTest{
         assertThrows(EntityNotFoundException.class, ()-> serviceToTest.RemoveHostRole(fakeUserName));
     }
 
-   /* @Test
-    public void testFindUserViewModelByUsername(){
+    @Test
+    public void testUpdateUser() throws IOException {
 
         when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
-        UserViewModel userViewModel = serviceToTest.findUserViewModelByUsername(testUser.getUsername());
-        assertEquals(userViewModel.getFirstName(), testUser.getFirstName());
-    }*/
+        testUser.setProfileImg(pictureTest);
+        userProfileBindingModel = new UserProfileBindingModel();
+        userProfileBindingModel.setUsername(testUser.getUsername());
+        userProfileBindingModel.setEmail(testUser.getEmail());
+        userProfileBindingModel.setFirstName("firstName");
+        userProfileBindingModel.setLastName(testUser.getLastName());
+        userProfileBindingModel.setProfileImg(mockMultipartFile);
+            serviceToTest.updateUser(userProfileBindingModel,testUser.getUsername());
+        assertEquals(userProfileBindingModel.getFirstName(), testUser.getFirstName());
+    }
 }
