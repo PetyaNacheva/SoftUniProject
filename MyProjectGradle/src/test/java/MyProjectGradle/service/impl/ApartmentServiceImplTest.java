@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
@@ -34,24 +35,25 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ApartmentServiceImplTest {
     private Apartment apartment1, apartment2;
-    private UserEntity testUser;
+    private UserEntity testUser, otherUser;
     private Town testTown;
     private Picture pictureTest, pictureFirst, pictureSecond;
-    private ApartmentService apartmentService;
+    private ApartmentServiceImpl apartmentService;
     private PasswordEncoder passwordEncoder;
     private List<GrantedAuthority> authorities;
     private Role userRole, adminRole, hostRole;
     private Type studio, oneBed;
     private ApartmentServiceModel apartmentServiceModel;
     private MultipartFile multipartFile;
-
+    private ApartmentViewModel apartmentViewModel;
+    private final ModelMapper modelMapper= new ModelMapper();
 
 
     @Mock
     UserRepository userRepository;
 
     @Mock
-    ApartmentRepository apartmentRepository;
+    ApartmentRepository apartmentRepository= Mockito.mock(ApartmentRepository.class);
     @Mock
     TownService townService;
     @Mock
@@ -72,14 +74,13 @@ class ApartmentServiceImplTest {
     MultipartFile mockMultipartFile;
     @Mock
     UserService userService;
-    @Mock
-    ModelMapper modelMapper = new ModelMapper();
+
 
 
     @BeforeEach
     public void setUp(){
         passwordEncoder = new Pbkdf2PasswordEncoder();
-        apartmentService = new ApartmentServiceImpl(apartmentRepository, modelMapper,userService, townService, typeService, pictureService, reservationService);
+
         testUser = new UserEntity();
         userRole = new Role();
         userRole.setName(RolesEnum.USER);
@@ -90,7 +91,19 @@ class ApartmentServiceImplTest {
         testUser.setPassword("test");
         testUser.setEmail("test@test.com");
         testUser.setPhone("+3598935467");
-        userRepository.save(testUser);
+        testUser.setId(1L);
+
+        otherUser = new UserEntity();
+
+        otherUser.setRole(List.of(userRole));
+        otherUser.setUsername("otherUser");
+        otherUser.setFirstName("otherUser");
+        otherUser.setLastName("otherUser");
+        otherUser.setPassword("otherUser");
+        otherUser.setEmail("test@test.com");
+        otherUser.setPhone("+3598935467");
+        otherUser.setId(2L);
+        userRepository.save(otherUser);
 
         testTown = new Town();
         testTown.setName("testTown");
@@ -102,6 +115,7 @@ class ApartmentServiceImplTest {
         pictureTest.setUserName("test");
         pictureTest.setPublicId("publicId");
         testTown.setPictureUrl(pictureTest);
+        testTown.setId(1L);
 
         townRepository.save(testTown);
 
@@ -152,12 +166,14 @@ class ApartmentServiceImplTest {
         apartment2.setTown(testTown);
         apartment2.setName("secondApartment");
         apartment2.setPictures(List.of(pictureSecond));
+         apartment1.setId(1L);
+         apartment2.setId(2L);
         testUser.setHostedApartments(List.of(apartment1, apartment2));
         apartmentRepository.save(apartment1);
         apartmentRepository.save(apartment2);
 
         multipartFile = new MockMultipartFile("test", "testFileName", "testContentName",new byte[1]);
-
+        apartmentService = new ApartmentServiceImpl(apartmentRepository, new ModelMapper(),userService, townService, typeService, pictureService, reservationService);
     }
 
    /* @Test
@@ -206,26 +222,21 @@ class ApartmentServiceImplTest {
         assertEquals(2, apartmentService.getAllApartments().size());
     }
 
-   /* @Test
+    @Test
     public  void testCanDeleteApartment(){
-        lenient().when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
-        lenient().when(userService.isAdmin(testUser.getUsername())).thenReturn(true);
-       /* List<Reservation> reservation = new ArrayList<>();
-        apartment1.setReservations(reservation);
-
-        OngoingStubbing<ApartmentServiceModel> apService = when(modelMapper.map(apartmentService.findById(apartment1.getId()), ApartmentServiceModel.class));
-
+       when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+        when(userService.findByUsername(testUser.getUsername())).thenReturn(testUser);
         assertTrue(apartmentService.canDelete(apartment1.getId(), testUser.getUsername()));
     }
 
 
     @Test
     public void testCanDeleteApartmentFalse(){
-        String fakeUser = "fakeUser";
-        lenient().when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
-        lenient().when(userService.isAdmin(fakeUser)).thenReturn(false);
-        assertFalse(apartmentService.canDelete(apartment1.getId(), fakeUser));
-    }*/
+
+        when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+        when(userService.findByUsername(otherUser.getUsername())).thenReturn(otherUser);
+        assertFalse(apartmentService.canDelete(apartment1.getId(), otherUser.getUsername()));
+    }
 
 
     @Test
@@ -241,9 +252,7 @@ class ApartmentServiceImplTest {
         apartmentServiceModel.setOwner(apartment1.getOwner());
         apartmentServiceModel.setTown(apartment1.getTown().getName());
         apartmentServiceModel.setPrice(apartment1.getPrice());
-
         apartmentServiceModel.setType(apartment1.getType().getType());
-
 
         pictureService.findPictureByPublicId(apartment1.getPictures().get(0).getPublicId());
         apartment1.getPictures().get(0).setTitle("");
@@ -264,4 +273,86 @@ class ApartmentServiceImplTest {
 
         assertThrows(EntityNotFoundException.class, () ->apartmentService.updateApartment(apartmentServiceModel));
     }
+
+    @Test
+    public void testDeleteApartment(){
+       lenient().when(apartmentRepository.findById(apartment2.getId())).thenReturn(Optional.of(apartment2));
+        lenient().when(apartmentRepository.findApartmentByName(apartment2.getName())).thenReturn(Optional.of(apartment2));
+
+        assertEquals("secondApartment",apartmentRepository.findApartmentByName(apartment2.getName()).get().getName());
+        apartmentService.deleteApartment(apartment2.getId());
+        assertEquals(0, apartmentRepository.findAll().size());
+    }
+
+
+    @Test
+    public void testDeleteApartmentShouldThrow(){
+        when(apartmentRepository.findById(555L)).thenReturn(Optional.empty());;
+        assertThrows(EntityNotFoundException.class,()->apartmentService.deleteApartment(555L));
+    }
+
+    @Test
+    public void testFindAllApartmentsByTownAndUser(){
+       when(apartmentRepository.findAllByTown_Id(testTown.getId())).thenReturn(List.of(apartment1, apartment2));
+        List<ApartmentViewModel> allApartmentsByTownAndUser = apartmentService.findAllApartmentsByTownAndUser(testTown.getId(), testUser.getId());
+
+        assertEquals(2, allApartmentsByTownAndUser.size());
+    }
+
+    @Test
+    public void testFindAllApartments(){
+        when(apartmentRepository.findAll()).thenReturn(List.of(apartment1, apartment2));
+
+        assertEquals("Total count of all apartments: 2", apartmentService.findAllApartments());
+    }
+
+
+    @Test
+    public void testFindApartmentDetailsViewModelById(){
+        when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+
+        assertEquals(apartment1.getAddress(),apartmentService.findApartmentDetailsViewModelById(apartment1.getId()).getAddress());
+    }
+
+    @Test
+    public void testFindApartmentDetailsViewModelByIdShouldThrow(){
+        when(apartmentRepository.findById(55L)).
+                thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->apartmentService.findApartmentDetailsViewModelById(55L));
+    }
+
+   /* @Test
+    public void testFindAllApartmentsByUsername(){
+        when(apartmentRepository.findAllByOwner(testUser)).thenReturn(List.of(apartment1, apartment2));
+        List<ApartmentViewModel> allApartmentsByUsername = apartmentService.findAllApartmentsByUsername(testUser);
+        assertEquals(2, apartmentService.findAllApartmentsByUsername(testUser).size());
+    }*/
+
+    @Test
+    public void testCanUpdate(){
+        when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+
+        assertTrue(apartmentService.canUpdate(apartment1.getId(), testUser.getUsername()));
+    }
+
+   /*@Test
+    public void testSaveApartment(){
+        apartmentServiceModel = new ApartmentServiceModel();
+        when(userRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
+        when(townRepository.findByName(testTown.getName())).thenReturn(Optional.of(testTown));
+       when(apartmentRepository.findAll()).thenReturn(List.of(apartment1, apartment2));
+        apartmentServiceModel.setPrice(BigDecimal.valueOf(50));
+        apartmentServiceModel.setPicture(multipartFile);
+        apartmentServiceModel.setName("NewApartment");
+        apartmentServiceModel.setOwner(testUser);
+        apartmentServiceModel.setTown(testTown.getName());
+        apartmentServiceModel.setAddress("new adress");
+        apartmentServiceModel.setType(studio.getType());
+       boolean b = apartmentService.saveApartment(apartmentServiceModel, testUser.getUsername());
+       Apartment newApartment = apartmentRepository.findApartmentByName("NewApartment").orElse(null);
+
+       String allApartments = apartmentService.findAllApartments();
+       assertEquals("Total count of all apartments: 3", apartmentService.findAllApartments());
+   }*/
 }

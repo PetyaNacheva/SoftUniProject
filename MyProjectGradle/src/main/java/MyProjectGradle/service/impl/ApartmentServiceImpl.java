@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,7 +91,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Transactional
     @Override
     public boolean deleteApartment(Long id) {
-        try {
+
             Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Apartment"));
                apartment.setPictures(new ArrayList<>());
                 updateApartmentPictures(apartment);
@@ -101,19 +102,30 @@ public class ApartmentServiceImpl implements ApartmentService {
                 });
                 userService.RemoveHostRole(apartment.getOwner().getUsername());
                 apartmentRepository.deleteById(id);
+        Apartment apartmentById = apartmentRepository.findById(id).orElse(null);
+        if(apartmentById==null){
             return true;
-        }catch (Exception e){
-            return false;
-        }
+        }else {return false;}
     }
 
 
     @Override
     public List<ApartmentViewModel> findAllApartmentsByTownAndUser(Long town_id, Long user_id) {
-       return apartmentRepository.findAllByTown_Id(town_id)
-                .stream().filter(a->!a.getOwner().getId().equals(user_id))
-                .map(a->modelMapper.map(a, ApartmentViewModel.class)).collect(Collectors.toList());
+        List<ApartmentViewModel> result = new ArrayList<>();
+        List<Apartment> allByTown_id = apartmentRepository.findAllByTown_Id(town_id);
+        for (Apartment apartment : allByTown_id) {
+            if(apartment.getOwner().getId().equals(user_id)){
+                ApartmentViewModel currAp = new ApartmentViewModel();
+                currAp.setName(apartment.getName());
+                currAp.setAddress(apartment.getAddress());
+                currAp.setPicture(apartment.getPictures().get(0).getUrl());
+                currAp.setId(apartment.getId());
+                result.add(currAp);
+            };
+        }
+        return result;
 
+        // TODO: 7/23/2022 changed sintaksis because of the tests 
     }
 
     @Override

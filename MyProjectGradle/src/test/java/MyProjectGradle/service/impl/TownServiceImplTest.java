@@ -42,6 +42,7 @@ class TownServiceImplTest {
     private TownServiceImpl townService;
     private Picture pictureTest;
     private MultipartFile multipartFile;
+    private final ModelMapper modelMapper= new ModelMapper();
 
     @Mock
     UserRepository mockUserRepository;
@@ -55,12 +56,11 @@ class TownServiceImplTest {
     PictureService pictureService;
     @Mock
     UserService userService;
-    @Mock
-    ModelMapper modelMapper = new ModelMapper();
+
 
     @BeforeEach
     void setUp(){
-        townService= new TownServiceImpl(mockTownRepository,pictureService,modelMapper,userService);
+        townService= new TownServiceImpl(mockTownRepository,pictureService,new ModelMapper(),userService);
         testUser = new UserEntity();
         userRole = new Role();
         userRole.setName(RolesEnum.USER);
@@ -73,7 +73,7 @@ class TownServiceImplTest {
         testUser.setPassword("test");
         testUser.setEmail("test@test.com");
         testUser.setPhone("+3598935467");
-
+        mockUserRepository.save(testUser);
         secondUser = new UserEntity();
         secondUser.setRole(List.of(userRole));
         secondUser.setUsername("user");
@@ -177,18 +177,40 @@ class TownServiceImplTest {
         assertFalse(townService.canDelete(townTest.getId(), fakeUser));
     }
 
-   /* @Test
+     @Test
     public void testFindByTownName(){
-        townServiceModel = new TownServiceModel();
-        townServiceModel.setName(townTest.getName());
-        townServiceModel.setDescription(townTest.getDescription());
-        townServiceModel.setPicture(mockMultipartFile);
 
         when(mockTownRepository.findByName(townTest.getName())).thenReturn(Optional.of(townTest));
 
-        TownServiceModel byTownName = townService.findByTownName(townServiceModel.getName());
-        assertEquals(townServiceModel.getName(), byTownName.getName());
+         assertEquals(townService.findByTownName(townTest.getName()).getName(), townTest.getName());
     }
-*/
+
+    @Test
+    public void testFindTownDetailsViewModelBy(){
+        when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+
+        TownDetailsViewModel townDetailsViewModelBy = townService.findTownDetailsViewModelBy(townTest.getId());
+
+        assertEquals(townDetailsViewModelBy.getDescription(), townTest.getDescription());
+    }
+
+/*    @Test
+    public void testSave(){
+        when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
+        when(mockTownRepository.findAll()).thenReturn(List.of(townTest));
+
+        townServiceModel = new TownServiceModel();
+        townServiceModel.setPicture(mockMultipartFile);
+        townServiceModel.setName("NewTown");
+        townServiceModel.setDescription("New best Town");
+        townServiceModel.setId(2L);
+      //  Town newTown = new Town("NewTown", "New best Town");
+        townService.saveTown(townServiceModel, testUser.getUsername());
+
+
+
+        assertEquals("NewTown",townService.findById(2L).getName());
+
+    }*/
 
 }
