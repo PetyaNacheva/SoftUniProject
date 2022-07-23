@@ -1,8 +1,10 @@
 package MyProjectGradle.service.impl;
 
+import MyProjectGradle.models.binding.TownUpdateBindingModel;
 import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
+import MyProjectGradle.models.service.ApartmentServiceModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
 import MyProjectGradle.repository.*;
 import MyProjectGradle.service.*;
@@ -11,19 +13,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApartmentServiceImplTest {
@@ -36,6 +42,9 @@ class ApartmentServiceImplTest {
     private List<GrantedAuthority> authorities;
     private Role userRole, adminRole, hostRole;
     private Type studio, oneBed;
+    private ApartmentServiceModel apartmentServiceModel;
+    private MultipartFile multipartFile;
+
 
 
     @Mock
@@ -65,6 +74,7 @@ class ApartmentServiceImplTest {
     UserService userService;
     @Mock
     ModelMapper modelMapper = new ModelMapper();
+
 
     @BeforeEach
     public void setUp(){
@@ -146,6 +156,8 @@ class ApartmentServiceImplTest {
         apartmentRepository.save(apartment1);
         apartmentRepository.save(apartment2);
 
+        multipartFile = new MockMultipartFile("test", "testFileName", "testContentName",new byte[1]);
+
     }
 
    /* @Test
@@ -187,11 +199,69 @@ class ApartmentServiceImplTest {
         assertThrows(EntityNotFoundException.class, () ->apartmentService.findByApartmentByApartmentName(fakeApartment));
     }
 
-   /* @Test
+    @Test
     public void testGetAllApartments(){
-        when(apartmentRepository.findApartmentByName(apartment1.getName())).thenReturn(Optional.of(apartment1));
-        when(apartmentRepository.findApartmentByName(apartment1.getName())).thenReturn(Optional.of(apartment2));
+        when(apartmentRepository.findAll()).thenReturn(List.of(apartment1, apartment2));
 
         assertEquals(2, apartmentService.getAllApartments().size());
+    }
+
+   /* @Test
+    public  void testCanDeleteApartment(){
+        lenient().when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+        lenient().when(userService.isAdmin(testUser.getUsername())).thenReturn(true);
+       /* List<Reservation> reservation = new ArrayList<>();
+        apartment1.setReservations(reservation);
+
+        OngoingStubbing<ApartmentServiceModel> apService = when(modelMapper.map(apartmentService.findById(apartment1.getId()), ApartmentServiceModel.class));
+
+        assertTrue(apartmentService.canDelete(apartment1.getId(), testUser.getUsername()));
+    }
+
+
+    @Test
+    public void testCanDeleteApartmentFalse(){
+        String fakeUser = "fakeUser";
+        lenient().when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+        lenient().when(userService.isAdmin(fakeUser)).thenReturn(false);
+        assertFalse(apartmentService.canDelete(apartment1.getId(), fakeUser));
     }*/
+
+
+    @Test
+    public void testUpdateApartment() throws IOException {
+
+        apartment1.setPictures(List.of(pictureTest));
+
+        apartmentServiceModel = new ApartmentServiceModel();
+        apartmentServiceModel.setPicture(mockMultipartFile);
+        apartmentServiceModel.setName("TestingTesting");
+        apartmentServiceModel.setReservationList(apartment1.getReservations());
+        apartmentServiceModel.setAddress(apartment1.getAddress());
+        apartmentServiceModel.setOwner(apartment1.getOwner());
+        apartmentServiceModel.setTown(apartment1.getTown().getName());
+        apartmentServiceModel.setPrice(apartment1.getPrice());
+
+        apartmentServiceModel.setType(apartment1.getType().getType());
+
+
+        pictureService.findPictureByPublicId(apartment1.getPictures().get(0).getPublicId());
+        apartment1.getPictures().get(0).setTitle("");
+        apartmentServiceModel.setId(apartment1.getId());
+
+        lenient().when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+
+        Long aLong = apartmentService.updateApartment(apartmentServiceModel);
+        assertEquals(apartment1.getId(), aLong);
+    }
+
+    @Test
+    public void testUpdateApartmentShouldThrow() throws IOException {
+        apartmentServiceModel = new ApartmentServiceModel();
+        apartmentServiceModel.setId(555L);
+        when(apartmentRepository.findById(555L)).
+                thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->apartmentService.updateApartment(apartmentServiceModel));
+    }
 }

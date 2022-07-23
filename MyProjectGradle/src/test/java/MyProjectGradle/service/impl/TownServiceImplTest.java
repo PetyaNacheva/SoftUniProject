@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -98,20 +99,6 @@ class TownServiceImplTest {
 
     }
 
-    @Test
-    public void testFindTownByName(){
-        when(mockTownRepository.findByName(townTest.getName())).thenReturn(Optional.of(townTest));
-        assertTrue(townService.findByName(townTest.getName()).getName().equals("TestTown"));
-    }
-
-    @Test
-    public void testFindTownByNameShouldThrow(){
-        String fakeTown = "FakeTown";
-        when(mockTownRepository.findByName(fakeTown)).
-                thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class, () ->townService.findByName(fakeTown));
-    }
 
     @Test
     public void testFindById(){
@@ -125,6 +112,21 @@ class TownServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> townService.findById(5L));
     }
 
+    @Test
+    public void testFindByName(){
+        when(mockTownRepository.findByName(townTest.getName())).thenReturn(Optional.of(townTest));
+
+        assertEquals("TestTown", townService.findByName(townTest.getName()).getName());
+    }
+
+
+    @Test
+    public void testFindByNameShouldThrow(){
+        String fakeTown = "FakeTown";
+        when(mockTownRepository.findByName(fakeTown)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->townService.findByName(fakeTown));
+    }
 
     @Test
     public void testDeleteTown(){
@@ -167,5 +169,26 @@ class TownServiceImplTest {
         assertTrue(townService.canDelete(townTest.getId(), testUser.getUsername()));
     }
 
+    @Test
+    public void testCanDeleteFalse(){
+        String fakeUser = "fakeUser";
+        when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+        when(userService.isAdmin(fakeUser)).thenReturn(false);
+        assertFalse(townService.canDelete(townTest.getId(), fakeUser));
+    }
+
+   /* @Test
+    public void testFindByTownName(){
+        townServiceModel = new TownServiceModel();
+        townServiceModel.setName(townTest.getName());
+        townServiceModel.setDescription(townTest.getDescription());
+        townServiceModel.setPicture(mockMultipartFile);
+
+        when(mockTownRepository.findByName(townTest.getName())).thenReturn(Optional.of(townTest));
+
+        TownServiceModel byTownName = townService.findByTownName(townServiceModel.getName());
+        assertEquals(townServiceModel.getName(), byTownName.getName());
+    }
+*/
 
 }

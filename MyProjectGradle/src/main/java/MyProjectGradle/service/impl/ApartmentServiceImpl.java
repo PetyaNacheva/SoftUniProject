@@ -131,6 +131,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     public void updateApartmentPictures(Apartment apartment) {
         apartmentRepository.save(apartment);
     }
+
     @Transactional
     @Override
     public boolean canDelete(Long id, String username) {
@@ -162,7 +163,9 @@ public class ApartmentServiceImpl implements ApartmentService {
         List<Picture> pictures = apartment.getPictures();
         pictures.stream().forEach(p-> pictureService.UpdateApartmentName(p, apartmentServiceModel.getName()));
         apartment.setPictures(pictures);
-        return apartmentRepository.save(apartment).getId();
+        apartmentRepository.save(apartment);
+        Apartment apartment1 = apartmentRepository.findById(apartment.getId()).orElseThrow(() -> new EntityNotFoundException("Apartment"));
+        return apartment1.getId();
     }
     @Transactional
     @Override
