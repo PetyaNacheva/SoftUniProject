@@ -7,13 +7,15 @@
 <body>
     <header id="nav" th:replace="fragments/fragment::navigation" >
     </header>
-    <div class="jumbotron jumbotron-fluid bg-blur min-vh-100" id="jumbotron">
-        <div class="container text-light ">
-            <h5 class="display-5 text-center my-5">
+
+    <div class="jumbotron jumbotron-fluid bg-secondary bg-opacity-50 min-vh-100" id="jumbotron">
+        <div class="container text-light px-0">
+            <h5 class="display-5 text-center py-5">
                 <strong class="bg-blur rounded px-5  text-light py-3 vw-25">
                     login and find your place</strong></h5>
         </div>
-        <div class="container bg-blur rounded p-5 mx-auto w-50 my-3 px-5">
+        <div class="container bg-blur rounded p-5 mx-auto w-50 my-3 px-5 my-auto">
+
             <form th:action="@{/users/login}" th:method="POST" class=" text-center text-light px-5">
                 <h3 class="mt-5 text-center">
                    <!-- <strong class="bg-blur rounded text-danger">
@@ -23,9 +25,9 @@
                         Invalid username or password.
                     </strong>
                 </h3>
-                <div class="form-group row px-5">
+                <div class="form-group row my-4 justify-content-center">
                     <label for="username" class="col-sm-2 col-form-label">Username</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input th:value="${username}"
                                name="username" type="text" min="3" max="20" class="form-control" id="username"
                                aria-describedby="usernameHelpInline" placeholder="Username">
@@ -34,9 +36,9 @@
                         </small>-->
                     </div>
                 </div>
-                <div class="form-group row px-5">
+                <div class="form-group row my-4 justify-content-center">
                     <label for="password" class="col-sm-2 col-form-label">Password</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input id="password"
                                name="password"
                                type="password"  min="3" max="20" class="form-control"
@@ -47,11 +49,17 @@
                     </div>
 
                 </div>
-                <button type="submit" class="btn btn-info w-50">Login</button>
+                <div class="row justify-content-center">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                <button type="submit" class="btn bg-info bg-opacity-50 w-50 text-white">Login</button>
+                </div>
+                </div>
             </form>
             <hr class="bg-light">
         </div>
     </div>
+
 
 <footer th:replace="fragments/fragment::footer">
 

@@ -16,10 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -194,22 +192,17 @@ class TownServiceImplTest {
         assertEquals(townDetailsViewModelBy.getDescription(), townTest.getDescription());
     }
 
-/*    @Test
-    public void testSave(){
+  /* @Test
+    public void testSaveTown() throws IOException {
         when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
-        when(mockTownRepository.findAll()).thenReturn(List.of(townTest));
-
         townServiceModel = new TownServiceModel();
         townServiceModel.setPicture(mockMultipartFile);
         townServiceModel.setName("NewTown");
         townServiceModel.setDescription("New best Town");
         townServiceModel.setId(2L);
-      //  Town newTown = new Town("NewTown", "New best Town");
-        townService.saveTown(townServiceModel, testUser.getUsername());
+       String username = mockUserRepository.findByUsername(testUser.getUsername()).get().getUsername();
 
-
-
-        assertEquals("NewTown",townService.findById(2L).getName());
+       assertTrue(townService.saveTown(townServiceModel, username));
 
     }*/
 

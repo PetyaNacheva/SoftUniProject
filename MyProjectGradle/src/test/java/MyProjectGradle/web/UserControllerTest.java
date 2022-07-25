@@ -5,32 +5,33 @@ import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.repository.RoleRepository;
 import MyProjectGradle.repository.UserRepository;
+import MyProjectGradle.service.UserService;
+import MyProjectGradle.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+
 import org.springframework.security.test.context.support.WithMockUser;
-
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,16 +39,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+
 class UserControllerTest {
 
     private UserEntity testUser;
     private Role userRole;
 
+    @Autowired
+    private UserServiceImpl userService;
 
    @Autowired
     MockMvc mockMvc;
-    @Autowired
+    @MockBean
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -72,15 +75,16 @@ class UserControllerTest {
         testUser.setPassword("test");
         testUser.setEmail("test@test.com");
         testUser.setPhone("+3598935467");
+        testUser.setId(1L);
         mockUserRepository.save(testUser);
     }
 
-   /* @AfterEach
+    @AfterEach
     void tearDown() {
         mockUserRepository.deleteAll();
         mockRoleRepository.deleteAll();
     }
-*/
+
     @Test
     void testLoginPageReturnValidStatusOK() throws Exception {
         mockMvc.perform(get("/users/login")).
@@ -96,10 +100,10 @@ class UserControllerTest {
     }
 
 
-   /* @Test
-    @WithMockUser(username = "testUser")
+  /* @Test
+    @WithMockUser()
     void testProfileUpdateReturnStatusOK() throws Exception{
-        mockMvc.perform(get("/users/profile/update"))
+        mockMvc.perform(get("/users/profile/update").with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-profile-update"));
     }*/
@@ -117,19 +121,17 @@ class UserControllerTest {
     }
 
 
-    /*@Test
+   @Test
     void test_PostLoginCorrectCredentials_LoginUserCorrectly() throws Exception {
-        PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder();
-       mockMvc
+       PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder();
+        mockMvc
                 .perform(post("/users/login")
                         .param("username", "testUser")
                         .param("password", passwordEncoder.encode("test"))
-                        .with(csrf())
+                        .secure(true).with(csrf())
                 )
-
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-    }*/
+                .andExpect(status().isOk());
+    }
 
     @Test
     void testRegisterPageReturnRedirectStatus() throws Exception {
@@ -161,22 +163,21 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
         assertEquals(1, mockUserRepository.count());
-        /*Optional<UserEntity> user = mockUserRepository.findByUsername("user");
-        assertTrue(user.isPresent());
-        assertTrue(user.get().getId()>0);
-        assertEquals("user@gmail.com", user.get().getEmail());
-        mockUserRepository.delete(user.get());*/
        }
 
-  /*  @Test
-    @WithMockUser(username = "testUser")
+   /* @Test
+    @WithMockUser
     void testProfilePageLoadsCorrectly() throws Exception {
-        mockMvc.perform(get("/users/profile")).
+        mockMvc.perform(get("/users/profile").with(csrf())).
                 andExpect(status().isOk()).
                 andExpect(view().name("my-profile"));
 
-    }
-*/
+     /* mockMvc
+                .perform(get("/users/profile").with(csrf()).secure(true))
+                .andExpect(status().isOk()).
+                andExpect(view().name("my-profile"));
+    }*/
+
 
 
 }

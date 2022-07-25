@@ -1,10 +1,10 @@
 package MyProjectGradle.service.impl;
 
-import MyProjectGradle.models.binding.TownUpdateBindingModel;
 import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
 import MyProjectGradle.models.service.ApartmentServiceModel;
+import MyProjectGradle.models.views.ApartmentDetailsViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
 import MyProjectGradle.repository.*;
 import MyProjectGradle.service.*;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +44,10 @@ class ApartmentServiceImplTest {
     private Type studio, oneBed;
     private ApartmentServiceModel apartmentServiceModel;
     private MultipartFile multipartFile;
-    private ApartmentViewModel apartmentViewModel;
+    private ApartmentDetailsViewModel apartmentDetailsViewModel;
     private final ModelMapper modelMapper= new ModelMapper();
+    private Reservation testReservation;
+    private ApartmentViewModel apartmentViewModel;
 
 
     @Mock
@@ -156,6 +157,7 @@ class ApartmentServiceImplTest {
         apartment1.setTown(testTown);
         apartment1.setName("firstApartment");
         apartment1.setPictures(List.of(pictureFirst));
+        apartment1.setId(1L);
 
 
         apartment2=new Apartment();
@@ -171,6 +173,17 @@ class ApartmentServiceImplTest {
         testUser.setHostedApartments(List.of(apartment1, apartment2));
         apartmentRepository.save(apartment1);
         apartmentRepository.save(apartment2);
+
+        testReservation = new Reservation();
+        testReservation.setUsername(testUser);
+        testReservation.setApartment(apartment1);
+        testReservation.setGuestName(testUser.getFirstName());
+        testReservation.setArrivalDate(LocalDate.of(2022, 10, 1));
+        testReservation.setDepartureDate(LocalDate.of(2022, 10, 5));
+        testReservation.setReservedOn(LocalDate.of(2022, 7, 1));
+        testReservation.setNumberOfGuests(2);
+        testReservation.setPrice(BigDecimal.valueOf(200));
+        testReservation.setId(1L);
 
         multipartFile = new MockMultipartFile("test", "testFileName", "testContentName",new byte[1]);
         apartmentService = new ApartmentServiceImpl(apartmentRepository, new ModelMapper(),userService, townService, typeService, pictureService, reservationService);
@@ -322,12 +335,6 @@ class ApartmentServiceImplTest {
         assertThrows(EntityNotFoundException.class, () ->apartmentService.findApartmentDetailsViewModelById(55L));
     }
 
-   /* @Test
-    public void testFindAllApartmentsByUsername(){
-        when(apartmentRepository.findAllByOwner(testUser)).thenReturn(List.of(apartment1, apartment2));
-        List<ApartmentViewModel> allApartmentsByUsername = apartmentService.findAllApartmentsByUsername(testUser);
-        assertEquals(2, apartmentService.findAllApartmentsByUsername(testUser).size());
-    }*/
 
     @Test
     public void testCanUpdate(){
@@ -336,23 +343,37 @@ class ApartmentServiceImplTest {
         assertTrue(apartmentService.canUpdate(apartment1.getId(), testUser.getUsername()));
     }
 
-   /*@Test
-    public void testSaveApartment(){
-        apartmentServiceModel = new ApartmentServiceModel();
-        when(userRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
-        when(townRepository.findByName(testTown.getName())).thenReturn(Optional.of(testTown));
-       when(apartmentRepository.findAll()).thenReturn(List.of(apartment1, apartment2));
-        apartmentServiceModel.setPrice(BigDecimal.valueOf(50));
-        apartmentServiceModel.setPicture(multipartFile);
-        apartmentServiceModel.setName("NewApartment");
-        apartmentServiceModel.setOwner(testUser);
-        apartmentServiceModel.setTown(testTown.getName());
-        apartmentServiceModel.setAddress("new adress");
-        apartmentServiceModel.setType(studio.getType());
-       boolean b = apartmentService.saveApartment(apartmentServiceModel, testUser.getUsername());
-       Apartment newApartment = apartmentRepository.findApartmentByName("NewApartment").orElse(null);
 
-       String allApartments = apartmentService.findAllApartments();
-       assertEquals("Total count of all apartments: 3", apartmentService.findAllApartments());
-   }*/
+    @Test
+    public void testFindByIdDetailsViewModel(){
+        when(apartmentRepository.findById(1L)).thenReturn(Optional.of(apartment1));
+
+        apartmentDetailsViewModel = new ApartmentDetailsViewModel();
+        apartmentDetailsViewModel.setId(apartment1.getId());
+        apartmentDetailsViewModel.setAddress(apartment1.getAddress());
+        apartmentDetailsViewModel.setName(apartment1.getName());
+        apartmentDetailsViewModel.setCapacity(apartment1.getType().getCapacity());
+        apartmentDetailsViewModel.setType(apartment1.getType());
+        apartmentDetailsViewModel.setPictures(apartment1.getPictures());
+        apartmentDetailsViewModel.setTown(apartment1.getTown().getName());
+        apartmentDetailsViewModel.setPrice(apartment1.getPrice());
+        apartmentDetailsViewModel.setOwner(testUser.getUsername());
+
+
+        assertEquals(apartmentDetailsViewModel.getName(), apartmentService.findById(apartment1.getId()).getName());
+    }
+
+    @Test
+    public void testIsAvailable(){
+        when(reservationService.findAllByApartmentsByName(apartment1.getName())).thenReturn(List.of(testReservation));
+
+        assertEquals("available", apartmentService.isAvailable(apartment1.getName(), LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)));
+    }
+
+    @Test
+    public void testFindAllAvailableApartmentsInPeriod(){
+        when(apartmentRepository.findAllByTown_Name(testTown.getName())).thenReturn(List.of(apartment1, apartment2));
+        assertEquals(2, apartmentService.findAllAvailableApartmentsInPeriod(testTown.getName(),LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)).size());
+    }
+
 }

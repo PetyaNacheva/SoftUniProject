@@ -7,52 +7,53 @@
 <body>
     <header id="nav" th:replace="fragments/fragment::navigation">
     </header>
-<div class="jumbotron bg-blur min-vh-100">
-    <div class="container text-light">
+
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+    <div class="container py-5">
         <h5 class="display-5 text-center my-0">
-            <strong class="bg-blur rounded px-5 text-light py-3 vw-25">
+            <strong class="bg-blur rounded px-5 text-white py-1">
                Detailed information</strong></h5>
     </div>
     <div class="container bg-blur  rounded p-5 mt-5 w-50" th:object="${userProfile}">
-          <div class="form-group row">
+          <div class="form-group row justify-content-center">
                 <div class="col-sm-2 col-form-label">
-                    <img th:src="*{profileImg}" class="card-img"
-                         width="70px" height="70px"/>
+                    <img th:src="*{profileImg}" class="card-img"/>
                 </div>
             </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label text-light">Username</label>
-            <div class="col-sm-10">
-                <h2 type="text" class=" form-control bg-secondary text-light" th:text="*{username}"></h2>
+        <div class="form-group row justify-content-center pt-2">
+            <label class="col-sm-3 col-form-label text-center text-light fs-5">Username</label>
+            <div class="col-sm-9">
+                <h2 type="text" readonly class="form-control-plaintext text-white bg-secondary bg-opacity-75 rounded px-2 fs-5" th:text="*{username}"></h2>
             </div>
         </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label text-light">First name</label>
-                <div class="col-sm-10">
-                    <h2 type="text" class=" form-control" th:text="*{firstName}"></h2>
+            <div class="form-group row justify-content-center py-3">
+                <label class="col-sm-3 col-form-label text-center text-light fs-5">First name</label>
+                <div class="col-sm-9">
+                    <h2 type="text" class=" form-control fs-5" th:text="*{firstName}"></h2>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label text-light">Last name</label>
-                <div class="col-sm-10">
-                    <h2 type="text" class=" form-control" th:text="*{lastName}"></h2>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-3 col-form-label text-center text-light fs-5">Last name</label>
+                <div class="col-sm-9">
+                    <h2 type="text" class=" form-control fs-5" th:text="*{lastName}"></h2>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label text-light">Email</label>
-                <div class="col-sm-10">
-                    <h2 type="text" class=" form-control" th:text="*{email}"></h2>
+            <div class="form-group row justify-content-center py-3">
+                <label class="col-sm-3 col-form-label text-center text-light fs-5">Email</label>
+                <div class="col-sm-9">
+                    <h2 type="text" class=" form-control fs-5" th:text="*{email}"></h2>
                 </div>
             </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label text-light">Phone</label>
-            <div class="col-sm-10">
-                <h2 type="text" class=" form-control" th:text="*{phone}"></h2>
+        <div class="form-group row justify-content-center">
+            <label class="col-sm-3 col-form-label text-center text-light fs-5">Phone</label>
+            <div class="col-sm-9">
+                <h2 type="text" class=" form-control fs-5" th:text="*{phone}"></h2>
             </div>
         </div>
-        <div class="col text-center">
-        <button class="btn btn-primary justify-content-center w-50 text-center text-light my-btn"><a class="text-light justify-content-center" th:href="@{/users/profile/update}">Change your profile details</a></button>
+        <div class="row justify-content-center">
+            <div class="col-3"></div>
+        <button class="col-9 btn bg-info bg-opacity-50 text-white w-50 my-3"><a class="text-light text-decoration-none fs-5" th:href="@{/users/profile/update}">Change your profile details</a></button>
         </div>
         <hr class="bg-light">
     </div>

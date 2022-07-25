@@ -9,25 +9,30 @@
 
 </header>
 
-<div class="jumbotron text-center">
-    <div class="container text-light text-center">
-        <h1 class="display-3"><strong class="bg-blur rounded">Towns</strong></h1>
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+<div class="row text-center pt-2">
+    <div class="container col-4 py-4">
+        <h1 class="display-3 bg-primary text-white rounded bg-opacity-50">Towns</h1>
     </div>
-    <div class="row mt-3 mb-3 ">
-        <div class="col-5 bg-blur rounded m-auto pb-3">
-            <div th:each="t : ${towns}" th:object="${t}" class="mt-3 rounded badge-info p-3">
-                <img class="mr-2" th:src="*{pictureUrl}"
+</div>
+    <div class="row mt-3">
+        <div class="bg-opacity-75 rounded m-auto pb-3 align-content-center">
+            <div th:each="t : ${towns}" th:object="${t}" class="col-8 m-auto mt-3 rounded bg-success bg-opacity-50 p-3 ">
+                <div class="d-flex flex-row justify-content-around">
+                <img class="col-1 mr-2" th:src="*{pictureUrl}"
                      width="50px" height="50px">
-                <span class="p-3" th:text="*{name}">Name</span>
-                <span class="p-3" th:text="*{description}">Description</span>
-                <a class="ml-3 p-3 text-warning" th:href="@{/towns/{id}/details(id=*{id})}">View</a>
-
-
+                <p class="p-3 col-2 fs-3" th:text="*{name}">Name</p>
+                <p class="p-3 col-8 text-truncate fs-3" th:text="*{description}">Description</p>
+               <a class="col-1 ml-3 p-3 text-warning fs-3" th:href="@{/towns/{id}/details(id=*{id})}">View</a>
+                </div>
             </div>
-           <button class="btn btn-info w-50"> <a class="ml-3 p-3 text-warning" th:href="@{/towns/add}">Add new town</a> </button>
-        </div>
+            <div class="text-center mt-3">
+           <button class="btn bg-warning bg-opacity-75"> <a class="ml-3 p-3 fs-3" th:href="@{/towns/add}">Add new town</a> </button>
+            </div>
+            </div>
 
     </div>
+</div>
 </div>
 
 <footer th:replace="fragments/fragment::footer">

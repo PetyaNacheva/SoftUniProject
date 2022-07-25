@@ -1,13 +1,11 @@
 package MyProjectGradle.service.impl;
 
 import MyProjectGradle.models.binding.UserProfileBindingModel;
-import MyProjectGradle.models.entities.Picture;
+import MyProjectGradle.models.entities.*;
+import MyProjectGradle.models.enums.TypeEnum;
 import MyProjectGradle.models.views.UserViewModel;
 import MyProjectGradle.repository.UserRepository;
-import MyProjectGradle.models.entities.Role;
-import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.enums.RolesEnum;
-import MyProjectGradle.models.service.UserServiceModel;
 import MyProjectGradle.service.PictureService;
 import MyProjectGradle.service.RoleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,10 @@ public class UserServiceImplTest{
     private UserEntity secondUser;
     private List<GrantedAuthority> authorities;
     private Role userRole, adminRole, hostRole;
-    
+    private final ModelMapper modelMapper=new ModelMapper();
+    private Apartment apartment;
+    private Type studio;
+    private Town testTown;
 
     @Mock
     UserRepository mockUserRepository;
@@ -52,14 +54,13 @@ public class UserServiceImplTest{
     PictureService mockPictureService;
     @Mock
     MultipartFile mockMultipartFile;
-    @Mock
-    ModelMapper modelMapper = new ModelMapper();
+
 
 
     @BeforeEach
     void setUp(){
         passwordEncoder = new Pbkdf2PasswordEncoder();
-        serviceToTest= new UserServiceImpl(userDetailsService, mockUserRepository, modelMapper, mockRoleService, passwordEncoder, mockPictureService);
+        serviceToTest= new UserServiceImpl(userDetailsService, mockUserRepository, new ModelMapper(), mockRoleService, passwordEncoder, mockPictureService);
         testUser = new UserEntity();
         userRole = new Role();
         userRole.setName(RolesEnum.USER);
@@ -78,6 +79,28 @@ public class UserServiceImplTest{
         testUser.setProfileImg(pictureTest);
         mockUserRepository.save(testUser);
 
+
+
+        studio = new Type();
+        studio.setType(TypeEnum.STUDIO);
+        studio.setCapacity(3);
+        studio.setDescription("studio");
+
+        testTown = new Town();
+        testTown.setName("testTown");
+        testTown.setDescription("testTown");
+        testTown.setPictureUrl(pictureTest);
+        testTown.setId(1L);
+
+        apartment=new Apartment();
+        apartment.setOwner(testUser);
+        apartment.setType(studio);
+        apartment.setAddress("any address");
+        apartment.setPrice(BigDecimal.valueOf(50));
+        apartment.setTown(testTown);
+        apartment.setName("firstApartment");
+        apartment.setPictures(List.of(pictureTest));
+
         secondUser = new UserEntity();
         userRole = new Role();
         userRole.setName(RolesEnum.USER);
@@ -92,6 +115,7 @@ public class UserServiceImplTest{
         secondUser.setPassword("admin");
         secondUser.setEmail("admin@admin.com");
         secondUser.setPhone("+3598935467");
+        secondUser.setHostedApartments(List.of(apartment));
         mockUserRepository.save(secondUser);
 
     }
@@ -177,4 +201,28 @@ public class UserServiceImplTest{
             serviceToTest.updateUser(userProfileBindingModel,testUser.getUsername());
         assertEquals(userProfileBindingModel.getFirstName(), testUser.getFirstName());
     }
+
+    @Test
+    public void testFindUserViewModelByUsername(){
+        when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
+        userViewModel = new UserViewModel();
+        userViewModel = serviceToTest.findUserViewModelByUsername(testUser.getUsername());
+        assertEquals("test", userViewModel.getFirstName());
+    }
+
+    @Test
+    public void testChangeTheRoleOfUser(){
+        when(mockUserRepository.findByUsername(secondUser.getUsername())).thenReturn(Optional.of(secondUser));
+        serviceToTest.ChangeTheRoleOfUser(secondUser.getUsername());
+        assertEquals(3, secondUser.getRole().size());
+    }
+
+
+   /* @Test
+    public void testRemoveHostRole(){
+       when(mockUserRepository.findByUsername(secondUser.getUsername())).thenReturn(Optional.of(secondUser));
+
+        serviceToTest.RemoveHostRole(secondUser.getUsername());
+        assertEquals(2, secondUser.getRole().size());
+    }*/
 }

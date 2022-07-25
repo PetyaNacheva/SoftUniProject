@@ -21,7 +21,7 @@ public interface TownService {
 
     Town findById(Long id);
 
-    boolean saveTown(TownServiceModel townServiceModel, String userIdentifier);
+    boolean saveTown(TownServiceModel townServiceModel, String userIdentifier) throws IOException;
 
     List<TownViewModel> getTop3TownsWithMostApartments();
 

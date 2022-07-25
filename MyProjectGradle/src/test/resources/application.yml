@@ -1,16 +1,16 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
   sql:
     init:
       mode: never
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
+ # mvc:
+  #  hiddenmethod:
+   #   filter:
+    #    enabled: true
 
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
 
 cloudinary:
   api-key: test

@@ -7,30 +7,33 @@
 <header id="nav" th:replace="fragments/fragment::navigation" >
 
 </header>
-
-<div class="jumbotron jumbotron-fluid bg-blur min-vh-100">
-    <div class="container">
-        <h1 class="title-h1 pl-2 text-light">Welcome to travel and working
-            <span sec:authorize="isAuthenticated()" sec:authentication="name">Name of the logged in user</span>
-            <span sec:authorize="!isAuthenticated()">Anonymous!</span>
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+   <!-- <div class="container bg-primary bg-opacity-25 rounded">-->
+       <div class="row justify-content-center pt-2">
+           <h1 class="title-h1 pl-2 text-light fs-3">Welcome to travel and working
+               <strong><span sec:authorize="isAuthenticated()" sec:authentication="name">Name of the logged in user</span></strong>
+                <strong></strong><span sec:authorize="!isAuthenticated()">Anonymous!</span></strong>
         </h1>
-        <p class="text-center text-light ">Top 3 of the towns with most available apartments</p>
-        <p sec:authorize="!isAuthenticated()" class="text-center text-light ">If you want to find more information about our available destinations please  <a class="text-info" th:href="@{/users/login}">Login</a> or  <a class="text-info" th:href="@{/users/register}">Register</a></p>
-        <ul class="container card-columns my-4 justify-content-between">
-            <li th:each="t: ${towns}" th:object="${t}" class="text-center">
-              <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header" th:text="*{name}"></div>
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="*{description}"></h5>
-                        <img th:src="*{pictureUrl}" class="card-img" alt="Card image cap">
-                        <p class="card-text my-1" th:text="*{description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <th:block sec:authorize="isAuthenticated()">
-                        <a th:href="@{/towns/{id}/details(id=*{id})}" class="btn-primary my-3">View details</a>
-                        </th:block>
-                    </div>
-                </div>
-            </li>
-        </ul>
+        <p class="text-center text-light fs-3 ">Top 3 of the towns with most available apartments</p>
+        <p sec:authorize="!isAuthenticated()" class="text-center text-light fs-3 my-2">If you want to find more information about our available destinations please  <a class="text-primary" th:href="@{/users/login}">Login</a> or  <a class="text-primary" th:href="@{/users/register}">Register</a></p>
+       </div>
+       <div class="d-flex flex-row my-2">
+               <div th:each="t: ${towns}" th:object="${t}" class="container card-columns my-4 justify-content-between col-4">
+                   <div  class="text-center">
+                       <div class="card bg-light mb-3 border border-0 rounded" style="max-width: 18rem;">
+                           <div class="card-header bg-success bg-opacity-50 text-white fs-3" th:text="*{name}"></div>
+                           <div class="card-body bg-success bg-opacity-50 fs-4">
+                               <img th:src="*{pictureUrl}" class="card-img" alt="Card image cap">
+                               <p class="card-text my-1 text-truncate text-white" th:text="*{description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                               <th:block sec:authorize="isAuthenticated()">
+                                   <a th:href="@{/towns/{id}/details(id=*{id})}" class="btn bg-warning bg-opacity-75 my-3">View details</a>
+                               </th:block>
+                           </div>
+                       </div>
+                   </div>
+           </div>
+       </div>
+        <div class="row mt-5 bg-primary bg-opacity-25 rounded">
         <hr class="bg-light">
         <th:block sec:authorize="isAuthenticated()">
             <div id="search-section" class="col-md-3 mx-auto my-lg-5">
@@ -38,24 +41,24 @@
                 <label for="town" class="text-black-50 font-weight-bold">Town</label>
                 <select id="town" class="form-control">
                     <option value="">- Choose Town -</option>
-                    <option th:each="t: ${allTowns}" th:object="${t}"
+                    <option class="bg-secondary bg-opacity-25" th:each="t: ${allTowns}" th:object="${t}"
                             th:value="${t.name}"
                             th:text="${t.name}"></option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="type" class="text-black-50 font-weight-bold">Type</label>
+                <label for="type" class="text-black-50 font-weight-bold py-1">Type</label>
                 <select id="type" class="form-control">
                     <option value="">- Choose Type-</option>
-                    <option th:each="t: ${T(MyProjectGradle.models.enums.TypeEnum).values()}" th:object="${t}"
+                    <option class="bg-secondary bg-opacity-25" th:each="t: ${T(MyProjectGradle.models.enums.TypeEnum).values()}" th:object="${t}"
                             th:value="${t.name}"
                             th:text="${t.name}"></option>
                 </select>
             </div>
             <div class="row">
                 <div class="col my-auto">
-                    <div class="button-holder">
-                        <input id="searchBtn" type="button" class="btn btn-info btn-lg" value="Search"/>
+                    <div class="button-holder my-2">
+                        <input id="searchBtn" type="button" class="btn bg-warning bg-opacity-75" value="Search"/>
                     </div>
                 </div>
             </div>
@@ -64,6 +67,7 @@
             </div>
         </th:block>
     </div>
+
 </div>
 
 

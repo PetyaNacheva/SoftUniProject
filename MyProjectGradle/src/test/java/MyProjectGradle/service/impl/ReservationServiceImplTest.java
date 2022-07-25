@@ -3,10 +3,12 @@ package MyProjectGradle.service.impl;
 import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
+import MyProjectGradle.models.service.ReservationServiceModel;
 import MyProjectGradle.models.views.ReservationDetailsViewModel;
 import MyProjectGradle.models.views.ReservationViewModel;
 import MyProjectGradle.repository.*;
 import MyProjectGradle.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +25,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,12 +33,13 @@ class ReservationServiceImplTest {
     private final ModelMapper modelMapper= new ModelMapper();
     private ReservationServiceImpl reservationService;
     private Role userRole, adminRole, hostRole;
-    private Reservation testReservation;
+    private Reservation testReservation, pastReservation;
     private Apartment testApartment;
     private Town testTown;
     private Type studio, oneBed;
     private Picture pictureFirst;
     private ReservationViewModel reservationViewModel;
+    private ReservationServiceModel reservationServiceModel;
 
     @Mock
     ReservationRepository reservationRepository;
@@ -122,8 +124,28 @@ class ReservationServiceImplTest {
         testReservation.setReservedOn(LocalDate.of(2022, 7, 1));
         testReservation.setNumberOfGuests(2);
         testReservation.setPrice(BigDecimal.valueOf(200));
+        testReservation.setId(1L);
         reservationRepository.save(testReservation);
 
+        pastReservation = new Reservation();
+        pastReservation.setUsername(testUser);
+        pastReservation.setApartment(testApartment);
+        pastReservation.setGuestName(testUser.getFirstName());
+        pastReservation.setArrivalDate(LocalDate.of(2021, 1, 1));
+        pastReservation.setDepartureDate(LocalDate.of(2021, 1, 5));
+        pastReservation.setReservedOn(LocalDate.of(2020, 7, 1));
+        pastReservation.setNumberOfGuests(2);
+        pastReservation.setPrice(BigDecimal.valueOf(200));
+        pastReservation.setId(2L);
+        reservationRepository.save(pastReservation);
+
+
+    }
+
+
+    @AfterEach
+    void tearDown(){
+        reservationRepository.deleteAll();
     }
 
     @Test
@@ -159,5 +181,99 @@ class ReservationServiceImplTest {
         reservationService.deleteReservation(testReservation.getId());
         assertEquals(0, reservationRepository.findAll().size());
         
+    }
+
+    @Test
+    public  void testDeletePastReservations(){
+        when(reservationRepository.findAll()).thenReturn(List.of(testReservation));
+        reservationRepository.save(pastReservation);
+        reservationService.deletePastReservations();
+       assertEquals(1, reservationRepository.findAll().size());
+    }
+
+    @Test
+    public void testFindAllReservationsWithTotalProfit(){
+        when(reservationRepository.findAll()).thenReturn(List.of(testReservation, pastReservation));
+        when(reservationRepository.findTotalPrice()).thenReturn(BigDecimal.valueOf(400));
+         assertEquals("Reservation count 2 - with total profit 400.00", reservationService.findAllReservationsWithTotalProfit());
+    }
+
+    @Test
+    public void testFindById(){
+        when(reservationRepository.findById(pastReservation.getId())).thenReturn(Optional.of(pastReservation));
+
+        assertEquals("test", reservationService.findById(pastReservation.getId()).getGuestName());
+    }
+
+    @Test
+    public void testFindByIdThrow(){
+        assertThrows(EntityNotFoundException.class, () -> reservationService.findById(5L));
+    }
+
+    @Test
+    public void testFindAllReservationsByUsernameFilterByDate(){
+        when(reservationRepository.findAllByUsername_Username(testUser.getUsername())).thenReturn(List.of(testReservation, pastReservation));
+        List<ReservationViewModel> past = reservationService.findAllReservationsByUsernameFilterByDate(testUser.getUsername(), "past");
+
+        assertEquals(1, past.size());
+
+    }
+    @Test
+    public void testFindAllReservationsByUsernameFilterByDateWithToday(){
+        when(reservationRepository.findAllByUsername_Username(testUser.getUsername())).thenReturn(List.of(testReservation, pastReservation));
+        List<ReservationViewModel> past = reservationService.findAllReservationsByUsernameFilterByDate(testUser.getUsername(), "today");
+
+        assertEquals(0, past.size());
+
+    }
+
+    @Test
+    public void testFindAllReservationsByUsernameFilterByDateWithFuture(){
+        when(reservationRepository.findAllByUsername_Username(testUser.getUsername())).thenReturn(List.of(testReservation, pastReservation));
+        List<ReservationViewModel> past = reservationService.findAllReservationsByUsernameFilterByDate(testUser.getUsername(), "future");
+
+        assertEquals(1, past.size());
+
+    }
+
+    @Test
+    public void testAddReservation(){
+
+        reservationServiceModel = new ReservationServiceModel();
+        reservationServiceModel.setUsername(testUser);
+
+        reservationServiceModel.setReservedOn(LocalDate.now());
+        reservationServiceModel.setApartment(testApartment);
+        reservationServiceModel.setArrivalDate(LocalDate.now().plusDays(5));
+        reservationServiceModel.setDepartureDate(LocalDate.now().plusDays(8));
+        reservationServiceModel.setGuestName(testUser.getFirstName());
+        reservationServiceModel.setNumberOfGuests(2);
+        reservationServiceModel.setPrice(BigDecimal.valueOf(150));
+        reservationServiceModel.setId(3L);
+       assertTrue(reservationService.addReservation(reservationServiceModel));
+    }
+
+    @Test
+    public void testAddReservationFalse(){
+
+        reservationServiceModel = new ReservationServiceModel();
+        reservationServiceModel.setUsername(testUser);
+
+        reservationServiceModel.setReservedOn(LocalDate.now());
+        reservationServiceModel.setApartment(testApartment);
+        reservationServiceModel.setArrivalDate(LocalDate.now().plusDays(5));
+        reservationServiceModel.setDepartureDate(LocalDate.now().plusDays(8));
+        reservationServiceModel.setGuestName(testUser.getFirstName());
+        reservationServiceModel.setNumberOfGuests(2);
+        reservationServiceModel.setPrice(BigDecimal.valueOf(150));
+
+        assertFalse(reservationService.addReservation(reservationServiceModel));
+    }
+    
+    @Test
+    public void testFindAllByApartmentsByName(){
+        when(reservationRepository.findAllByApartment_Name(testApartment.getName())).thenReturn(List.of(testReservation, pastReservation));
+
+        assertEquals(2, reservationService.findAllByApartmentsByName(testApartment.getName()).size());
     }
 }

@@ -20,7 +20,7 @@ min-height: 100% !important}
     border: none
 }
  .navbar-brand, .nav-link,
- .nav{
+ .nav, #user{
      border: none;
     background-color: #0b4027;
    color: rgb(240, 205, 139);
