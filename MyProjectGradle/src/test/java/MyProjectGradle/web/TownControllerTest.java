@@ -66,9 +66,15 @@ class TownControllerTest {
         testUser.setPassword("test");
         testUser.setEmail("test@test.com");
         testUser.setPhone("+3598935467");
+
+
         mockUserRepository.save(testUser);
 
-        testTown = mockTownRepository.save(new Town("Sofia", "Sofia is the capital of Bulgaria"));
+        testTown = new Town();
+        testTown.setId(1L);
+        testTown.setName("Sofia");
+        testTown.setDescription("Sofia is the capital of Bulgaria");
+        mockTownRepository.save(testTown);
     }
 
     @AfterEach
@@ -90,10 +96,27 @@ class TownControllerTest {
     @Test
     @WithMockUser(value = "testUser", username = "testUser", roles = "ADMIN")
     void testAllTowns() throws Exception {
-        mockMvc.perform(get("/towns/add")).
+        mockMvc.perform(get("/towns/all")).
                 andExpect(status().isOk()).
-                andExpect(view().name("town-add"));
+                andExpect(view().name("allTowns"));
     }
+
+    /*@Test
+    @WithMockUser(value = "testUser", username = "testUser", roles = "ADMIN")
+    void testUpdate() throws Exception {
+        mockMvc.perform(get("/towns/1/update")).
+                andExpect(status().isOk()).
+                andExpect(view().name("town-update"));
+    }
+
+
+    @Test
+    @WithMockUser(value = "testUser", username = "testUser")
+    void testDetails() throws Exception {
+        mockMvc.perform(get("/towns/1/details")).
+                andExpect(status().isOk()).
+                andExpect(view().name("town-details"));
+    }*/
 
    /* @Test
     @WithMockUser(value = "testUser", username = "testUser", roles = "ADMIN")

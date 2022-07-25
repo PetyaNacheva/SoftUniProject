@@ -8,12 +8,13 @@ import MyProjectGradle.models.views.ApartmentDetailsViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public interface ApartmentService {
-    boolean saveApartment(ApartmentServiceModel apartmentServiceModel, String name);
+    boolean saveApartment(ApartmentServiceModel apartmentServiceModel, String name) throws IOException;
 
     List<ApartmentViewModel> findAllApartmentsByUsername(UserEntity user);
 

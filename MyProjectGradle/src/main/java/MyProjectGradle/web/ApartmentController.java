@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,7 +62,7 @@ private final ReservationService reservationService;
     }
 
     @PostMapping("/add")
-    public String addApartment(@Valid ApartmentAddBindingModel apartmentAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal MySecurityUser principal){
+    public String addApartment(@Valid ApartmentAddBindingModel apartmentAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal MySecurityUser principal) throws IOException {
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("apartmentAddBindingModel", apartmentAddBindingModel);

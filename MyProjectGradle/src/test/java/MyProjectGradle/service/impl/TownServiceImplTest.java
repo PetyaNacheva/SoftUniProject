@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -194,22 +195,17 @@ class TownServiceImplTest {
         assertEquals(townDetailsViewModelBy.getDescription(), townTest.getDescription());
     }
 
-/*    @Test
-    public void testSave(){
+  /* @Test
+    public void testSaveTown() throws IOException {
         when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
-        when(mockTownRepository.findAll()).thenReturn(List.of(townTest));
-
         townServiceModel = new TownServiceModel();
         townServiceModel.setPicture(mockMultipartFile);
         townServiceModel.setName("NewTown");
         townServiceModel.setDescription("New best Town");
         townServiceModel.setId(2L);
-      //  Town newTown = new Town("NewTown", "New best Town");
-        townService.saveTown(townServiceModel, testUser.getUsername());
+       String username = mockUserRepository.findByUsername(testUser.getUsername()).get().getUsername();
 
-
-
-        assertEquals("NewTown",townService.findById(2L).getName());
+       assertTrue(townService.saveTown(townServiceModel, username));
 
     }*/
 

@@ -66,7 +66,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public void UpdateApartmentName(Picture p, String name) {
-        Picture pictureById = pictureRepository.findById(p.getId()).orElse(null);
+        Picture pictureById = pictureRepository.findById(p.getId()).orElseThrow(() ->new EntityNotFoundException("Picture"));
         pictureById.setApartmentName(name);
         pictureRepository.save(pictureById);
     }

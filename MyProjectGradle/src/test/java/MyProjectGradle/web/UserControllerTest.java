@@ -161,11 +161,7 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
         assertEquals(1, mockUserRepository.count());
-        /*Optional<UserEntity> user = mockUserRepository.findByUsername("user");
-        assertTrue(user.isPresent());
-        assertTrue(user.get().getId()>0);
-        assertEquals("user@gmail.com", user.get().getEmail());
-        mockUserRepository.delete(user.get());*/
+
        }
 
   /*  @Test

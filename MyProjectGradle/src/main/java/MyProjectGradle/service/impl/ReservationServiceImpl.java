@@ -34,22 +34,20 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findAllApartmentsByName(String name) {
+    public List<Reservation> findAllByApartmentsByName(String name) {
         return reservationRepository.findAllByApartment_Name(name);
     }
 
     @Override
     public boolean addReservation(ReservationServiceModel reservationServiceModel) {
-      try{  Reservation reservation = modelMapper.map(reservationServiceModel, Reservation.class);
+       Reservation reservation = modelMapper.map(reservationServiceModel, Reservation.class);
           int days = reservation.getArrivalDate().until(reservation.getDepartureDate()).getDays();
           BigDecimal totalPrice = reservation.getApartment().getPrice().multiply(BigDecimal.valueOf(days));
           reservation.setPrice(totalPrice);
           reservationRepository.save(reservation);
        if(reservation.getId()==null){
            return false;
-       }}catch (Exception e){
-          return false;
-      }
+       }
         return true;
 
     }

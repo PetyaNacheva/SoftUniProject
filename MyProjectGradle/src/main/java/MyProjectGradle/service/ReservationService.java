@@ -9,7 +9,7 @@ import java.time.Period;
 import java.util.List;
 
 public interface ReservationService {
-    List<Reservation> findAllApartmentsByName(String name);
+    List<Reservation> findAllByApartmentsByName(String name);
 
 
     boolean addReservation(ReservationServiceModel reservationServiceModel);

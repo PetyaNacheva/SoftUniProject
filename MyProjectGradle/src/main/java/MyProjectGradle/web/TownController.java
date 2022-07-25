@@ -49,7 +49,7 @@ public class TownController {
     }
 
     @PostMapping("/add")
-    public String addTownConfirmed(@Valid TownAddBindingModel townAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal MySecurityUser principal){
+    public String addTownConfirmed(@Valid TownAddBindingModel townAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal MySecurityUser principal) throws IOException {
 
             if (bindingResult.hasErrors()) {
                 redirectAttributes.addFlashAttribute("townAddBindingModel", townAddBindingModel);

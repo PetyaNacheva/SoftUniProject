@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import java.time.temporal.ChronoUnit;
@@ -45,8 +46,8 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
     @Transactional
     @Override
-    public boolean saveApartment(ApartmentServiceModel apartmentServiceModel, String name) {
-        try {
+    public boolean saveApartment(ApartmentServiceModel apartmentServiceModel, String name) throws IOException {
+
             Apartment apartment = modelMapper.map(apartmentServiceModel, Apartment.class);
            UserEntity user =userService.findByUsername(name);
             userService.ChangeTheRoleOfUser(user.getUsername());
@@ -61,10 +62,11 @@ public class ApartmentServiceImpl implements ApartmentService {
             apartment.setOwner(user);
 
             apartmentRepository.save(apartment);
-            return true;
-        }catch (Exception e){
+
+        if(apartment.getId()==null){
             return false;
         }
+        return true;
     }
 
     @Override
@@ -136,7 +138,6 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public Apartment findByApartmentByApartmentName(String apartmentName) {
         return apartmentRepository.findApartmentByName(apartmentName).orElseThrow(()-> new EntityNotFoundException("Apartment"));
-        // TODO: 7/7/2022 to check this functionality changed the throw to be with exception when implementing tests
     }
 
     @Override
@@ -210,7 +211,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
     @Override
     public String isAvailable(String apartment, LocalDate arrivalDate, LocalDate departureDate){
-        List<Reservation> reservationsByApartment = reservationService.findAllApartmentsByName(apartment);
+        List<Reservation> reservationsByApartment = reservationService.findAllByApartmentsByName(apartment);
         List<Reservation> sorted = reservationsByApartment.stream().sorted(Comparator.comparing(Reservation::getArrivalDate)).toList();
         for (Reservation reservation : sorted) {
             LocalDate currResArrDate=reservation.getArrivalDate();

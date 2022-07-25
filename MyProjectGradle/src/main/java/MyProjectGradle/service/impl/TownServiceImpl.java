@@ -35,22 +35,17 @@ public class TownServiceImpl implements TownService {
     
 
     @Override
-    public boolean saveTown(TownServiceModel townServiceModel, String userIdentifier) {
-        try {
+    public boolean saveTown(TownServiceModel townServiceModel, String userIdentifier) throws IOException {
            Town town = modelMapper.map(townServiceModel, Town.class);
             UserEntity user =userService.findByUsername(userIdentifier);
-
             MultipartFile picture = townServiceModel.getPicture();
             Picture pictureFile = pictureService.createPicture(picture, picture.getOriginalFilename(), user.getUsername(), town.getName());
             town.setPictureUrl(pictureFile);
-
             townRepository.save(town);
-
-            return true;
-        }catch (Exception e){
+       if(town.getId()==null){
             return false;
         }
-        // TODO: 7/1/2022 to correct the logic without try catch and implement errorhandling 
+        return true;
     }
 
     @Override
