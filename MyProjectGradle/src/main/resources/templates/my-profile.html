@@ -9,12 +9,12 @@
     </header>
 
 <div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
-    <div class="container py-5">
-        <h5 class="display-5 text-center my-0">
+    <div class="container py-4">
+        <h5 class="fs-3 text-center my-0">
             <strong class="bg-blur rounded px-5 text-white py-1">
                Detailed information</strong></h5>
     </div>
-    <div class="container bg-blur  rounded p-5 mt-5 w-50" th:object="${userProfile}">
+    <div class="container bg-blur  rounded p-4 w-50" th:object="${userProfile}">
           <div class="form-group row justify-content-center">
                 <div class="col-sm-2 col-form-label">
                     <img th:src="*{profileImg}" class="card-img"/>
@@ -22,33 +22,33 @@
             </div>
 
         <div class="form-group row justify-content-center pt-2">
-            <label class="col-sm-3 col-form-label text-center text-light fs-5">Username</label>
+            <label class="col-sm-3 col-form-label text-center text-light ">Username</label>
             <div class="col-sm-9">
-                <h2 type="text" readonly class="form-control-plaintext text-white bg-secondary bg-opacity-75 rounded px-2 fs-5" th:text="*{username}"></h2>
+                <h2 type="text" readonly class="form-control-plaintext text-white bg-secondary bg-opacity-75 rounded px-2" th:text="*{username}"></h2>
             </div>
         </div>
             <div class="form-group row justify-content-center py-3">
-                <label class="col-sm-3 col-form-label text-center text-light fs-5">First name</label>
+                <label class="col-sm-3 col-form-label text-center text-light ">First name</label>
                 <div class="col-sm-9">
-                    <h2 type="text" class=" form-control fs-5" th:text="*{firstName}"></h2>
+                    <h2 type="text" class=" form-control " th:text="*{firstName}"></h2>
                 </div>
             </div>
             <div class="form-group row justify-content-center">
-                <label class="col-sm-3 col-form-label text-center text-light fs-5">Last name</label>
+                <label class="col-sm-3 col-form-label text-center text-light ">Last name</label>
                 <div class="col-sm-9">
-                    <h2 type="text" class=" form-control fs-5" th:text="*{lastName}"></h2>
+                    <h2 type="text" class=" form-control " th:text="*{lastName}"></h2>
                 </div>
             </div>
             <div class="form-group row justify-content-center py-3">
-                <label class="col-sm-3 col-form-label text-center text-light fs-5">Email</label>
+                <label class="col-sm-3 col-form-label text-center text-light ">Email</label>
                 <div class="col-sm-9">
-                    <h2 type="text" class=" form-control fs-5" th:text="*{email}"></h2>
+                    <h2 type="text" class=" form-control " th:text="*{email}"></h2>
                 </div>
             </div>
         <div class="form-group row justify-content-center">
-            <label class="col-sm-3 col-form-label text-center text-light fs-5">Phone</label>
+            <label class="col-sm-3 col-form-label text-center text-light ">Phone</label>
             <div class="col-sm-9">
-                <h2 type="text" class=" form-control fs-5" th:text="*{phone}"></h2>
+                <h2 type="text" class=" form-control " th:text="*{phone}"></h2>
             </div>
         </div>
         <div class="row justify-content-center">

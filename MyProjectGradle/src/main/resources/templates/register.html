@@ -10,11 +10,11 @@
 
 <div class="jumbotron jumbotron-fluid bg-secondary bg-opacity-50 min-vh-100">
     <div class="container text-light py-4 px-0">
-        <h5 class="display-5 text-center py-3">
+        <h5 class="fs-3 text-center py-3">
             <strong class="bg-blur rounded px-5 text-light py-3 vw-25">
                 Register and you choose to be a host or to be a guest</strong></h5>
     </div>
-    <div class="container bg-blur rounded p-5 mt-5 w-50">
+    <div class="container bg-blur rounded py-2 mt-2 w-50">
         <div>
         <form enctype="multipart/form-data" th:action="@{/users/register}" th:method="POST" th:object="${userRegisterBindingModel}"
                class=" text-center text-light px-5 my-form">
@@ -24,7 +24,7 @@
                 </strong>
             </h3>
             <div class="form-group row justify-content-center">
-                <label for="username" class="col-sm-3 col-form-label fs-5">Username</label>
+                <label for="username" class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-9">
                     <input th:field="*{username}" th:errorclass="bg-danger" type="text" min="3" max="20" class="form-control" id="username"
                            aria-describedby="usernameHelpInline" placeholder="Username">
@@ -34,14 +34,14 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center py-3">
-                <label for="firstName" class="col-sm-3 col-form-label fs-5">First name</label>
+                <label for="firstName" class="col-sm-3 col-form-label">First name</label>
                 <div class="col-sm-9">
                     <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" min="3" max="20" class=" form-control" id="firstName"
                            aria-describedby="firstNameHelpInline" placeholder="First name">
                 </div>
             </div>
             <div class="form-group row justify-content-center">
-                <label for="lastName" class="col-sm-3 col-form-label fs-5">Last name</label>
+                <label for="lastName" class="col-sm-3 col-form-label ">Last name</label>
                 <div class="col-sm-9">
                     <input th:field="*{lastName}" th:errorclass="bg-danger" type="text" min="3" max="20" class="form-control" id="lastName"
                            aria-describedby="lastNameHelpInline" placeholder="LastName">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center py-3">
-                <label for="email" class="col-sm-3 col-form-label fs-5">Email</label>
+                <label for="email" class="col-sm-3 col-form-label ">Email</label>
                 <div class="col-sm-9">
                     <input th:field="*{email}" th:errorclass="bg-danger" type="email" class="form-control" id="email"
                            aria-describedby="emailHelpInline" placeholder="email@example.com">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center">
-                <label for="password" class="col-sm-3 col-form-label fs-5">Password</label>
+                <label for="password" class="col-sm-3 col-form-label ">Password</label>
                 <div class="col-sm-9">
                     <input th:field ="*{password}" th:errorclass="bg-danger"  type="password" min="5" max="12" class=" form-control" id="password"
                            aria-describedby="passwordHelpInline" placeholder="Password">
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center py-3">
-                <label for="confirmPassword" class="col-sm-3 col-form-label fs-5">Confirm Password</label>
+                <label for="confirmPassword" class="col-sm-3 col-form-label ">Confirm Password</label>
                 <div class="col-sm-9">
                     <input th:field="*{confirmPassword}" th:errorclass="bg-danger" type="password" min="5" max="12" class="form-control" id="confirmPassword"
                            aria-describedby="confirmPasswordHelpInline" placeholder="Confirm Password">
@@ -81,7 +81,7 @@
                 </div>
             </div>
           <div class="form-group row justify-content-center">
-                <label for="phone" class="col-sm-3 col-form-label fs-5">Phone</label>
+                <label for="phone" class="col-sm-3 col-form-label">Phone</label>
                 <div class="col-sm-9">
                     <input th:field="*{phone}" th:errorclass="bg-danger" type="text" min="5" max="12" class="form-control"
                             placeholder="phone">
@@ -91,7 +91,7 @@
                 </div>
             </div>
            <div class="form-group row justify-content-center py-3">
-                <label for="profileImg" class="col-sm-3 col-form-label fs-5">Profile Picture</label>
+                <label for="profileImg" class="col-sm-3 col-form-label ">Profile Picture</label>
                 <div class="col-sm-9 align-items-center">
                    <input type="file" th:field="*{profileImg}"  class="form-control-file my-3" >
                     <small th:if="${#fields.hasErrors('profileImg')}" th:errors="*{profileImg}"  id="profileImg" class="bg-danger text-light rounded">

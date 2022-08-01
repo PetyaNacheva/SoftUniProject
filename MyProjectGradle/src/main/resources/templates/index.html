@@ -10,12 +10,12 @@
 <div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
    <!-- <div class="container bg-primary bg-opacity-25 rounded">-->
        <div class="row justify-content-center pt-2">
-           <h1 class="title-h1 pl-2 text-light fs-3">Welcome to travel and working
+           <h1 class="title-h1 pl-2 text-light fs-4">Welcome to travel and working
                <strong><span sec:authorize="isAuthenticated()" sec:authentication="name">Name of the logged in user</span></strong>
                 <strong></strong><span sec:authorize="!isAuthenticated()">Anonymous!</span></strong>
         </h1>
-        <p class="text-center text-light fs-3 ">Top 3 of the towns with most available apartments</p>
-        <p sec:authorize="!isAuthenticated()" class="text-center text-light fs-3 my-2">If you want to find more information about our available destinations please  <a class="text-primary" th:href="@{/users/login}">Login</a> or  <a class="text-primary" th:href="@{/users/register}">Register</a></p>
+        <p class="text-center text-light fs-4 ">Top 3 of the towns with most available apartments</p>
+        <p sec:authorize="!isAuthenticated()" class="text-center text-light fs-4 my-2">If you want to find more information about our available destinations please  <a class="text-primary" th:href="@{/users/login}">Login</a> or  <a class="text-primary" th:href="@{/users/register}">Register</a></p>
        </div>
        <div class="d-flex flex-row my-2">
                <div th:each="t: ${towns}" th:object="${t}" class="container card-columns my-4 justify-content-between col-4">
@@ -33,13 +33,13 @@
                    </div>
            </div>
        </div>
+    <th:block sec:authorize="isAuthenticated()">
         <div class="row mt-5 bg-primary bg-opacity-25 rounded">
         <hr class="bg-light">
-        <th:block sec:authorize="isAuthenticated()">
             <div id="search-section" class="col-md-3 mx-auto my-lg-5">
             <div  class="form-group">
-                <label for="town" class="text-black-50 font-weight-bold">Town</label>
-                <select id="town" class="form-control">
+                <label for="town" class="text-black-50 font-weight-bold fs-5">Town</label>
+                <select id="town" class="form-control fs-5 my-2">
                     <option value="">- Choose Town -</option>
                     <option class="bg-secondary bg-opacity-25" th:each="t: ${allTowns}" th:object="${t}"
                             th:value="${t.name}"
@@ -47,8 +47,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="type" class="text-black-50 font-weight-bold py-1">Type</label>
-                <select id="type" class="form-control">
+                <label for="type" class="text-black-50 font-weight-bold py-1 fs-5">Type</label>
+                <select id="type" class="form-control fs-5 my-2">
                     <option value="">- Choose Type-</option>
                     <option class="bg-secondary bg-opacity-25" th:each="t: ${T(MyProjectGradle.models.enums.TypeEnum).values()}" th:object="${t}"
                             th:value="${t.name}"
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col my-auto">
                     <div class="button-holder my-2">
-                        <input id="searchBtn" type="button" class="btn bg-warning bg-opacity-75" value="Search"/>
+                        <input id="searchBtn" type="button" class="btn bg-warning bg-opacity-75 fs-4 my-3" value="Search"/>
                     </div>
                 </div>
             </div>

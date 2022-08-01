@@ -18,7 +18,7 @@ public class LogAspect {
         this.logService = logService;
     }
 
-    @Pointcut("execution(* MyProjectGradle.web.ApartmentController.makeReservation(..))")
+   /* @Pointcut("execution(* MyProjectGradle.web.ApartmentController.makeReservation(..))")
     public void detailsPointcut(){};
 
   @After("detailsPointcut()")
@@ -29,5 +29,5 @@ public class LogAspect {
         logService.createLog(action, apartmentId);
 
 
-    }
+    }*/
 }

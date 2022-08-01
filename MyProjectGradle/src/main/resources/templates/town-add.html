@@ -8,17 +8,17 @@
 <header id="nav" th:replace="fragments/fragment::navigation">
 </header>
 <div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
-    <div class="container py-5">
-        <h5 class="display-5 text-center my-0">
-            <strong class="bg-blur rounded px-5  text-white py-1">
+    <div class="container py-4">
+        <h5 class="fs-3 text-center my-0">
+            <strong class="bg-blur rounded px-5 text-white py-1">
                 Add Town</strong></h5>
         <h5 th:if="${isExist}" class="bg-danger text-light rounded my-1" >Town already exist</h5>
     </div>
-    <div class="container bg-blur bg-opacity-50 rounded p-5 mt-5 w-50">
+    <div class="container bg-blur bg-opacity-50 rounded p-5 mt-2 w-50">
         <form role="form" enctype="multipart/form-data" th:action="@{/towns/add}"  th:method="POST" th:object="${townAddBindingModel}"
-              class=" text-center text-light px-5 my-form">
+              class=" text-center text-light px-2 my-form">
             <div class="form-group row justify-content-center">
-                <label for="name" class="col-sm-3 col-form-label fs-5">Apartment name</label>
+                <label for="name" class="col-sm-3 col-form-label">Apartment name</label>
                 <div class="col-sm-9">
                     <input th:field="*{name}" th:errorclass="bg-danger" type="text" min="3" max="50" class="form-control" id="name"
                            aria-describedby="usernameHelpInline" placeholder="name">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center py-3">
-                <label for="description" class="col-sm-3 col-form-label fs-5">Description</label>
+                <label for="description" class="col-sm-3 col-form-label">Description</label>
                 <div class="col-sm-9">
                     <input th:field="*{description}" th:errorclass="bg-danger" type="text" min="3" max="50" class="form-control" id="description"
                            aria-describedby="apartmentTypeHelpInline" placeholder="Town description">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="form-group row justify-content-center">
-                <label for="picture" class="col-sm-3 col-form-label fs-5">Pictures</label>
+                <label for="picture" class="col-sm-3 col-form-label">Pictures</label>
                 <div class="col-sm-9">
                     <!--th:field ="*{picture}" th:errorclass="bg-danger"-->
                     <input type="file" class="form-control" id="picture" name="picture" th:field="*{picture}"
@@ -52,7 +52,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-3"></div>
-            <button type="submit" class=" col-9 btn btn bg-info bg-opacity-50 text-white w-50 my-3 ">Add Town</button>
+            <button type="submit" class=" col-9 btn btn bg-info bg-opacity-50 text-white w-50 my-4 ">Add Town</button>
             </div>
         </form>
         <hr class="bg-light">
