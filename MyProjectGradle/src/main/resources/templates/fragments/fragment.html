@@ -15,44 +15,44 @@
     <nav class="navbar navbar-expand-sm">
         <div class="container w-100">
             <div class="navbar-header justify-content-lg-between w-25" >
-                <a class="navbar fs-4 text-decoration-none" th:href="@{/info}">WebSiteName</a>
+                <a class="navbar text-decoration-none" th:href="@{/info}">BestSiteName</a>
             </div>
             <ul class="navbar-nav justify-content-between w-50">
                 <li class="nav-item">
-                    <a class="nav-link fs-4" th:href="@{/}">Home</a>
+                    <a class="nav-link " th:href="@{/}">Home</a>
                 </li>
                <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
-                    <a class="nav-link fs-4" th:href="@{/statistics}">Stats</a>
+                    <a class="nav-link" th:href="@{/statistics}">Stats</a>
                </li>
                 <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
-                    <a class="nav-link fs-4" th:href="@{/towns/all}">Towns</a>
+                    <a class="nav-link" th:href="@{/towns/all}">Towns</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link fs-4" th:href="@{/#search-section}">Make Reservation</a>
+                    <a class="nav-link " th:href="@{/#search-section}">Make Reservation</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link fs-4" th:href="@{/reservations/getMy}">My-reservations</a>
+                    <a class="nav-link " th:href="@{/reservations/getMy}">My-reservations</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link fs-4" th:href="@{/apartments/add}">Be a Host</a>
+                    <a class="nav-link " th:href="@{/apartments/add}">Be a Host</a>
                 </li>
                 <!--<th:block sec:authorize="hasRole('ROLE_HOST')">-->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link fs-4" th:href="@{/apartments/getMy}">My-apartments</a>
+                    <a class="nav-link " th:href="@{/apartments/getMy}">My-apartments</a>
                 </li>
 
             </ul>
             <ul class="nav navbar navbar-right w-25">
                 <li>
-                    <a th:href="@{/users/register}" sec:authorize="!isAuthenticated()"><span class="glyphicon glyphicon-user mx-2 fs-4"></span>Register</a>
+                    <a class="text-decoration-none" th:href="@{/users/register}" sec:authorize="!isAuthenticated()"><span class="glyphicon glyphicon-user mx-2  nav-link">Register</span></a>
                 </li>
                 <li>
-                    <a th:href="@{/users/login}" sec:authorize="!isAuthenticated()"><span class="glyphicon glyphicon-log-in mx-2 fs-4"></span> LogIn</a>
+                    <a class="text-decoration-none" th:href="@{/users/login}" sec:authorize="!isAuthenticated()"><span class="glyphicon glyphicon-log-in mx-2 nav-link">LogIn</span> </a>
                 </li>
                   <li><a class="text-decoration-none" id="user" th:href="@{/users/profile}" sec:authorize="isAuthenticated()">
-                      <span sec:authentication="name" class="glyphicon glyphicon-log-in mx-2 fs-4 text-decoration-none"></span></a></li>
+                      <span sec:authentication="name" class="glyphicon glyphicon-log-in mx-2 text-decoration-none"></span></a></li>
                   <form sec:authorize="isAuthenticated()" th:action="@{/logout}" th:method="POST">
-                      <input class="nav-link fs-4" type="submit" value="Logout"/>
+                      <input class="nav-link" type="submit" value="Logout"/>
                   </form>
             </ul>
         </div>

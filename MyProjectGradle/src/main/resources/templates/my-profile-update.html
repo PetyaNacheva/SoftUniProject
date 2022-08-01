@@ -7,32 +7,32 @@
 <body>
 <header id="nav" th:replace="fragments/fragment::navigation">
 </header>
-<div class="jumbotron  min-vh-100 bg-secondary bg-opacity-50">
-    <div class="container py-5">
-        <h5 class="display-5 text-center my-0">
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+    <div class="container py-4">
+        <h5 class="fs-3 text-center my-0">
             <strong class="bg-blur rounded px-5 text-white py-1">
                 Change your profile</strong></h5>
     </div>
-    <div class="container bg-blur rounded p-5 mt-5 w-50">
+    <div class="container bg-blur rounded p-4 mt-2 w-50">
         <form enctype="multipart/form-data" th:action="@{/users/profile/update}" th:method="PATCH" th:object="${userProfileBindingModel}"
-               class=" text-center px-5 my-form">
-            <div class="form-group row justify-content-center">
+               class=" text-center px-5 my-form text-white">
+            <div class=" form-group row justify-content-center">
                 <div class="col-sm-10">
-                    <h2 class="justify-content-center mx-auto" th:text="|Username *{username}|"></h2>
+                    <h2 class="justify-content-center mx-auto fs-5" th:text="|Username *{username}|"></h2>
                 </div>
             </div>
 
             <div class="form-group row justify-content-center py-3">
                 <label for="firstName" class="col-sm-3 col-form-label">Change First name</label>
                 <div class="col-sm-9">
-                    <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" class=" mt-2 form-control" id="firstName"
+                    <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" class=" form-control" id="firstName"
                            aria-describedby="firstNameHelpInline" placeholder="First name">
                 </div>
             </div>
             <div class="form-group row justify-content-center">
                 <label for="lastName" class="col-sm-3 col-form-label">Change Last name</label>
                 <div class="col-sm-9">
-                    <input th:field="*{lastName}" th:errorclass="bg-danger"  type="text" class="mt-2 form-control" id="lastName"
+                    <input th:field="*{lastName}" th:errorclass="bg-danger"  type="text" class="form-control" id="lastName"
                            aria-describedby="lastNameHelpInline" placeholder="Last name">
                     <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" id="lastNameHelpInline" class="bg-danger text-light rounded">
                         Last name length must be between 5 and 20 characters.
@@ -42,7 +42,7 @@
             <div class="form-group row justify-content-center py-3">
                 <label for="phone" class="col-sm-3 col-form-label"> Change Phone</label>
                 <div class="col-sm-9">
-                    <input th:field="*{phone}" th:errorclass="bg-danger" type="text" min="5" max="12" class="mt-3 form-control"
+                    <input th:field="*{phone}" th:errorclass="bg-danger" type="text" min="5" max="12" class=" form-control "
                            placeholder="phone">
                     <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  id="phone" class="bg-danger text-light rounded">
                         Password length must be more than 3 characters long.
@@ -51,20 +51,21 @@
             </div>
             <div class="form-group row justify-content-center">
                 <div class="col-sm-10">
-                    <h3 class="justify-content-center mx-auto" th:text="|User email is *{email}|"></h3>
+                    <h3 class="justify-content-center mx-auto fs-5 my-2" th:text="|User email is *{email}|"></h3>
                 </div>
             </div>
-            <img class="form-group row" th:src="*{profileImg}"
-                 width="50px" height="50px">
-            <div class="form-group justify-content-center">
-                <div class="justify-content-center">
-                    <label for="profileImg">Change your profile picture</label>
-                    <input type="file" th:field="*{profileImg}"  class="form-control-file" id="profileImg">
+            <div class="col-sm-2 col-form-label m-auto py-3">
+                <img th:src="*{profileImg}" class="card-img"/>
+            </div>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-4 col-form-label" for="profileImg">Change your profile picture</label>
+                <div class="col-sm-8">
+                    <input type="file" th:field="*{profileImg}"  class="form-control" id="profileImg">
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-3"></div>
-            <button type="submit" class=" col-9 btn bg-info bg-opacity-50 text-white w-50 my-3">Update</button>
+            <button type="submit" class=" col-9 btn bg-info bg-opacity-50 text-white w-50 my-3 fs-5">Update</button>
             </div>
         </form>
         <hr class="bg-light">
