@@ -12,26 +12,37 @@ fetch("http://localhost:8080/apartments/api/statistic/{id}")
     });
 
 statisticBtn.addEventListener('click', (e) => {
-
-    displayApartments(apartmentStatistic);
-
+    let filterApartments =apartmentStatistic.filter(statistic => {
+        if (statistic.futureProfit > "0" || statistic.pastProfit > "0") {
+            return statistic;
+        }
+    });
+    displayApartments(filterApartments);
 });
 
 const displayApartments = (apartments) => {
     statisticElement.innerHTML = '';
     let row = [];
-    for (let i = 0; i < apartments.length; i++) {
+    for (let i = 0; i < apartments.pastReservations.length; i++) {
         let span = document.createElement('span');
         span.innerText=apartments[i].name;
         let pPastMonth=document.createElement('p');
         pPastMonth.innerText=apartments[i].profitFromPastMonth;
-        let pFutureMonth = document.createElement('p');
-        pFutureMonth.innerText=apartments[i].profitForFutureMonth;
-        span.appendChild(pPastMonth);
-        span.appendChild(pFutureMonth);
-        row.push(span);
 
+        span.appendChild(pPastMonth);
+
+        row.push(span);
     }
+    for (let i = 0; i < apartments.futureReservations.length; i++) {
+        let span2 = document.createElement('span');
+        span2.innerText=apartments[i].name;
+        let pFutureMonth=document.createElement('p');
+        pFutureMonth.innerText=apartments[i].profitFromPastMonth;
+
+        span.appendChild(pFutureMonth);
+        row.push(span2);
+    }
+
     statisticElement.appendChild(row);
 }
 

@@ -49,23 +49,23 @@ class TownControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
+    @MockBean
     private PasswordEncoder passwordEncoder;
-    @Autowired
+    @MockBean
     private RoleRepository mockRoleRepository;
 
-    @Autowired
+    @MockBean
     private UserServiceImpl userService;
-    @Autowired
+    @MockBean
     private TownServiceImpl mockTownService;
-    @Autowired
+    @MockBean
     private UserRepository mockUserRepository;
-    @Autowired
+    @MockBean
     private PictureServiceImpl pictureService;
-    @Autowired
+    @MockBean
     private PictureRepository pictureRepository;
 
-    @Autowired
+    @MockBean
     private TownRepository  mockTownRepository;
     @MockBean
     private CloudinaryService cloudinaryService;
@@ -97,10 +97,11 @@ class TownControllerTest {
         mockUserRepository.save(testUser);
 
         testTown = new Town();
-        testTown.setId(1L);
+
         testTown.setName("Sofia");
         testTown.setDescription("Sofia is the capital of Bulgaria");
         mockTownRepository.save(testTown);
+        testTown.setId(1L);
     }
 
     @AfterEach
@@ -127,24 +128,23 @@ class TownControllerTest {
                 andExpect(view().name("allTowns"));
     }
 
-    /*@Test
-
+  /* @Test
     @WithMockUser(authorities="ROLE_ADMIN")
     void testUpdate() throws Exception {
         mockMvc.perform(get("/towns/{id}/update", 1).with(csrf())).
                 andExpect(status().isOk()).
                 andExpect(view().name("town-update"));
     }
-*/
 
-   /* @Test
-    @WithMockUser()
+
+    @Test
+    @WithMockUser(authorities="ROLE_ADMIN")
     void testDetails() throws Exception {
         mockMvc.perform(get("/towns/"+1+"/details").with(csrf())).
                 andExpect(status().isOk()).
                 andExpect(view().name("town-details"));
-    }
-*/
+    }*/
+
     @Test
     @WithMockUser(authorities="ROLE_ADMIN")
     void testAddTownCorrect() throws Exception {
@@ -159,12 +159,6 @@ class TownControllerTest {
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:add"));
-
-       /* Optional<Town> town = mockTownRepository.findByName("Varna");
-        assertTrue(town.isPresent());
-        assertTrue(town.get().getId() > 0);
-
-        mockTownRepository.delete(town.get());*/
     }
 
     @Test
@@ -175,22 +169,6 @@ class TownControllerTest {
                         .andExpect(status().is4xxClientError());
     }
 
-   /* @Test
-    @WithMockUser(authorities="ROLE_ADMIN")
-    void testUpdateTownCorrect() throws Exception {
-        mockMvc
-                .perform(patch("/towns/"+testTown.getId()+"/update" )
-                        .param("name", "Ploviv")
-                        .param("description", "Old town of Plovdiv is very attractive")
-                        .with(csrf())
-                )
-                .andExpect(status().isOk())
-                .andExpect(view().name("/towns/all"));
-
-      /*  Optional<Town> plovdiv = mockTownRepository.findByName("Plovdiv");
-        assertTrue(plovdiv.isPresent());
-        assertTrue(mockTownRepository.findByName("Sofia").isEmpty());
-    }*/
 
    @Test
     void testEditTownNotAuthorized() throws Exception {
@@ -200,14 +178,7 @@ class TownControllerTest {
                 .andExpect(status().is4xxClientError());
 
     }
-   /*@Test
-   void test_GetTownDetails_ReturnsCorrectly() throws Exception {
-       mockMvc
-               .perform(get("/towns/" + testTown.getId()+"/details").with(csrf()))
-               .andExpect(status().isOk())
-               .andExpect(view().name("town-details"))
-               .andExpect(model().attributeExists("town"));
-   }*/
+
 
     @Test
     void test_GetTownDetailsInvalidId_Throws() throws Exception {
@@ -216,16 +187,5 @@ class TownControllerTest {
                 .andExpect(status().is3xxRedirection());
     }
 
-   /* @Test
-    @WithMockUser(authorities="ROLE_ADMIN")
-    void test_Delete_WorksCorrectly() throws Exception {
-        mockMvc
-                .perform(delete("/towns/" + 1+"/delete")
-                        .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/towns/all"));
 
-       // Town deletedTown = mockTownRepository.findById(testTown.getId()).get();
-       // assertTrue(deletedTown.getName().isEmpty());
-    }*/
 }

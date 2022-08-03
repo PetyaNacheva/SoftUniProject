@@ -100,13 +100,6 @@ class UserControllerTest {
     }
 
 
-  /* @Test
-    @WithMockUser()
-    void testProfileUpdateReturnStatusOK() throws Exception{
-        mockMvc.perform(get("/users/profile/update").with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("my-profile-update"));
-    }*/
 
     @Test
     void testPostLoginWrongCredentialsLoginError() throws Exception {
@@ -164,20 +157,6 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/"));
         assertEquals(1, mockUserRepository.count());
        }
-
-   /* @Test
-    @WithMockUser
-    void testProfilePageLoadsCorrectly() throws Exception {
-        mockMvc.perform(get("/users/profile").with(csrf())).
-                andExpect(status().isOk()).
-                andExpect(view().name("my-profile"));
-
-     /* mockMvc
-                .perform(get("/users/profile").with(csrf()).secure(true))
-                .andExpect(status().isOk()).
-                andExpect(view().name("my-profile"));
-    }*/
-
 
 
 }

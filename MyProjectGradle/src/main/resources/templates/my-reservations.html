@@ -6,17 +6,16 @@
 </head>
 <body>
 <header id="nav" th:replace="fragments/fragment::navigation">
-
 </header>
-<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50 p-0">
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50 ">
 <div class="container-fluid ">
     <div class="container text-light text-center">
         <h1 class="fs-2 py-3"><strong class="bg-blur rounded text-light px-3">Arrival Today</strong></h1>
     </div>
     <div class="row mx-xl-5 justify-content-center">
-        <div th:each="r : ${reservationArrivedToday}" th:object="${r}"class="bg-blur rounded mx-5 w-75 py-2">
+        <div th:each="r : ${reservationArrivedToday}" th:object="${r}" class="bg-blur rounded mx-5 w-75 py-2">
             <div  class="d-flex flex-row justify-content-around text-center text-white">
-                <img th:src="*{apartment.pictures.get(0).url}" class="col-1 mr-2"
+                <img th:src="*{apartment.pictures.get(0).url}" alt="picture" class="col-1 mr-2"
                      width="50px" height="50px">
                 <p th:text="*{guestName}" class="py-3 col-2">GuestName</p>
                 <p th:text="*{arrivalDate}" class="py-3 col-2">ArrivalDate</p>
@@ -24,7 +23,6 @@
                 <p th:text="*{apartment.name}" class="py-3 col-2">Apartment</p>
                 <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ApartmentDetails</a>
                 <a th:href="@{/reservations/{id}/details(id=*{id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ReservationDetails</a>
-
             </div>
         </div>
     </div>
@@ -34,9 +32,9 @@
         <h1 class="fs-2 py-3"><strong class="bg-blur rounded text-light px-3 text-sm-center">New Reservations</strong></h1>
     </div>
     <div class="row mx-xl-5 justify-content-center">
-  <div th:each="r : ${futureReservations}" th:object="${r}"class="bg-blur rounded mx-5 w-75 py-2">
+  <div th:each="r : ${futureReservations}" th:object="${r}" class="bg-blur rounded mx-5 w-75 py-2">
             <div  class=" d-flex flex-row justify-content-around text-center text-white">
-                <img th:src="*{apartment.pictures.get(0).url}" class="col-1 mr-2"
+                <img th:src="*{apartment.pictures.get(0).url}" alt="picture" class="col-1 mr-2"
                      width="50px" height="50px">
                 <p th:text="*{guestName}" class="py-3 col-2">GuestName</p>
                 <p th:text="*{arrivalDate}" class="py-3 col-2 ">ArrivalDate</p>
@@ -55,9 +53,9 @@
     <div class="row mx-xl-5 justify-content-center">
         <div th:each="r : ${oldReservations}" th:object="${r}" class="bg-blur rounded mx-5 w-75 py-2">
             <div  class="d-flex flex-row justify-content-around text-center text-white">
-                <img th:src="*{apartment.pictures.get(0).url}" class="col-1 mr-2"
+                <img th:src="*{apartment.pictures.get(0).url}" alt="picture" class="col-1 mr-2"
                      width="50px" height="50px">
-                <p th:text="*{guestName}" class="py-3 col-2">GuestName</span>
+                <p th:text="*{guestName}" class="py-3 col-2">GuestName</p>
                 <p th:text="*{arrivalDate}" class="py-3 col-2">ArrivalDate</p>
                 <p th:text="*{departureDate}" class="py-3 col-2">DepartureDate</p>
                 <p th:text="*{apartment.name}" class="py-3 col-2">Apartment</p>
@@ -69,9 +67,7 @@
     </div>
 </div>
 </div>
-
 <footer th:replace="fragments/fragment::footer">
 </footer>
-
 </body>
 </html>

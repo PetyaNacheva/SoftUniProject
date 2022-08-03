@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/fragment::head">
-
 </head>
 <body>
 <header id="nav" th:replace="fragments/fragment::navigation">
@@ -40,11 +38,8 @@
             <div class="form-group row justify-content-center">
                 <label for="picture" class="col-sm-3 col-form-label">Picture</label>
                 <div class="col-sm-9">
-                    <!--th:field ="*{picture}" th:errorclass="bg-danger"-->
                     <input type="file" class="form-control" id="picture" name="picture" th:field="*{picture}"
                            aria-describedby="passwordHelpInline" placeholder="Put picture of your apartment here">
-                    <!--           <input th:field ="*{pictures}" th:errorclass="bg-danger"  type="url" class="form-control" id="pictureBedroom"
-                                      aria-describedby="passwordHelpInline" placeholder="Put picture of your bedroom here">-->
                     <small th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"  class="bg-danger text-light rounded">
                         At least one picture must be uploaded.
                     </small>
@@ -54,17 +49,12 @@
                 <div class="col-3"></div>
                 <button type="submit" class=" col-9 btn btn bg-info bg-opacity-50 text-white w-50 my-4 ">Update Town</button>
             </div>
-
         </form>
         <hr class="bg-light">
         </div>
     </div>
 </div>
-
 <footer th:replace="fragments/fragment::footer">
-
 </footer>
-
-
 </body>
 </html>

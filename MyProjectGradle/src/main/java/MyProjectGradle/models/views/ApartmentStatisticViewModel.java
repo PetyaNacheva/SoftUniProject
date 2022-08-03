@@ -10,8 +10,8 @@ public class ApartmentStatisticViewModel {
     private String name;
     private BigDecimal profitFromPastMonth;
     private BigDecimal profitForFutureMonth;
-    private List<ReservationViewModel> comingReservations;
-    private List<ReservationViewModel> past30DaysReservations;
+    private List<ReservationStatViewModel> comingReservations;
+    private List<ReservationStatViewModel> past30DaysReservations;
 
     public ApartmentStatisticViewModel() {
     }
@@ -48,20 +48,19 @@ public class ApartmentStatisticViewModel {
         this.profitForFutureMonth = profitForFutureMonth;
     }
 
-    public List<ReservationViewModel> getComingReservations() {
+    public List<ReservationStatViewModel> getComingReservations() {
         return comingReservations;
     }
 
-    public void setComingReservations(List<ReservationViewModel> comingReservations) {
+    public void setComingReservations(List<ReservationStatViewModel> comingReservations) {
         this.comingReservations = comingReservations;
     }
 
-    public List<ReservationViewModel> getPast30DaysReservations() {
+    public List<ReservationStatViewModel> getPast30DaysReservations() {
         return past30DaysReservations;
     }
 
-    public void setPast30DaysReservations(List<ReservationViewModel> past30DaysReservations) {
+    public void setPast30DaysReservations(List<ReservationStatViewModel> past30DaysReservations) {
         this.past30DaysReservations = past30DaysReservations;
     }
-
 }

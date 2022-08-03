@@ -24,6 +24,4 @@ public class TownRestController {
         List<TownViewModel> townViewModels = townService.getTop3TownsWithMostApartments();
         return ResponseEntity.ok().body(townViewModels);
     }
-
-    // TODO: 7/7/2022 towns all to be implemented with rest controller
 }

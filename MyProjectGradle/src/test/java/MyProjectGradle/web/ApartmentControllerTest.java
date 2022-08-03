@@ -5,6 +5,7 @@ import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
 import MyProjectGradle.repository.*;
 import MyProjectGradle.service.ApartmentService;
+import MyProjectGradle.service.CloudinaryService;
 import MyProjectGradle.service.TypeService;
 import MyProjectGradle.service.impl.ApartmentServiceImpl;
 import MyProjectGradle.service.impl.TownServiceImpl;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -44,17 +46,17 @@ class ApartmentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
+    @MockBean
     private RoleRepository mockRoleRepository;
-    @Autowired
+    @MockBean
     private UserRepository mockUserRepository;
-    @Autowired
+    @MockBean
     private ApartmentRepository apartmentRepository;
-    @Autowired
+    @MockBean
     private TownRepository townRepository;
-    @Autowired
+    @MockBean
     private TypeRepository typeRepository;
-    @Autowired
+    @MockBean
     private PictureRepository pictureRepository;
     @MockBean
     private ApartmentServiceImpl apartmentService;
@@ -64,6 +66,8 @@ class ApartmentControllerTest {
     private TypeServiceImpl typeService;
     @MockBean
     private UserServiceImpl userService;
+    @MockBean
+    private CloudinaryService cloudinaryService;
 
     @BeforeEach
     void setUp() {
@@ -127,9 +131,9 @@ class ApartmentControllerTest {
     }
 
 
-   /*@Test
-    @WithMockUser(authorities="ROLE_USER")
-    void testAddApartment() throws Exception {
+   @Test
+    @WithMockUser()
+    void testAddApartmentGet() throws Exception {
         mockMvc.perform(get("/apartments/add").with(csrf())).
                 andExpect(status().isOk()).
                 andExpect(view().name("add-apartment"));
@@ -142,16 +146,35 @@ class ApartmentControllerTest {
 
 
     @Test
-    @WithMockUser(authorities="ROLE_USER")
-    void testGetMyApartments() throws Exception {
-        mockMvc.perform(get("/apartments/getMy").with(csrf())).
-                andExpect(status().isOk()).
-                andExpect(view().name("my-apartments"));
-    }
-
-    @Test
     void testGetMyApartmentsNotAuthorized() throws Exception {
         mockMvc.perform(post("/apartments/getMy"))
                 .andExpect(status().is4xxClientError());
-    }*/
+    }
+
+    @Test
+    @WithMockUser
+    void testApartmentUpdate() throws Exception {
+        mockMvc.perform(get("/apartments/"+100+"/update").with(csrf()))
+               .andExpect(view().name("errors/error404"));
+    }
+
+    @Test
+    @WithMockUser
+    void testAddApartmentPost() throws Exception {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
+                "text/plain", "Spring Framework".getBytes());
+
+        mockMvc
+                .perform(post("/apartments/add")
+                        .param("name", "MyApartment")
+                        .param("address", "any text")
+                        .param("price", "50")
+                        .param("town", testTown.getName())
+                        .param("type", studio.getType().name())
+                        .param("picture", multipartFile.getName())
+                        .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:add"));
+    }
 }

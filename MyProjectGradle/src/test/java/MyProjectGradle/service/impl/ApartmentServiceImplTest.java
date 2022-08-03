@@ -367,7 +367,13 @@ class ApartmentServiceImplTest {
     public void testIsAvailable(){
         when(reservationService.findAllByApartmentsByName(apartment1.getName())).thenReturn(List.of(testReservation));
 
-        assertEquals("available", apartmentService.isAvailable(apartment1.getName(), LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)));
+        assertEquals("Next available days are after 2022-10-05", apartmentService.isAvailable(apartment1.getName(), LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)));
+    }
+    @Test
+    public void testFindNextAvailableDays(){
+        when(reservationService.findAllByApartmentsByName(apartment1.getName())).thenReturn(List.of(testReservation));
+
+        assertEquals("Next available days are after 2022-10-05", apartmentService.isAvailable(apartment1.getName(),testReservation.getArrivalDate(), testReservation.getDepartureDate()));
     }
 
     @Test

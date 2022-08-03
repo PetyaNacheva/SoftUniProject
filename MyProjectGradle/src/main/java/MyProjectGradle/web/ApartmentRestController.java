@@ -2,10 +2,7 @@ package MyProjectGradle.web;
 
 import MyProjectGradle.models.entities.Apartment;
 import MyProjectGradle.models.entities.Reservation;
-import MyProjectGradle.models.views.ApartmentSearchViewModel;
-import MyProjectGradle.models.views.ApartmentStatisticViewModel;
-import MyProjectGradle.models.views.ApartmentViewModel;
-import MyProjectGradle.models.views.ReservationViewModel;
+import MyProjectGradle.models.views.*;
 import MyProjectGradle.service.ApartmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -54,15 +51,15 @@ public class ApartmentRestController {
         Apartment apartment = apartmentService.findApartmentById(id);
         BigDecimal futureProfit=BigDecimal.valueOf(0);
         BigDecimal pastProfit = BigDecimal.valueOf(0);
-        List<ReservationViewModel> pastReservations= new ArrayList<>();
-        List<ReservationViewModel> futureReservations= new ArrayList<>();
+        List<ReservationStatViewModel> pastReservations= new ArrayList<>();
+        List<ReservationStatViewModel> futureReservations= new ArrayList<>();
         for (Reservation reservation : apartment.getReservations()) {
             if (reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(1))&&reservation.getArrivalDate().isBefore(LocalDate.now().plusDays(31))) {
-                futureReservations.add(modelMapper.map(reservation, ReservationViewModel.class));
+                futureReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
                 futureProfit= futureProfit.add(reservation.getPrice());
             }else if(reservation.getArrivalDate().isBefore(LocalDate.now()) && reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(31))){
                 pastProfit.add(reservation.getPrice());
-                pastReservations.add(modelMapper.map(reservation, ReservationViewModel.class));
+                pastReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
             }
         }
         ApartmentStatisticViewModel apartmentStatisticViewModel = modelMapper.map(apartment, ApartmentStatisticViewModel.class);
@@ -76,12 +73,4 @@ public class ApartmentRestController {
         return ResponseEntity.ok().body(apartmentStatisticViewModel);
     }
 
- /*@GetMapping("/availableApartmentsByTown/{town}/{arrivalDate}/{departureDate}")
-    public ResponseEntity<List<ApartmentViewModel>> getAllAvailable(@PathVariable String town, @PathVariable LocalDate arrivalDate, @PathVariable LocalDate departureDate){
-        List<ApartmentViewModel> apartmentViewModels = apartmentService.findAllAvailableApartmentsInPeriod(town, arrivalDate, departureDate);
-        return ResponseEntity.ok().body(apartmentViewModels);
-    }*/
-
-
-    // TODO: 7/3/2022 i could implement the logic for getMyApertments with rest
 }

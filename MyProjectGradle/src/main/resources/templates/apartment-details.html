@@ -9,58 +9,61 @@
 
 </header>
 
-<div class="container-fluid">
-    <h2 class="text-center text-white mt-5">Details</h2>
-    <div class="offers row mx-auto d-flex flex-row justify-content-center">
-        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+<div class="row text-center pt-2">
+    <div class="col-4 container my-2">
+    <h2 class="fs-3 text-center my-0 bg-secondary bg-opacity-50 rounded  text-light py-2">Details</h2>
+    </div>
+    <div class="offers row mx-auto d-flex flex-row justify-content-center py-2">
+        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0 bg-primary bg-opacity-25" >
 
-            <div class="card-body pb-1">
-                <h5 class="card-title" th:text="|Details apartment *{name}|">
+            <div class="pt-5">
+                <h5 class="card-title py-2 fs-5 text-white" th:text="|Details apartment *{name}|">
                     Apartment description</h5>
             </div>
-            <ul class="offer-details list-group list-group-flush">
-                <li class="list-group-item">
-                    <div class="card-text"><span th:text="|Type: *{type.type}|">Type</span></div>
+
+            <div class="offer-details text-white">
+                <div class="list-group-item">
+                    <div class="card-text py-1"><span th:text="|Type: *{type.type}|">Type</span></div>
                     <div class="card-text"><span th:text="|Capacity: *{capacity}|">Capacity</span></div>
-                    <div class="card-text"><span th:text="|Price: *{price}|">Price</span></div>
+                    <div class="card-text py-1 "><span class="font-weight-bold" th:text="|Price: *{price}|">Price</span></div>
                     <div class="card-text"><span th:text="|Address: *{address}|">Address</span></div>
-                </li>
-            </ul>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="row">
                    <th:block th:if="*{canUpdate}">
-                    <a class="btn btn-link" th:href="@{/apartments/{id}/update(id=*{id})}">Update</a>
-                       <a class="btn btn-link" id="statisticsBtn" th:href="@{/apartments/api/statistic/{id}(id=*{id})}">Statistic</a>
-                    </th:block>
+                    <a class="col-4 mx-auto btn bg-warning text-primary" th:href="@{/apartments/{id}/update(id=*{id})}">Update</a>
+                       <a class="col-4 mx-auto btn bg-warning text-primary" id="statisticsBtn" th:href="@{/apartments/api/statistic/{id}(id=*{id})}">Statistic</a>
+                       <div id="apartmentStatistic">
+                       </div>
+                   </th:block>
 
                     <th:block th:if="${canDelete}">
-                    <form class="btn btn-link" th:action="@{/apartments/{id}/delete(id=*{id})}" th:method="delete">
+                    <form class=" col-6 btn btn-link" th:action="@{/apartments/{id}/delete(id=*{id})}" th:method="delete">
                         <input type="submit" class="btn btn-link" value="Delete"/>
                     </form>
                     </th:block>
                     <th:block th:unless="${canDelete}">
-                        <h5> The apartment has active reservations and could not be deleted</h5>
+                        <h5 class="text-danger pt-3"> The apartment has active reservations and could not be deleted</h5>
                     </th:block>
                 </div>
             </div>
         </div>
-
-        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
-
-            <span th:each="picture : ${apartment.getPictures()}" th:object="${picture}">
-          <img th:src="*{url}" th:value="*{publicId}" class="card-img-top"  alt="Apartment image">
+        <div th:object="${apartment}" class="offer border border-0 card col-sm-2 col-md-3 bg-primary bg-opacity-25 col-lg-4 m-1 p-0">
+            <span class="col-10 mx-auto" th:each="picture : ${apartment.getPictures()}" th:object="${picture}">
+          <img th:src="*{url}" th:value="*{publicId}" class="card-img-top mt-2 rounded"  alt="Apartment image">
                  <th:block th:if="${apartment.canUpdate}">
                   <th:block th:if="${apartment.getPictures().size()>1}">
-               <a class="btn btn-link" th:href="@{/pictures/delete/{id}(id=*{publicId})}">Delete Picture</a>
+               <a class="btn bg-warning text-primary my-2" th:href="@{/pictures/delete/{id}(id=*{publicId})}">Delete Picture</a>
                  </th:block>
-                     <th:block th:if="${apartment.getPictures().size()==1}">You can not delete the picture</th:block>
-            <a class="btn btn-link" th:href="@{/pictures/add/{id}(id=${apartment.getId()})}">Add Picture</a>
+                     <th:block th:if="${apartment.getPictures().size()==1}"><span class="px-2 text-white">You can not delete the picture</span></th:block>
+            <a class="btn bg-warning text-primary my-2" th:href="@{/pictures/add/{id}(id=${apartment.getId()})}">Add Picture</a>
                  </th:block>
             </span>
 
         </div>
     </div>
-
 </div>
 <div class="container-fluid">
     <form th:if="${apartment.canReserve}" method="POST" th:action="@{/apartments/reserve/{id}(id=${id})}"
@@ -112,15 +115,13 @@
                 </p>
             </div>
             </div>
-        <button type="submit" value="Reserve" class="btn btn-warning">Reserve</button>
+        <button type="submit" value="Reserve" class="btn bg-warning text-primary">Reserve</button>
         <p th:if="${isReserved}" class="errors alert alert-danger">
             The apartment is not available in this period.
         <p th:if="${isReserved}" th:text="${nextAvailableDates}" class="errors alert alert-danger"></p>
         </p>
     </form>
-
-    <div id="apartmentStatistic">
-    </div>
+</div>
 </div>
 
 <footer th:replace="fragments/fragment::footer">

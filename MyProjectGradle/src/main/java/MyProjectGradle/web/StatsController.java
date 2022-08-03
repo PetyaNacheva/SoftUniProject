@@ -30,7 +30,6 @@ public class StatsController {
         modelAndView.addObject("stats", statService.getStats());
         modelAndView.addObject("reservations", reservationService.findAllReservationsWithTotalProfit());
         modelAndView.addObject("apartments", apartmentService.findAllApartments());
-        modelAndView.addObject("logs", logService.findAll());
         modelAndView.setViewName("stats");
         return modelAndView;
     }

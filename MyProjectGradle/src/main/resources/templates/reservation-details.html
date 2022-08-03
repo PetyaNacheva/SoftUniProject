@@ -8,36 +8,38 @@
 <header id="nav" th:replace="fragments/fragment::navigation">
 
 </header>
-
-<div class="container-fluid">
-    <h2 class="text-center text-white mt-5">Details</h2>
+<div class="container-fluid min-vh-100 bg-secondary bg-opacity-50">
+    <div class="container py-4">
+        <h1 class="fs-3 text-center my-0"><strong class="bg-blur rounded px-3 text-light py-2">Reservation details</strong></h1>
+    </div>
     <div class="offers row mx-auto d-flex flex-row justify-content-center">
-        <div th:object="${reservation}" class="offer card" >
-
-            <div class="card-body">
-                <h5 class="card-title" th:text="|Details reservation of *{username} to *{apartment.name}|">
+        <div th:object="${reservation}" class="offer card col-6 bg-success bg-opacity-50">
+            <div class="card-body mx-5 row-flex d-flex text-center">
+                <h5 class="card-title fs-5 text-center px-4 my-auto text-white" th:text="|Details reservation of *{username} to *{apartment.name}|">
                     Offer year Brand name Model name</h5>
-                <img th:src="*{pictureUrl}" height="50 px" width="50 px">
+                <div class="col-3 rounded">
+                <img th:src="*{pictureUrl}" class="rounded" height="80 px" width="80 px">
+                </div>
             </div>
-            <ul class="offer-details list-group list-group-flush">
-                <li class="list-group-item">
+            <div class="offer-details">
+                <div class="list-group-item">
                     <div class="card-text"><span th:text="|Guest: *{guestName}|">Type</span></div>
-                    <div class="card-text"><span th:text="|ArrivalDate: *{arrivalDate}|">ArrivalDate</span></div>
-                    <div class="card-text"><span th:text="|DepartureDate: *{departureDate}|">DepartureDate</span></div>
-                    <div class="card-text"><span th:text="|Number of guests: *{numberOfGuests}|">Number of guests</span></div>
-                    <div class="card-text"><span th:text="|ReservedOn: *{reservedOn}|">ReservedOn</span></div>
+                    <div class="card-text my-1"><span th:text="|ArrivalDate: *{arrivalDate}|">ArrivalDate</span></div>
+                    <div class="card-text my-1"><span th:text="|DepartureDate: *{departureDate}|">DepartureDate</span></div>
+                    <div class="card-text my-1"><span th:text="|Number of guests: *{numberOfGuests}|">Number of guests</span></div>
+                    <div class="card-text my-1"><span th:text="|ReservedOn: *{reservedOn}|">ReservedOn</span></div>
                     <div class="card-text"><span th:text="|Price: *{price}|">Price</span></div>
-                </li>
-            </ul>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="row">
-                    <th:block th:if="*{canUpdate}">
+                    <!--<th:block th:if="*{canUpdate}">
                         <a class="btn btn-link" th:href="@{/reservations/{id}/update(id=*{id})}">Update</a>
-                    </th:block>
+                    </th:block>-->
 
                     <th:block th:if="*{canDelete}">
-                        <form class="btn btn-link" th:action="@{/reservations/{id}/delete(id=*{id})}" th:method="delete">
-                            <input type="submit" class="btn btn-link" value="Delete"/>
+                        <form class="btn" th:action="@{/reservations/{id}/delete(id=*{id})}" th:method="delete">
+                            <input type="submit" class="btn bg-warning text-primary bg-opacity-75 text-decoration-none" value="Delete"/>
                         </form>
                     </th:block>
                     <th:block th:unless="*{canDelete}">

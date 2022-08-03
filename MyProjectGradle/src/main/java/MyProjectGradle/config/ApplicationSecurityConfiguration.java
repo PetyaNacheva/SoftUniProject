@@ -29,7 +29,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http.authorizeRequests().
                 //permission configuration
                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
-                antMatchers("/users/login", "/users/register","/").permitAll().
+                antMatchers("/users/login", "/users/register","/","/towns/api/top3").permitAll().
                 //anyMatchers("/search/freeApartments")
                 antMatchers("/statistics", "/towns/add", "/towns/all").hasRole(RolesEnum.ADMIN.name()).
                 anyRequest().authenticated().
