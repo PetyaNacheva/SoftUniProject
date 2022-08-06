@@ -21,6 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,7 +58,7 @@ class ApartmentControllerTest {
     private TownRepository townRepository;
     @MockBean
     private TypeRepository typeRepository;
-    @MockBean
+    @Autowired
     private PictureRepository pictureRepository;
     @MockBean
     private ApartmentServiceImpl apartmentService;
@@ -68,6 +70,8 @@ class ApartmentControllerTest {
     private UserServiceImpl userService;
     @MockBean
     private CloudinaryService cloudinaryService;
+    @MockBean
+    private MockMultipartFile multipartFile;
 
     @BeforeEach
     void setUp() {
@@ -144,6 +148,33 @@ class ApartmentControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    @WithMockUser(authorities="ROLE_ADMIN")
+    void testAddApartmentWithCorrectParams()throws Exception {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
+                "text/plain", "Spring Framework".getBytes());
+
+        MockMultipartHttpServletRequestBuilder multipartRequest =
+                MockMvcRequestBuilders.multipart("/apartments/add");
+        multipartRequest.param("name", "Test")
+                .param("address", "TestAddress")
+                .param("price", "50")
+                .param("town", testTown.getName())
+
+                .param("type",studio.getType().name());
+        multipartRequest.secure(true).with(csrf());
+
+        mockMvc
+                .perform(multipartRequest.file(multipartFile))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    public void getMyApartments() throws Exception {
+        mockMvc.perform(get("/apartments/getMy")).
+                andExpect(status().isOk());
+    }
 
     @Test
     void testGetMyApartmentsNotAuthorized() throws Exception {
@@ -159,22 +190,22 @@ class ApartmentControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void testAddApartmentPost() throws Exception {
+    @WithMockUser(authorities="ROLE_ADMIN")
+    void testAddApartmentInvalidParamsPost() throws Exception {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
                 "text/plain", "Spring Framework".getBytes());
 
         mockMvc
                 .perform(post("/apartments/add")
-                        .param("name", "MyApartment")
-                        .param("address", "any text")
-                        .param("price", "50")
+                        .param("name","a")
+                        .param("address", "a")
+                        .param("price", "-50")
                         .param("town", testTown.getName())
                         .param("type", studio.getType().name())
-                        .param("picture", multipartFile.getName())
+                        .secure(true)
                         .with(csrf())
                 )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:add"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("errors/error404"));
     }
 }

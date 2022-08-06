@@ -1,8 +1,11 @@
 package MyProjectGradle.web;
 
+import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.models.entities.Role;
 import MyProjectGradle.models.entities.UserEntity;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +36,7 @@ public class HomeControllerTest {
     private UserRepository userRepository;
 
 
-   /* @BeforeEach
+   @BeforeEach
     void setup(){
         testUser = new UserEntity();
         userRole = new Role();
@@ -49,7 +54,7 @@ public class HomeControllerTest {
     @AfterEach
     void tearDown(){
         userRepository.deleteAll();
-    }*/
+    }
 
     @Test
     @WithMockUser(username = "admin@admin.bg")

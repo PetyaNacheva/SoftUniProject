@@ -196,14 +196,14 @@ class TownServiceImplTest {
   /* @Test
     public void testSaveTown() throws IOException {
         when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
+       // when(mockTownRepository.save(townTest)).thenReturn(Optional.of(townTest));
         townServiceModel = new TownServiceModel();
         townServiceModel.setPicture(mockMultipartFile);
         townServiceModel.setName("NewTown");
         townServiceModel.setDescription("New best Town");
         townServiceModel.setId(2L);
-       String username = mockUserRepository.findByUsername(testUser.getUsername()).get().getUsername();
 
-       assertTrue(townService.saveTown(townServiceModel, username));
+       assertTrue(townService.saveTown(townServiceModel, testUser.getUsername()));
 
     }*/
 

@@ -5,10 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 
@@ -28,7 +25,7 @@ public class ApartmentAddBindingModel {
     @NotBlank(message = "apartment address is required")
     @Size(min = 3, max =50, message ="addres must be at least 5 chars" )
     private String address;
-    @NotNull(message = "apartment picture is required")
+    @NotEmpty(message = "apartment picture is required")
     private MultipartFile picture;
 
 
