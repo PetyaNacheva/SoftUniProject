@@ -7,7 +7,7 @@ There has admin and user, as user if own appartment will be automaticly set as h
 The admin would have access to all operations of adding, deleting or modifiying any apartments from the users. 
 Admin is the first register user in the app and also will be responsible for adding, deleting or updating of all information for the towns that are populated in the database. Also the admin will have access to statistic panel with information for the wuantity of the apartments or reservations.<span>
 
-<h2>Funsctionality<h2>
+<h4>Funsctionality<h4>
   <ul>
 <li> public part (accessible without authentication) - the non-authenticated users can see:
   <ol type="1">
