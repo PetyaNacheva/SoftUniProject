@@ -24,6 +24,8 @@ Admin is the first register user in the app and also will be responsible for add
   <li> Home page - search section - at the bottom of the home page is shown the search section which will allow user to find the appropriate apatment in the desire town.</li>
   <li>Town page - the user could find list of all towns and with view btn to subscribe all datailed information for the town as picture.</li>
   <li>Make reservation tag- redirect the user to the search section on the home page.</li>
+  <li>Apartment details - from searc section the user could view the apartment and could make a reservation for this apartment if it is available for the period.
+   If the apartment is not available for the current period the system will show message to the user for next available dates for this apartment.</li>
   <li>My reservation tag - on this section the user could explore all own reservations:</li>
       <li> Arrival today - on this section will be shown the reservation that is with arival day on the same day</li>
       <li> New reservations - all of the reservations that are with arrival day in the future</li>
