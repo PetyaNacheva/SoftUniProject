@@ -5,6 +5,7 @@ import MyProjectGradle.models.entities.Picture;
 import MyProjectGradle.models.entities.UserEntity;
 import MyProjectGradle.models.service.ApartmentServiceModel;
 import MyProjectGradle.models.views.ApartmentDetailsViewModel;
+import MyProjectGradle.models.views.ApartmentStatisticViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
 
 import javax.servlet.http.HttpSession;
@@ -47,4 +48,6 @@ public interface ApartmentService {
     String isAvailable(String name, LocalDate arrivalDate, LocalDate departureDate);
 
     String findAllApartments();
+
+    ApartmentStatisticViewModel getStatistic(Long id);
 }

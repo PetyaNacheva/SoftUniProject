@@ -15,7 +15,7 @@
     <h2 class="fs-3 text-center my-0 bg-secondary bg-opacity-50 rounded  text-light py-2">Details</h2>
     </div>
     <div class="offers row mx-auto d-flex flex-row justify-content-center py-2">
-        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0 bg-primary bg-opacity-25" >
+        <div th:object="${apartment}" class="offer card col-sm-2 col-md-3  col-lg-5 m-1 p-0 bg-primary bg-opacity-25" >
 
             <div class="pt-5">
                 <h5 class="card-title py-2 fs-5 text-white" th:text="|Details apartment *{name}|">
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div th:object="${apartment}" class="offer border border-0 card col-sm-2 col-md-3 bg-primary bg-opacity-25 col-lg-4 m-1 p-0">
+        <div th:object="${apartment}" class="offer border border-0 card col-sm-2 col-md-3 bg-primary bg-opacity-25 col-lg-5 m-1 p-0">
             <span class="col-10 mx-auto" th:each="picture : ${apartment.getPictures()}" th:object="${picture}">
           <img th:src="*{url}" th:value="*{publicId}" class="card-img-top mt-2 rounded"  alt="Apartment image">
                  <th:block th:if="${apartment.canUpdate}">

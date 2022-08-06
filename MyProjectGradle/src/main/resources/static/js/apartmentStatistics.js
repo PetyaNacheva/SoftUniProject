@@ -57,21 +57,138 @@ const displayApartments = (apartments) => {
     pProfitLabelFuture.innerText="Expected profit from reservations in next 30 days";
     pProfitLabelFuture.className="text-white";
    // console.log(pProfitFuture);
-    let fututeReservations = document.createElement('p');
-    fututeReservations.innerText=apartments[0].comingReservations.length;
+    let tableElement = document.createElement('table');
+    let h4=document.createElement('h4');
+    let fReservation = document.createElement('p');
 
-    console.log(fututeReservations);
-    let pastReservations = document.createElement('p');
-    pastReservations.innerText=apartments[0].past30DaysReservations.length;
-    console.log(fututeReservations);
+   if(apartments[0].comingReservations.length>0){
+       h4.className="text-white text-decoration-underline";
+       h4.innerText="Future reservations are:"+apartments[0].comingReservations.length;
+       tableElement.className="table text-white table-bordered border-white";
+       let thead=document.createElement('thead');
+       let tr= document.createElement('tr');
+       let th1=document.createElement('th');
+       th1.scope="col";
+       th1.innerText="№"
+       let th2=document.createElement('th');
+       th2.scope="col";
+       th2.innerText="Guest Name"
+       let th3=document.createElement('th');
+       th3.scope="col";
+       th3.innerText="Arrival date"
+       let th4=document.createElement('th');
+       th4.scope="col";
+       th4.innerText="Departure date"
+       let th5=document.createElement('th');
+       th5.scope="col";
+       th5.innerText="Price";
+       tr.appendChild(th1);
+       tr.appendChild(th2);
+       tr.appendChild(th3);
+       tr.appendChild(th4);
+       tr.appendChild(th5);
+       thead.appendChild(tr);
+       tableElement.appendChild(thead);
+       let tbody=document.createElement('tbody');
+
+       for (let i = 0; i < apartments[0].comingReservations.length; i++) {
+
+           let bodytr = document.createElement('tr');
+           let bodyTh = document.createElement('th');
+           bodyTh.innerText=i+1;
+           let tdGuestName =document.createElement('td');
+           tdGuestName.innerText=apartments[0].comingReservations[i].guestName;
+           let tdArrival = document.createElement('td');
+           tdArrival.innerText = apartments[0].comingReservations[i].arrivalDate;
+           let tdDeparture = document.createElement('td');
+           tdDeparture.innerText = apartments[0].comingReservations[i].departureDate;
+           let tdPrice = document.createElement('td');
+           tdPrice.innerText=apartments[0].comingReservations[i].price;
+           bodytr.appendChild(bodyTh);
+           bodytr.appendChild(tdGuestName);
+           bodytr.appendChild(tdArrival);
+           bodytr.appendChild(tdDeparture);
+           bodytr.appendChild(tdPrice);
+           tbody.appendChild(bodytr);
+       }
+       tableElement.appendChild(tbody);
+    }else{
+        fReservation.innerText="There has not future reservations for this apartment"
+        fReservation.className="text-white";
+    }
+
+    let tableElementPast = document.createElement('table');
+    let h4Past=document.createElement('h4');
+    let pReservations = document.createElement('p');
+    if(apartments[0].past30DaysReservations.length>0){
+        h4Past.className="text-white text-decoration-underline";
+        h4Past.innerText="Future reservations are:"+apartments[0].past30DaysReservations.length;
+        tableElementPast.className="table text-white table-bordered border-white";
+        let theadPast=document.createElement('thead');
+        let trPast= document.createElement('tr');
+        let th1Past=document.createElement('th');
+        th1Past.scope="col";
+        th1Past.innerText="№"
+        let th2Past=document.createElement('th');
+        th2Past.scope="col";
+        th2Past.innerText="Guest Name"
+        let th3Past=document.createElement('th');
+        th3Past.scope="col";
+        th3Past.innerText="Arrival date"
+        let th4Past=document.createElement('th');
+        th4Past.scope="col";
+        th4Past.innerText="Departure date"
+        let th5Past=document.createElement('th');
+        th5Past.scope="col";
+        th5Past.innerText="Price";
+        trPast.appendChild(th1Past);
+        trPast.appendChild(th2Past);
+        trPast.appendChild(th3Past);
+        trPast.appendChild(th4Past);
+        trPast.appendChild(th5Past);
+        theadPast.appendChild(trPast);
+        tableElementPast.appendChild(theadPast);
+        let tbodyPast=document.createElement('tbody');
+
+        for (let i = 0; i < apartments[0].past30DaysReservations.length; i++) {
+
+            let bodytrPast = document.createElement('tr');
+            let bodyThPast = document.createElement('th');
+            bodyThPast.innerText=i+1;
+            let tdGuestNamePast =document.createElement('td');
+            tdGuestNamePast.innerText=apartments[0].past30DaysReservations[i].guestName;
+            let tdArrivalPast = document.createElement('td');
+            tdArrivalPast.innerText = apartments[0].past30DaysReservations[i].arrivalDate;
+            let tdDeparturePast = document.createElement('td');
+            tdDeparturePast.innerText = apartments[0].past30DaysReservations[i].departureDate;
+            let tdPricePast = document.createElement('td');
+            tdPricePast.innerText=apartments[0].past30DaysReservations[i].price;
+            bodytrPast.appendChild(bodyThPast);
+            bodytrPast.appendChild(tdGuestNamePast);
+            bodytrPast.appendChild(tdArrivalPast);
+            bodytrPast.appendChild(tdDeparturePast);
+            bodytrPast.appendChild(tdPricePast);
+            tbodyPast.appendChild(bodytrPast);
+        }
+        tableElementPast.appendChild(tbodyPast);
+    }else {
+        pReservations.innerText = "There has no past reservations for this apartment"
+        pReservations.className="text-white";
+    }
+
 
     row.push(h5Tag);
     divContainer.appendChild(pProfitLabel)
     divContainer.appendChild(pProfit);
     divContainer.appendChild(pProfitLabelFuture);
     divContainer.appendChild(pProfitFuture);
-   // divContainer.appendChild(fututeReservations);
-    //divContainer.appendChild(pastReservations);
+    divContainer.appendChild(h4);
+    divContainer.appendChild(fReservation)
+    divContainer.appendChild(tableElement);
+    divContainer.appendChild(h4Past);
+    divContainer.appendChild(pReservations);
+    divContainer.appendChild(tableElementPast);
+
 
 
     statisticElement.className="container my-2";

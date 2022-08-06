@@ -55,28 +55,8 @@ public class ApartmentRestController {
         Apartment apartment = apartmentService.findApartmentById(id);
         UserEntity user = userService.findByUsername(principal.getUserIdentifier());
         if(user.getUsername().equals(apartment.getOwner().getUsername())|| userService.isAdmin(principal.getUserIdentifier())) {
-            BigDecimal futureProfit = BigDecimal.valueOf(0);
-            BigDecimal pastProfit = BigDecimal.valueOf(0);
-            List<ReservationStatViewModel> pastReservations = new ArrayList<>();
-            List<ReservationStatViewModel> futureReservations = new ArrayList<>();
-            for (Reservation reservation : apartment.getReservations()) {
-                if (reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(1)) && reservation.getArrivalDate().isBefore(LocalDate.now().plusDays(31))) {
-                    futureReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
-                    futureProfit = futureProfit.add(reservation.getPrice());
-                } else if (reservation.getArrivalDate().isBefore(LocalDate.now()) && reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(31))) {
-                    pastProfit.add(reservation.getPrice());
-                    pastReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
-                }
-            }
-            ApartmentStatisticViewModel apartmentStatisticViewModel = modelMapper.map(apartment, ApartmentStatisticViewModel.class);
-            apartmentStatisticViewModel.setName(apartment.getName());
-
-            apartmentStatisticViewModel.setComingReservations(futureReservations);
-            apartmentStatisticViewModel.setPast30DaysReservations(pastReservations);
-            apartmentStatisticViewModel.setProfitForFutureMonth(futureProfit);
-            apartmentStatisticViewModel.setProfitFromPastMonth(pastProfit);
-
-            return ResponseEntity.ok().body(apartmentStatisticViewModel);
+           ApartmentStatisticViewModel apartmentStatistic = apartmentService.getStatistic(id);
+            return ResponseEntity.ok().body(apartmentStatistic);
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

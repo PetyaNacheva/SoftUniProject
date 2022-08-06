@@ -3,7 +3,9 @@ package MyProjectGradle.service.impl;
 import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.service.ApartmentServiceModel;
 import MyProjectGradle.models.views.ApartmentDetailsViewModel;
+import MyProjectGradle.models.views.ApartmentStatisticViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
+import MyProjectGradle.models.views.ReservationStatViewModel;
 import MyProjectGradle.repository.ApartmentRepository;
 import MyProjectGradle.service.*;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import java.time.temporal.ChronoUnit;
@@ -251,5 +254,31 @@ public class ApartmentServiceImpl implements ApartmentService {
     public String findAllApartments() {
         int count = apartmentRepository.findAll().size();
         return String.format("Total count of all apartments: %d", count);
+    }
+
+    @Override
+    public ApartmentStatisticViewModel getStatistic(Long id) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Apartment"));
+        BigDecimal futureProfit = BigDecimal.valueOf(0);
+        BigDecimal pastProfit = BigDecimal.valueOf(0);
+        List<ReservationStatViewModel> pastReservations = new ArrayList<>();
+        List<ReservationStatViewModel> futureReservations = new ArrayList<>();
+        for (Reservation reservation : apartment.getReservations()) {
+            if (reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(1)) && reservation.getArrivalDate().isBefore(LocalDate.now().plusDays(31))) {
+                futureReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
+                futureProfit = futureProfit.add(reservation.getPrice());
+            } else if (reservation.getArrivalDate().isBefore(LocalDate.now()) && reservation.getArrivalDate().isAfter(LocalDate.now().minusDays(31))) {
+                pastProfit.add(reservation.getPrice());
+                pastReservations.add(modelMapper.map(reservation, ReservationStatViewModel.class));
+            }
+        }
+        ApartmentStatisticViewModel apartmentStatisticViewModel = modelMapper.map(apartment, ApartmentStatisticViewModel.class);
+        apartmentStatisticViewModel.setName(apartment.getName());
+
+        apartmentStatisticViewModel.setComingReservations(futureReservations);
+        apartmentStatisticViewModel.setPast30DaysReservations(pastReservations);
+        apartmentStatisticViewModel.setProfitForFutureMonth(futureProfit);
+        apartmentStatisticViewModel.setProfitFromPastMonth(pastProfit);
+        return apartmentStatisticViewModel;
     }
 }
