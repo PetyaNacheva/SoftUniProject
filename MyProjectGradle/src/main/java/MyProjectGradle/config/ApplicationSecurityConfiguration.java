@@ -29,9 +29,9 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http.authorizeRequests().
                 //permission configuration
                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
-                antMatchers("/users/login", "/users/register","/","/towns/api/top3").permitAll().
+                antMatchers("/users/login","/info", "/users/register","/","/towns/api/top3").permitAll().
                 //anyMatchers("/search/freeApartments")
-                antMatchers("/statistics", "/towns/add", "/towns/all").hasRole(RolesEnum.ADMIN.name()).
+                antMatchers("/statistics", "/towns/add").hasRole(RolesEnum.ADMIN.name()).
                 anyRequest().authenticated().
                 //login configuration
                 and().formLogin()

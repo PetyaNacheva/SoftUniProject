@@ -26,9 +26,11 @@
                <a class="col-1 ml-3 p-3 text-warning fs-5 text-decoration-none" th:href="@{/towns/{id}/details(id=*{id})}">View</a>
                 </div>
             </div>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="text-center mt-3">
            <button class="btn bg-warning bg-opacity-75"> <a class="ml-3 p-3 fs-5 text-decoration-none" th:href="@{/towns/add}">Add new town</a> </button>
             </div>
+            </th:block>
             </div>
 
     </div>

@@ -18,8 +18,8 @@
             <div th:each="a : ${myApartments}" th:object="${a}" class="col-8 m-auto rounded bg-success bg-opacity-50 p-3 ">
                 <div class="d-flex flex-row justify-content-around">
                 <img class="col-1 mr-2 rounded" th:src="*{picture}">
-                <span class="my-auto text-center col-2 fs-5" th:text="*{name}">Name</span>
-                <span class="my-auto text-center col-2 fs-5" th:text="*{address}">Address</span>
+                <span class="my-auto text-center col-2 fs-5 text-white" th:text="*{name}">Name</span>
+                <span class="my-auto text-center col-2 fs-5 text-white" th:text="*{address}">Address</span>
                 <a class="my-auto text-center col-1 text-warning text-decoration-none fs-5" th:href="@{/apartments/{id}/details(id=*{id})}">View</a>
                 </div>
         </div>

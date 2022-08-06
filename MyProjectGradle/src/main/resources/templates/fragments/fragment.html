@@ -24,7 +24,7 @@
                <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
                     <a class="nav-link" th:href="@{/statistics}">Stats</a>
                </li>
-                <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/towns/all}">Towns</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">

@@ -34,9 +34,9 @@
                 <div class="row">
                    <th:block th:if="*{canUpdate}">
                     <a class="col-4 mx-auto btn bg-warning text-primary" th:href="@{/apartments/{id}/update(id=*{id})}">Update</a>
-                       <a class="col-4 mx-auto btn bg-warning text-primary" id="statisticsBtn" th:href="@{/apartments/api/statistic/{id}(id=*{id})}">Statistic</a>
-                       <div id="apartmentStatistic">
-                       </div>
+                      <!-- <input id="statisticsBtn" type="button" class="col-4 mx-auto btn bg-warning text-primary" value="Statistic" th:href="@{/apartments/api/statistic/{id}(id=*{id})}" />-->
+                       <a id="apartmentId" type="hidden" th:hidden="*{id}" th:text="*{id}"></a>
+                       <a class="col-4 mx-auto btn bg-warning text-primary" id="statisticsBtn">Statistic</a>
                    </th:block>
 
                     <th:block th:if="${canDelete}">
@@ -47,6 +47,8 @@
                     <th:block th:unless="${canDelete}">
                         <h5 class="text-danger pt-3"> The apartment has active reservations and could not be deleted</h5>
                     </th:block>
+                    <div id="apartmentStatistic">
+                    </div>
                 </div>
             </div>
         </div>

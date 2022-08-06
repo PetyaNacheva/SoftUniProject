@@ -12,6 +12,7 @@ fetch("http://localhost:8080/towns/api/top3")
     }).then(data => displayTowns(allTowns));
 
 const displayTowns = (towns) => {
+
     townsList.innerHTML = '';
     let row = [];
     for (let i = 0; i < towns.length; i++) {

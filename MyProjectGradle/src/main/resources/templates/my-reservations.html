@@ -19,7 +19,7 @@
                      width="50px" height="50px">
                 <p th:text="*{guestName}" class="py-3 col-2">GuestName</p>
                 <p th:text="*{arrivalDate}" class="py-3 col-2">ArrivalDate</p>
-                <p th:text="*{departureDate}" class="py-3 col-2">DepartureDate</p>
+                <p th:text="*{departureDate}" class="py-3 col-1">DepartureDate</p>
                 <p th:text="*{apartment.name}" class="py-3 col-2">Apartment</p>
                 <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ApartmentDetails</a>
                 <a th:href="@{/reservations/{id}/details(id=*{id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ReservationDetails</a>
@@ -57,13 +57,13 @@
                      width="50px" height="50px">
                 <p th:text="*{guestName}" class="py-3 col-2">GuestName</p>
                 <p th:text="*{arrivalDate}" class="py-3 col-2">ArrivalDate</p>
-                <p th:text="*{departureDate}" class="py-3 col-2">DepartureDate</p>
+                <p th:text="*{departureDate}" class="py-3 col-1">DepartureDate</p>
                 <p th:text="*{apartment.name}" class="py-3 col-2">Apartment</p>
                 <a th:href="@{/apartments/{id}/details(id=*{apartment.id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ApartmentDetails</a>
                 <a th:href="@{/reservations/{id}/details(id=*{id})}" class="col-2 ml-3 p-3 text-warning text-decoration-none">ReservationDetails</a>
             </div>
         </div>
-
+    </div>
     </div>
 </div>
 </div>
