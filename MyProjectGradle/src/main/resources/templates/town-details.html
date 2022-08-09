@@ -22,9 +22,13 @@
                 <img th:src="*{picture.url}" th:value="*{picture.publicId}" class="rounded"  alt="Apartment image">
             </div>
             <div class="card-body row flex-row justify-content-between">
+
                 <div >
                     <th:block th:if="*{canUpdate}">
                         <a class="btn bg-warning  text-decoration-none text-primary fs-5 py-1" th:href="@{/towns/{id}/update(id=*{id})}">Update</a>
+                    </th:block>
+                    <th:block th:unless="*{canUpdate}">
+                        <p class="text-danger">This town could not be updated since there have active apartments</p>
                     </th:block>
                         <th:block th:if="*{canDelete}">
                             <form class="btn mx-2" th:action="@{/towns/{id}/delete(id=*{id})}" th:method="delete">
@@ -32,6 +36,7 @@
                             </form>
                     </th:block>
                 </div>
+
             </div>
 
         </div>

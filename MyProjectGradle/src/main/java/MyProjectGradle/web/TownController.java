@@ -95,7 +95,11 @@ public class TownController {
     public String getUpdate(@PathVariable Long id, Model model, @AuthenticationPrincipal MySecurityUser principal) {
         if (!model.containsAttribute("town")&& userService.isAdmin(principal.getUserIdentifier())) {
             TownDetailsViewModel townsDetailsViewModel = townService.findTownDetailsViewModelBy(id);
-            townsDetailsViewModel.setCanUpdate(true);
+            if(townService.canUpdate(id, principal.getUserIdentifier())){
+                townsDetailsViewModel.setCanUpdate(true);
+            }else {
+                townsDetailsViewModel.setCanUpdate(false);
+            }
             model.addAttribute("town", townsDetailsViewModel);
             return "town-update";
         }
@@ -109,13 +113,13 @@ public class TownController {
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) throws IOException {
 
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()||!townService.canUpdate(id,principal.getUserIdentifier())){
             redirectAttributes.addFlashAttribute("townUpdateBindingModel", townUpdateBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.townUpdateBindingModel", townUpdateBindingModel);
             return "redirect:town-update";
         }
-         townService.updateTown(id, townUpdateBindingModel, principal.getUserIdentifier());
-        return "redirect:/towns/all";
+        townService.updateTown(id, townUpdateBindingModel, principal.getUserIdentifier());
+        return "redirect:/towns/"+id+"/details";
     }
 
     @Transactional

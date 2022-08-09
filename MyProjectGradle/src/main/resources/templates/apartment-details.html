@@ -40,8 +40,8 @@
                    </th:block>
 
                     <th:block th:if="${canDelete}">
-                    <form class=" col-6 btn btn-link" th:action="@{/apartments/{id}/delete(id=*{id})}" th:method="delete">
-                        <input type="submit" class="btn btn-link" value="Delete"/>
+                    <form class=" col-6 btn btn-link mx-auto" th:action="@{/apartments/{id}/delete(id=*{id})}" th:method="delete">
+                        <input type="submit" class=" btn col-4 mx-auto btn bg-warning text-primary" value="Delete"/>
                     </form>
                     </th:block>
                     <th:block th:unless="${canDelete}">

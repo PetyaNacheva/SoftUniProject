@@ -5,7 +5,9 @@ import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
 import MyProjectGradle.models.service.ApartmentServiceModel;
 import MyProjectGradle.models.views.ApartmentDetailsViewModel;
+import MyProjectGradle.models.views.ApartmentStatisticViewModel;
 import MyProjectGradle.models.views.ApartmentViewModel;
+import MyProjectGradle.models.views.ReservationStatViewModel;
 import MyProjectGradle.repository.*;
 import MyProjectGradle.service.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +52,7 @@ class ApartmentServiceImplTest {
     private ApartmentViewModel apartmentViewModel;
 
 
+
     @Mock
     UserRepository userRepository;
 
@@ -69,6 +72,8 @@ class ApartmentServiceImplTest {
 
     @Mock
     PictureRepository pictureRepository;
+    @Mock
+    ReservationRepository reservationRepository;
     @Mock
     ReservationService reservationService;
     @Mock
@@ -184,6 +189,7 @@ class ApartmentServiceImplTest {
         testReservation.setNumberOfGuests(2);
         testReservation.setPrice(BigDecimal.valueOf(200));
         testReservation.setId(1L);
+        reservationRepository.save(testReservation);
 
         multipartFile = new MockMultipartFile("test", "testFileName", "testContentName",new byte[1]);
         apartmentService = new ApartmentServiceImpl(apartmentRepository, new ModelMapper(),userService, townService, typeService, pictureService, reservationService);
@@ -367,7 +373,9 @@ class ApartmentServiceImplTest {
     public void testIsAvailable(){
         when(reservationService.findAllByApartmentsByName(apartment1.getName())).thenReturn(List.of(testReservation));
 
-        assertEquals("Next available days are after 2022-10-05", apartmentService.isAvailable(apartment1.getName(), LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)));
+        LocalDate arrivalTest= LocalDate.of(2022,10,1);
+        LocalDate departureTest= LocalDate.of(2022, 10,5);
+        assertEquals("Next available days are after 2022-10-05", apartmentService.isAvailable(apartment1.getName(), arrivalTest, departureTest));
     }
     @Test
     public void testFindNextAvailableDays(){
@@ -382,4 +390,12 @@ class ApartmentServiceImplTest {
         assertEquals(2, apartmentService.findAllAvailableApartmentsInPeriod(testTown.getName(),LocalDate.now().plusDays(50), LocalDate.now().plusDays(60)).size());
     }
 
+    @Test
+    public void testGetStatistics(){
+        when(apartmentRepository.findById(apartment1.getId())).thenReturn(Optional.of(apartment1));
+
+        assertEquals(0,apartmentService.getStatistic(apartment1.getId()).getComingReservations().size());
+        assertEquals(0, apartmentService.getStatistic(apartment1.getId()).getPast30DaysReservations().size());
+        assertEquals(BigDecimal.ZERO, apartmentService.getStatistic(apartment1.getId()).getProfitFromPastMonth());
+    }
 }

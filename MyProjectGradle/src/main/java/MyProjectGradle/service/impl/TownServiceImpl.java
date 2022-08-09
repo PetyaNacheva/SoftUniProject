@@ -109,9 +109,17 @@ public class TownServiceImpl implements TownService {
         }
          townRepository.save(town);
     }
+
     @Transactional
     @Override
     public boolean canDelete(Long id, String username) {
+        Town town = townRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Town"));
+        return userService.isAdmin(username) && town != null&&town.getApartments().size()==0;
+    }
+
+    @Transactional
+    @Override
+    public boolean canUpdate(Long id, String username) {
         Town town = townRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Town"));
         return userService.isAdmin(username) && town != null&&town.getApartments().size()==0;
     }
@@ -119,7 +127,8 @@ public class TownServiceImpl implements TownService {
     @Override
     public void deleteTown(Long id) {
         Town town = townRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Town"));
-            pictureService.delete(town.getPictureUrl().getPublicId());
+        Picture picture = pictureService.findPictureByPublicId(town.getPictureUrl().getPublicId());
+            /*pictureService.delete(picture.getPublicId());*/
             townRepository.delete(town);
     }
 }

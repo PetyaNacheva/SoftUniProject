@@ -1,5 +1,6 @@
 package MyProjectGradle.web;
 
+import MyProjectGradle.models.binding.ApartmentAddBindingModel;
 import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.enums.TypeEnum;
@@ -56,17 +57,17 @@ class ApartmentControllerTest {
     private ApartmentRepository apartmentRepository;
     @MockBean
     private TownRepository townRepository;
-    @MockBean
+    @Autowired
     private TypeRepository typeRepository;
     @Autowired
     private PictureRepository pictureRepository;
-    @MockBean
+    @Autowired
     private ApartmentServiceImpl apartmentService;
-    @MockBean
+    @Autowired
     private TownServiceImpl townService;
-    @MockBean
+    @Autowired
     private TypeServiceImpl typeService;
-    @MockBean
+    @Autowired
     private UserServiceImpl userService;
     @MockBean
     private CloudinaryService cloudinaryService;
@@ -75,9 +76,11 @@ class ApartmentControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockUserRepository.deleteAll();
-        mockRoleRepository.deleteAll();
+
+
         apartmentRepository.deleteAll();
+        mockRoleRepository.deleteAll();
+        mockUserRepository.deleteAll();
         typeRepository.deleteAll();
         pictureRepository.deleteAll();
         testUser = new UserEntity();
@@ -128,10 +131,11 @@ class ApartmentControllerTest {
 
     @AfterEach
     void tearDown() {
-        mockUserRepository.deleteAll();
-        mockRoleRepository.deleteAll();
-        apartmentRepository.deleteAll();
 
+
+        apartmentRepository.deleteAll();
+        mockRoleRepository.deleteAll();
+        mockUserRepository.deleteAll();
     }
 
 
@@ -153,26 +157,23 @@ class ApartmentControllerTest {
     void testAddApartmentWithCorrectParams()throws Exception {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
                 "text/plain", "Spring Framework".getBytes());
-
-        MockMultipartHttpServletRequestBuilder multipartRequest =
-                MockMvcRequestBuilders.multipart("/apartments/add");
-        multipartRequest.param("name", "Test")
-                .param("address", "TestAddress")
+        MockMultipartHttpServletRequestBuilder multipartRequest = MockMvcRequestBuilders.multipart("/apartments/add").file(multipartFile);
+        multipartRequest.param("name", "Test").
+                param("address", "Test")
                 .param("price", "50")
                 .param("town", testTown.getName())
-
-                .param("type",studio.getType().name());
+                .param("type", studio.getType().name());
         multipartRequest.secure(true).with(csrf());
 
         mockMvc
                 .perform(multipartRequest.file(multipartFile))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
     @WithMockUser
     public void getMyApartments() throws Exception {
-        mockMvc.perform(get("/apartments/getMy")).
+        mockMvc.perform(get("/apartments/getMy").with(csrf())).
                 andExpect(status().isOk());
     }
 
@@ -205,7 +206,6 @@ class ApartmentControllerTest {
                         .secure(true)
                         .with(csrf())
                 )
-                .andExpect(status().isOk())
-                .andExpect(view().name("errors/error404"));
+                .andExpect(status().is3xxRedirection());
     }
 }

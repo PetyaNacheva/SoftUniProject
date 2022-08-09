@@ -30,6 +30,14 @@ searchBtn.addEventListener('click', (e) => {
 const displayApartments = (apartments) => {
     apartmentList.innerHTML = '';
     let row = [];
+    if(apartments.length==0){
+        let divElement = document.createElement('div');
+        divElement.className="text-center text-danger py-3 my-2"
+        divElement.innerText = "Unfortunately there no have any apartments on this criteria"
+
+        apartmentList.appendChild(divElement);
+    }else{
+
     for (let i = 0; i < apartments.length; i++) {
 
         let card = document.createElement('div');
@@ -39,13 +47,13 @@ const displayApartments = (apartments) => {
         card.classList.add('bg-success');
         card.classList.add('bg-opacity-75');
         card.classList.add('text-white');
-        card.style.width="max-width: 18rem";
+        card.style.width = "max-width: 18rem";
 
         let img = document.createElement('img');
         img.className = 'card-img';
         img.src = apartments[i].picture;
         img.alt = 'Card image cap';
-        img.style.width="max-width: 18rem;";
+        img.style.width = "max-width: 18rem;";
         let cardBody = document.createElement('div');
         cardBody.className = 'card-body';
         let cardTitle = document.createElement('h5');
@@ -53,11 +61,11 @@ const displayApartments = (apartments) => {
         cardTitle.innerText = apartments[i].name;
         let cardText = document.createElement('p');
         cardText.className = 'card-text py-2 fs-5';
-        cardText.innerText =apartments[i].address;
+        cardText.innerText = apartments[i].address;
         let a = document.createElement('a');
         a.className = 'btn bg-warning text-primary fs-5';
 
-        a.href = '/apartments/'+apartments[i].id+'/details';
+        a.href = '/apartments/' + apartments[i].id + '/details';
         a.innerText = 'Visit';
         cardBody.appendChild(cardTitle);
         cardBody.appendChild(cardText);
@@ -79,6 +87,7 @@ const displayApartments = (apartments) => {
             apartmentList.appendChild(cardGroup);
             row = [];
         }
+    }
     }
 }
 

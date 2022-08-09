@@ -5,6 +5,7 @@ import MyProjectGradle.models.entities.*;
 import MyProjectGradle.models.enums.RolesEnum;
 import MyProjectGradle.models.service.TownServiceModel;
 import MyProjectGradle.models.views.TownDetailsViewModel;
+import MyProjectGradle.repository.PictureRepository;
 import MyProjectGradle.repository.TownRepository;
 import MyProjectGradle.repository.UserRepository;
 import MyProjectGradle.service.PictureService;
@@ -55,6 +56,8 @@ class TownServiceImplTest {
     PictureService pictureService;
     @Mock
     UserService userService;
+    @Mock
+    PictureRepository pictureRepository;
 
 
     @BeforeEach
@@ -130,6 +133,7 @@ class TownServiceImplTest {
     @Test
     public void testDeleteTown(){
         when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+       /* when(pictureRepository.findByPublicId(pictureTest.getPublicId())).thenReturn(Optional.of(pictureTest));*/
         townService.deleteTown(townTest.getId());
         Mockito.verify(mockTownRepository).delete(townTest);
     }

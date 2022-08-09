@@ -25,6 +25,8 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 import java.util.List;
@@ -102,15 +104,13 @@ class UserControllerTest {
 
 
     @Test
-    void testPostLoginWrongCredentialsLoginError() throws Exception {
-        mockMvc
-                .perform(post("/users/login")
-                        .param("username", "wrong_username")
-                        .param("password", "12345")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                )
-                .andExpect(forwardedUrl("/users/login-error"));
+    public void testPostLoginWrongCredentialsLoginError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/login-error")
+                        .param("email", "x@y.z")
+                        .param("password", "111")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/users/login"));
     }
 
 
@@ -158,5 +158,16 @@ class UserControllerTest {
         assertEquals(1, mockUserRepository.count());
        }
 
+       @Test
+    public void testGetProfileNotAuthenticatedUse() throws Exception {
+           mockMvc.perform(get("/users/profile")).
+                   andExpect(status().is3xxRedirection());
+       }
+
+    @Test
+    public void testGetProfileUpdateNotAuthenticatedUser() throws Exception {
+        mockMvc.perform(get("/users/profile/update")).
+                andExpect(status().is3xxRedirection());
+    }
 
 }

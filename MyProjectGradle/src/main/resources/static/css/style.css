@@ -86,10 +86,6 @@ main{
     width: 100%;
 }
 main {
-    background-image: url(https://i.pinimg.com/736x/88/c6/c6/88c6c6b6a8cae5dd846f596fd447010a.jpg);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
     height: 100%;
     box-sizing: content-box;
     min-height: 100%;

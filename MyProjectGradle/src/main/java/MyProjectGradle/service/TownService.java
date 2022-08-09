@@ -32,6 +32,7 @@ public interface TownService {
     void updateTown(Long id, TownUpdateBindingModel townUpdateBindingModel, String userIdentifier) throws IOException;
 
     boolean canDelete(Long id, String userIdentifier);
+    boolean canUpdate(Long id, String userIdentifier);
 
     void deleteTown(Long id);
 }

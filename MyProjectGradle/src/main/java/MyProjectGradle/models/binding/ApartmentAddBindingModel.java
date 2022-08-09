@@ -25,7 +25,7 @@ public class ApartmentAddBindingModel {
     @NotBlank(message = "apartment address is required")
     @Size(min = 3, max =50, message ="addres must be at least 5 chars" )
     private String address;
-    @NotEmpty(message = "apartment picture is required")
+    @NotNull(message = "apartment picture is required")
     private MultipartFile picture;
 
 

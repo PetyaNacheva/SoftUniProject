@@ -26,6 +26,8 @@ const displayTowns = (towns) => {
         img.className = 'card-img';
         img.src = towns[i].pictureUrl;
         img.alt = 'Card image cap';
+        img.width='250';
+        img.height='250';
         let cardBody = document.createElement('div');
         cardBody.className = 'card-body';
         let cardTitle = document.createElement('div');

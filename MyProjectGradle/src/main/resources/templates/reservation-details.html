@@ -33,10 +33,6 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <!--<th:block th:if="*{canUpdate}">
-                        <a class="btn btn-link" th:href="@{/reservations/{id}/update(id=*{id})}">Update</a>
-                    </th:block>-->
-
                     <th:block th:if="*{canDelete}">
                         <form class="btn" th:action="@{/reservations/{id}/delete(id=*{id})}" th:method="delete">
                             <input type="submit" class="btn bg-warning text-primary bg-opacity-75 text-decoration-none" value="Delete"/>
