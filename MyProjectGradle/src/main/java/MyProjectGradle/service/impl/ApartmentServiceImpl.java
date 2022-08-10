@@ -74,11 +74,15 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public List<ApartmentViewModel> findAllApartmentsByUsername(UserEntity user) {
-      return apartmentRepository.findAllByOwner(user).stream().map(a->{
-                 ApartmentViewModel ap=modelMapper.map(a, ApartmentViewModel.class);
-            List<Picture> pictures = pictureService.findPictureByApartmentName(a.getName());
-            ap.setPicture(pictures.get(0).getUrl());
-                 return ap;}).collect(Collectors.toList());
+        List<Apartment> apartments = apartmentRepository.findAllByOwner(user);
+        List<ApartmentViewModel> result = new ArrayList<>();
+        for (Apartment apartment : apartments) {
+            ApartmentViewModel apartmentViewModel = modelMapper.map(apartment, ApartmentViewModel.class);
+            Picture picture = pictureService.findPictureByApartmentName(apartment.getName()).get(0);
+            apartmentViewModel.setPicture(picture.getUrl());
+            result.add(apartmentViewModel);
+        }
+      return result;
     }
 
     @Override
@@ -129,8 +133,6 @@ public class ApartmentServiceImpl implements ApartmentService {
             };
         }
         return result;
-
-        // TODO: 7/23/2022 changed sintaksis because of the tests 
     }
 
     @Override
@@ -180,8 +182,7 @@ public class ApartmentServiceImpl implements ApartmentService {
         pictures.stream().forEach(p-> pictureService.UpdateApartmentName(p, apartmentServiceModel.getName()));
         apartment.setPictures(pictures);
         apartmentRepository.save(apartment);
-        Apartment apartment1 = apartmentRepository.findById(apartment.getId()).orElseThrow(() -> new EntityNotFoundException("Apartment"));
-        return apartment1.getId();
+        return apartment.getId();
     }
     @Transactional
     @Override

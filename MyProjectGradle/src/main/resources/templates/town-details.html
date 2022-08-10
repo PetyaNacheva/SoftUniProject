@@ -27,7 +27,7 @@
                     <th:block th:if="*{canUpdate}">
                         <a class="btn bg-warning  text-decoration-none text-primary fs-5 py-1" th:href="@{/towns/{id}/update(id=*{id})}">Update</a>
                     </th:block>
-                    <th:block th:unless="*{canUpdate}">
+                    <th:block th:unless="*{!canUpdate}">
                         <p class="text-danger">This town could not be updated since there have active apartments</p>
                     </th:block>
                         <th:block th:if="*{canDelete}">

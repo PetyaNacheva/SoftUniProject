@@ -43,6 +43,8 @@ const displayApartments = (apartments) => {
         let card = document.createElement('div');
         card.classList.add('card');
         card.classList.add('my-card');
+        card.classList.add('rounded');
+        card.classList.add('mx-3');
         card.classList.add('text-center');
         card.classList.add('bg-success');
         card.classList.add('bg-opacity-75');
@@ -53,7 +55,8 @@ const displayApartments = (apartments) => {
         img.className = 'card-img';
         img.src = apartments[i].picture;
         img.alt = 'Card image cap';
-        img.style.width = "max-width: 18rem;";
+        img.width = "200";
+        img.height="200";
         let cardBody = document.createElement('div');
         cardBody.className = 'card-body';
         let cardTitle = document.createElement('h5');
@@ -78,7 +81,7 @@ const displayApartments = (apartments) => {
             let cardGroup = document.createElement('div');
             cardGroup.classList.add('card-group');
             cardGroup.classList.add('align-content-center');
-            cardGroup.classList.add('col-md-3');
+            cardGroup.classList.add('col-md-5');
             cardGroup.classList.add('mx-auto');
             cardGroup.classList.add('py-4');
             for (let j = 0; j < row.length; j++) {

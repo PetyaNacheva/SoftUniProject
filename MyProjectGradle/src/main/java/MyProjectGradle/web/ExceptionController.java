@@ -21,10 +21,11 @@ public class ExceptionController implements ErrorController {
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "errors/error404";
-            } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "errors/error500";
             }else if (statusCode == HttpStatus.BAD_REQUEST.value()){
                 return "errors/error400";
+            }
+            else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+                return "errors/error500";
             }else if (statusCode == HttpStatus.UNAUTHORIZED.value()){
                 return "errors/error401";
             }else if (statusCode == HttpStatus.FORBIDDEN.value()){

@@ -14,5 +14,5 @@ public interface TownRepository extends JpaRepository<Town, Long> {
     Optional<Town> findByName(String name);
 
     @Query(value = "select t from Town as t order by size(t.apartments) DESC , t.name ASC")
-    List<Town> findByAndApartments();
+    List<Town> findByApartments();
 }

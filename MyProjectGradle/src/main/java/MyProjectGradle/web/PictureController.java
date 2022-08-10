@@ -48,7 +48,7 @@ public class PictureController {
 
         return "picture-add-form";
     }else {
-            return "errors/error403";
+            return "errors/error401";
         }
     }
     @Transactional
@@ -87,7 +87,7 @@ public class PictureController {
             }
             return "redirect:/apartments/getMy";
         }else {
-            return "errors/error403";
+            return "errors/error401";
         }
     }
 }

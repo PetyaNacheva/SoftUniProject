@@ -197,6 +197,21 @@ class TownServiceImplTest {
         assertEquals(townDetailsViewModelBy.getDescription(), townTest.getDescription());
     }
 
+    @Test
+    public void  testCanUpdate(){
+        when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+        when(userService.isAdmin(testUser.getUsername())).thenReturn(true);
+        assertTrue(townService.canUpdate(townTest.getId(),testUser.getUsername()));
+    }
+
+    @Test
+    public void testCanUpdateFalse(){
+        String fakeUser = "fakeUser";
+        when(mockTownRepository.findById(townTest.getId())).thenReturn(Optional.of(townTest));
+        when(userService.isAdmin(fakeUser)).thenReturn(false);
+        assertFalse(townService.canUpdate(townTest.getId(), fakeUser));
+    }
+
   /* @Test
     public void testSaveTown() throws IOException {
         when(mockUserRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));

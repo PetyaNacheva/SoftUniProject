@@ -11,6 +11,7 @@ import MyProjectGradle.models.views.TownDetailsViewModel;
 import MyProjectGradle.service.TownService;
 import MyProjectGradle.service.UserService;
 import MyProjectGradle.service.impl.MySecurityUser;
+import org.apache.http.HttpException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -85,9 +86,9 @@ public class TownController {
         }
             if (!model.containsAttribute("town")) {
                 model.addAttribute("town", townsDetailsViewModel);
-                return "town-details";
+
             }
-        return "errors/error403";
+        return "town-details";
     }
 
     @Transactional
@@ -103,7 +104,7 @@ public class TownController {
             model.addAttribute("town", townsDetailsViewModel);
             return "town-update";
         }
-        return "errors/error403";
+        return "errors/error401";
     }
 
     @Transactional

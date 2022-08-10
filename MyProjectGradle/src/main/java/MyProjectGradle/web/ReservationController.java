@@ -44,19 +44,19 @@ private final UserService userService;
     @GetMapping("/{id}/details")
     public String showReservation(@PathVariable Long id, Model model, @AuthenticationPrincipal MySecurityUser principal){
         ReservationDetailsViewModel reservation = reservationService.findByIdAndUsername(id, principal.getUserIdentifier());
-        if(reservation.getUsername().equals(principal.getUserIdentifier())||userService.isAdmin(principal.getUserIdentifier())){
-            reservation.setCanUpdate(true);
+           if (reservation.getUsername().equals(principal.getUserIdentifier()) || userService.isAdmin(principal.getUserIdentifier())) {
+               reservation.setCanUpdate(true);
 
-        }
-        if(reservationService.canDelete(reservation.getId(),principal.getUserIdentifier())){
-            reservation.setCanDelete(true);
-        }
-        if(!model.containsAttribute("reservation")){
-            model.addAttribute("reservation", reservation);
-            model.addAttribute("canDelete", reservation.getCanDelete()  );
-            return "reservation-details";
-        }
-        return "errors/error403";
+           if (reservationService.canDelete(reservation.getId(), principal.getUserIdentifier())) {
+               reservation.setCanDelete(true);
+           }
+           if (!model.containsAttribute("reservation")) {
+               model.addAttribute("reservation", reservation);
+               model.addAttribute("canDelete", reservation.getCanDelete());
+               return "reservation-details";
+           }
+       }
+        return "errors/error401";
     }
 
     @Transactional

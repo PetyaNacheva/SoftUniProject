@@ -45,8 +45,10 @@
                     </form>
                     </th:block>
                     <th:block th:unless="${canDelete}">
+                        <th:block th:if="*{canUpdate}">
                         <h5 class="text-danger pt-3"> The apartment has active reservations and could not be deleted</h5>
-                    </th:block>
+                        </th:block>
+                        </th:block>
                     <div id="apartmentStatistic">
                     </div>
                 </div>
@@ -119,9 +121,8 @@
             </div>
         <button type="submit" value="Reserve" class="btn bg-warning text-primary">Reserve</button>
         <p th:if="${isReserved}" class="errors alert alert-danger">
-            The apartment is not available in this period.
-        <p th:if="${isReserved}" th:text="${nextAvailableDates}" class="errors alert alert-danger"></p>
-        </p>
+            The apartment is not available in this period.</p>
+        <p th:if="${isReserved}" th:text="${nextAvailableDates}" class="errors alert alert-danger my-0"></p>
     </form>
 </div>
 </div>

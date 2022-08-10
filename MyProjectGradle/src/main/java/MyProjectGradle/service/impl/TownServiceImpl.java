@@ -72,8 +72,8 @@ public class TownServiceImpl implements TownService {
        @Transactional
     @Override
     public List<TownViewModel> getTop3TownsWithMostApartments() {
-        // TODO: 7/1/2022 to implement cash function for better functionality
-      return townRepository.findByAndApartments().stream()/*.sorted(Comparator.comparing(town -> town.getApartments().size()))*/.limit(3).map(t->{
+
+      return townRepository.findByApartments().stream().limit(3).map(t->{
          TownViewModel townViewModel = modelMapper.map(t, TownViewModel.class);
          townViewModel.setPictureUrl(t.getPictureUrl().getUrl());
           return townViewModel;

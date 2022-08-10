@@ -107,7 +107,7 @@ private final ReservationService reservationService;
           if(!model.containsAttribute("isAvailable")){
               model.addAttribute("isAvailable", true);
           }
-        return "errors/error403";
+        return "errors/error401";
     }
     @Transactional
     @PostMapping("/reserve/{id}")
@@ -173,7 +173,8 @@ private final ReservationService reservationService;
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.apartmentUpdateBindingModel", bindingResult);
             return "redirect:/" + id+"/update";
         }
-        Apartment byApartmentName = apartmentService.findByApartmentByApartmentName(apartmentUpdateBindingModel.getName());
+
+        Apartment byApartmentName =  apartmentService.findApartmentById(id);;
         if(byApartmentName!=null){
             redirectAttributes.addFlashAttribute("apartmentUpdateBindingModel", apartmentUpdateBindingModel);
             redirectAttributes.addFlashAttribute("isExist", true);
@@ -181,11 +182,9 @@ private final ReservationService reservationService;
         ApartmentDetailsViewModel apartmentView = apartmentService.findById(id);
         if (apartmentService.canUpdate(apartmentView.getId(), principal.getUserIdentifier())) {
             ApartmentServiceModel apartment = modelMapper.map(apartmentUpdateBindingModel, ApartmentServiceModel.class);
-            Long updatedId = apartmentService.updateApartment(apartment);
-            return "redirect:/apartments/" + updatedId+"/details";
-        }else{
-            return "errors/error403";
+            apartmentService.updateApartment(apartment);
         }
+        return "redirect:/apartments/"+id+"/details";
     }
 
 

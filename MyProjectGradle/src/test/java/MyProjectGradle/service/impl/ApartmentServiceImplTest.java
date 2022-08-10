@@ -13,6 +13,7 @@ import MyProjectGradle.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,6 +22,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,7 +35,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({})
 @ExtendWith(MockitoExtension.class)
 class ApartmentServiceImplTest {
     private Apartment apartment1, apartment2;
@@ -41,7 +45,6 @@ class ApartmentServiceImplTest {
     private Picture pictureTest, pictureFirst, pictureSecond;
     private ApartmentServiceImpl apartmentService;
     private PasswordEncoder passwordEncoder;
-    private List<GrantedAuthority> authorities;
     private Role userRole, adminRole, hostRole;
     private Type studio, oneBed;
     private ApartmentServiceModel apartmentServiceModel;
@@ -49,9 +52,6 @@ class ApartmentServiceImplTest {
     private ApartmentDetailsViewModel apartmentDetailsViewModel;
     private final ModelMapper modelMapper= new ModelMapper();
     private Reservation testReservation;
-    private ApartmentViewModel apartmentViewModel;
-
-
 
     @Mock
     UserRepository userRepository;
@@ -161,6 +161,8 @@ class ApartmentServiceImplTest {
         apartment1.setPrice(BigDecimal.valueOf(50));
         apartment1.setTown(testTown);
         apartment1.setName("firstApartment");
+        pictureFirst.setApartmentName(apartment1.getName());
+        pictureRepository.save(pictureFirst);
         apartment1.setPictures(List.of(pictureFirst));
         apartment1.setId(1L);
 
@@ -172,6 +174,8 @@ class ApartmentServiceImplTest {
         apartment2.setPrice(BigDecimal.valueOf(80));
         apartment2.setTown(testTown);
         apartment2.setName("secondApartment");
+        pictureSecond.setApartmentName(apartment2.getName());
+        pictureRepository.save(pictureSecond);
         apartment2.setPictures(List.of(pictureSecond));
          apartment1.setId(1L);
          apartment2.setId(2L);
@@ -195,16 +199,6 @@ class ApartmentServiceImplTest {
         apartmentService = new ApartmentServiceImpl(apartmentRepository, new ModelMapper(),userService, townService, typeService, pictureService, reservationService);
     }
 
-   /* @Test
-    public void testFindAllApartmentsByUsername(){
-        when(userRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.of(testUser));
-        when(apartmentRepository.findApartmentByName(apartment1.getName()));
-        when(apartmentRepository.findApartmentByName(apartment2.getName()));
-        List<ApartmentViewModel> allApartmentsByUsername = apartmentService.findAllApartmentsByUsername(testUser);
-        allApartmentsByUsername.size();
-        assertEquals(apartmentService.findAllApartmentsByUsername(testUser).size(),2);
-
-    }*/
 
     @Test
     public void testFindById(){
@@ -398,4 +392,6 @@ class ApartmentServiceImplTest {
         assertEquals(0, apartmentService.getStatistic(apartment1.getId()).getPast30DaysReservations().size());
         assertEquals(BigDecimal.ZERO, apartmentService.getStatistic(apartment1.getId()).getProfitFromPastMonth());
     }
+
+
 }

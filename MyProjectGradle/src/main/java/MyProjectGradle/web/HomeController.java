@@ -17,9 +17,8 @@ public class HomeController {
     }
     @GetMapping("/")
     public String index(Model model) {
-       // List<TownViewModel> towns = townService.getTop3TownsWithMostApartments();
         List<TownViewModel> allTowns= townService.getAllTowns();
-      //model.addAttribute("towns", towns);
+
       model.addAttribute("allTowns", allTowns);
         return "/index";
     }
